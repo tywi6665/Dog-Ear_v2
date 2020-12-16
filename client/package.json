@@ -1,5 +1,5 @@
 {
-  "name": "dog-ear_v2",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -23,6 +23,9 @@
       "react-app/jest"
     ]
   },
+  "author": "Tyler Winstead",
+  "license": "ISC",
+  "proxy": "http://localhost:8000",
   "browserslist": {
     "production": [
       ">0.2%",
