@@ -20,7 +20,7 @@ class RecipeItem(models.Model):
     @property
     def to_dict(self):
         data = {
-            'data': json.loads(self.data)
+            'data': json.loads(self.data),
             'date': self.date
         }
         return data 
