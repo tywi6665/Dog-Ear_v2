@@ -16,3 +16,14 @@ class RecipeItem(models.Model):
     tags = models.JSONField(default=[])
     timestamp = models.DateTimeField(default=timezone.now)
 
+    # This is for basic and custom serialisation to return it to client as a JSON.
+    @property
+    def to_dict(self):
+        data = {
+            'data': json.loads(self.data)
+            'date': self.date
+        }
+        return data 
+
+    def __str__(self):
+        return self.unique_id
