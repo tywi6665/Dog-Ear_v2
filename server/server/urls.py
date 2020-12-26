@@ -15,11 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls import url,static
+# from django.views.generic import TemplateView
 
-from . import views
+from .views import hello
+from main.views import crawl
 
 app_name = 'dog-ear-server'
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/hello/', views.hello, name='hello'),
+    # url(r'^$', home_view, name='home'),
+    path('api/hello/', hello, name='hello'),
+    url(r'^api/crawl/', crawl, name='crawl'),
 ]
+

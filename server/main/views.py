@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from scrapyd_api import ScrapydAPI
-from main.utils import URLUtil
+# from main.utils import URLUtil
 from main.models import RecipeItem
 
 # connect to scrapyd service
@@ -20,7 +20,7 @@ def is_valid_url(url):
         validate(url) # check to see if url format is valid
     except ValidationError:
         return False
-    return rue
+    return True
 
 # csrf security token exemption
 @csrf_exempt
