@@ -6,8 +6,29 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from main.models import RecipeItem
+import json
 
 
 class RecipeScraperPipeline:
+    def __init__(self, unique_id, *args, **kwargs):
+        self.unique_id = unique_id
+        self.items = []
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        retrun cls(
+            #this will be passed from django view
+            unique_id = crawler.settings.get('unique_id')
+        )
+
+    def close_spider(self, spider):
+        # this is where we are saving the crawled data with django models
+        item = RecipeItem
+        item.unique_id = self.unique_id
+        item.data = json.dumps(self.items)
+        item.save()
+
     def process_item(self, item, spider):
+        self.items.append(item['url'])
         return item
