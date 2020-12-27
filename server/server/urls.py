@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls import url,static
+from django.views.decorators.csrf import csrf_exempt
 # from django.views.generic import TemplateView
 
 from .views import hello
@@ -26,7 +27,7 @@ app_name = 'dog-ear-server'
 urlpatterns = [
     path('admin/', admin.site.urls),
     # url(r'^$', home_view, name='home'),
-    path('api/hello/', hello, name='hello'),
-    url(r'^api/crawl/', crawl, name='crawl'),
+    path('api/hello/', csrf_exempt(hello), name='hello'),
+    url(r'^api/crawl/', csrf_exempt(crawl), name='crawl'),
 ]
 

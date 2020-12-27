@@ -17,7 +17,7 @@ class RecipeScraperPipeline:
 
     @classmethod
     def from_crawler(cls, crawler):
-        retrun cls(
+        return cls(
             #this will be passed from django view
             unique_id = crawler.settings.get('unique_id')
         )
@@ -27,6 +27,7 @@ class RecipeScraperPipeline:
         item = RecipeItem
         item.unique_id = self.unique_id
         item.data = json.dumps(self.items)
+        # print(item.data)
         item.save()
 
     def process_item(self, item, spider):

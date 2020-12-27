@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from scrapyd_api import ScrapydAPI
 # from main.utils import URLUtil
 from main.models import RecipeItem
+import json
 
 # connect to scrapyd service
 scrapyd = ScrapydAPI('http://localhost:6800')
@@ -33,7 +34,9 @@ def crawl(request):
     # POST requests == new crawling task
     if request.method == 'POST':
         # take url from client
-        url = request.POST.get('url', None)
+        data = json.loads(request.body.decode('utf-8'))
+        print(data)
+        url = data.get('url', None)
         # if url does not exist
         if not url:
             return JsonResponse({'error': 'Missing args'})
@@ -45,7 +48,7 @@ def crawl(request):
         domain = urlparse(url).netloc
         # create a unique id
         unique_id = str(uuid4())
-        
+        print(domain, unique_id)
         # custom settings for scrapy spider
         settings = {
             'unique_id': unique_id, # unique id for each entry in DB
@@ -54,16 +57,16 @@ def crawl(request):
 
         # schedule a new crawling task
         # return a id which will be used to check on the task's status
-        task = scrapyd.schedule(
-            'default',
-            'icrawler',
-            settings=settings,
-            url=url,
-            domain=domain
-            )
+        # task = scrapyd.schedule(
+        #     'default',
+        #     'recipe_crawler',
+        #     settings=settings,
+        #     url=url,
+        #     domain=domain
+        #     )
 
         return JsonResponse({
-            'task_id': task,
+            # 'task_id': task,
             'unique_id': unique_id,
             'status': 'started'
         })
