@@ -32,10 +32,12 @@ def is_valid_url(url):
 # crawling function
 def crawl(request):
     # POST requests == new crawling task
-    if request.method == 'POST':
+    data = json.loads(request.body.decode('utf-8'))
+    if data.get('method') == 'POST':
         # take url from client
-        data = json.loads(request.body.decode('utf-8'))
-        print(data)
+        print('POST', data)
+        # data = json.loads(request.body.decode('utf-8'))
+        # print('Post:', data)
         url = data.get('url', None)
         # if url does not exist
         if not url:
@@ -48,7 +50,7 @@ def crawl(request):
         domain = urlparse(url).netloc
         # create a unique id
         unique_id = str(uuid4())
-        print(domain, unique_id)
+        # print(domain, unique_id)
         # custom settings for scrapy spider
         settings = {
             'unique_id': unique_id, # unique id for each entry in DB
@@ -57,25 +59,27 @@ def crawl(request):
 
         # schedule a new crawling task
         # return a id which will be used to check on the task's status
-        # task = scrapyd.schedule(
-        #     'default',
-        #     'recipe_crawler',
-        #     settings=settings,
-        #     url=url,
-        #     domain=domain
-        #     )
+        task = scrapyd.schedule(
+            'default',
+            'recipe_crawler',
+            settings=settings,
+            url=url,
+            domain=domain
+            )
 
         return JsonResponse({
-            # 'task_id': task,
+            'task_id': task,
             'unique_id': unique_id,
             'status': 'started'
         })
 
     # GET requests are for checking on status of specific crawling task
-    elif request.method == 'GET':
+    elif data.get('method') == 'GET':
         # if crawling is complete, then crawled data is returned
-        task_id = request.GET.get('task_id', None)
-        unique_id = request.GET.get('unique_id', None)
+        # data = json.loads(request.HEADER.decode('utf-8'))
+        print('GET:', data)
+        task_id = data.get('task_id', None)
+        unique_id = data.get('unique_id', None)
 
         # validate
         if not task_id or not unique_id:
