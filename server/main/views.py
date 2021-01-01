@@ -95,11 +95,14 @@ def crawl(request):
         # else return active status
         # possible results are => pending, running, finished
         status = scrapyd.job_status('default', task_id)
+        print(status)
         if status == 'finished':
             try:
                 # this is the unique_id that was created above
                 item = RecipeItem.objects.get(unique_id=unique_id)
-                return JsonResponse({'data': item.to_dict['data']})
+                # title = RecipeItem.objects.get('title')
+                print('------Item------', item)
+                return JsonResponse({'data': item.to_dict})
             except Exception as e:
                 return JsonResponse({'error': str(e)})
         else:

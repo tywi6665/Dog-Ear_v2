@@ -60,6 +60,7 @@ function App() {
       )
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         if (data.data) {
           clearInterval(statusInterval)
           setData(data.data)
