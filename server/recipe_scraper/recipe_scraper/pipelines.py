@@ -27,7 +27,6 @@ class RecipeScraperPipeline:
         item = RecipeItem
         item.unique_id = self.unique_id
         item.data = json.dumps(self.items)
-        # print(item.data)
         # item.save()
 
     def process_item(self, item, spider):

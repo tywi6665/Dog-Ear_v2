@@ -3,7 +3,7 @@ import React, {useEffect, useState, useRef} from 'react';
 
 function App() {
 
-  const [url, setUrl] = useState('https://www.google.com');
+  const [url, setUrl] = useState('https://food52.com/recipes/84669-doubletree-cookies-recipe');
   const [crawlingStatus, setCrawlingStatus] = useState(null);
   const [data, setData] = useState(null);
   const [taskID, setTaskID] = useState(null);
@@ -75,6 +75,7 @@ function App() {
   return (
     <div className="App">
       <button onClick={() => startCrawl()}>Click Me!</button>
+      <p>Be sure to change USER_AGENT in Settings before deploying</p>
     </div>
   );
 }

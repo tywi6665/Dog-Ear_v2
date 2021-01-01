@@ -20,14 +20,14 @@ django.setup()
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'recipe_scraper'
+BOT_NAME = 'Dog-Ear'
 
 SPIDER_MODULES = ['recipe_scraper.spiders']
 NEWSPIDER_MODULE = 'recipe_scraper.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'recipe_scraper (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True

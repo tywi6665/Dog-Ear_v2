@@ -24,6 +24,7 @@ from .views import hello
 from main.views import crawl
 
 app_name = 'dog-ear-server'
+websocket = path
 urlpatterns = [
     path('admin/', admin.site.urls),
     # url(r'^$', home_view, name='home'),

@@ -39,6 +39,7 @@ def crawl(request):
         # data = json.loads(request.body.decode('utf-8'))
         # print('Post:', data)
         url = data.get('url', None)
+        print("-----URL-----", url)
         # if url does not exist
         if not url:
             return JsonResponse({'error': 'Missing args'})
@@ -48,6 +49,7 @@ def crawl(request):
 
         # parse the url and extract its domain
         domain = urlparse(url).netloc
+        print("-----Domain-----", domain)
         # create a unique id
         unique_id = str(uuid4())
         # print(domain, unique_id)
@@ -59,13 +61,16 @@ def crawl(request):
 
         # schedule a new crawling task
         # return a id which will be used to check on the task's status
-        task = scrapyd.schedule(
-            'default',
-            'recipe_crawler',
-            settings=settings,
-            url=url,
-            domain=domain
-            )
+        print("-----Scheduling Crawler-----")
+
+        if domain == "food52.com":
+            task = scrapyd.schedule(
+                'default',
+                'food52_crawler',
+                settings=settings,
+                url=url,
+                domain=domain
+                )
 
         return JsonResponse({
             'task_id': task,
