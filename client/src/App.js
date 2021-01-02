@@ -3,7 +3,7 @@ import React, {useEffect, useState, useRef} from 'react';
 
 function App() {
 
-  const [url, setUrl] = useState('https://food52.com/recipes/84669-doubletree-cookies-recipe');
+  const [url, setUrl] = useState('https://omnivorescookbook.com/milk-bread-rolls/');
   const [crawlingStatus, setCrawlingStatus] = useState(null);
   const [data, setData] = useState(null);
   const [taskID, setTaskID] = useState(null);

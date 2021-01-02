@@ -63,14 +63,13 @@ def crawl(request):
         # return a id which will be used to check on the task's status
         print("-----Scheduling Crawler-----")
 
-        if domain == "food52.com":
-            task = scrapyd.schedule(
-                'default',
-                'food52_crawler',
-                settings=settings,
-                url=url,
-                domain=domain
-                )
+        task = scrapyd.schedule(
+            'default',
+            'recipe_crawler',
+            settings=settings,
+            url=url,
+            domain=domain
+            )
 
         return JsonResponse({
             'task_id': task,

@@ -33,9 +33,7 @@ class RecipeScraperPipeline:
         item.description = self.items[3]
         item.img_src = self.items[4]
         item.tags = self.items[5]
-        # logging.log('-----Item.data-----', item)
         item.save()
-        # return item
 
     def process_item(self, item, spider):
         self.items.append(item['url'])
