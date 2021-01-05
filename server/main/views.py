@@ -33,7 +33,7 @@ def is_valid_url(url):
 def recipes(request):
         # return all DB entries
         all_recipes = list(RecipeItem.objects.values())
-        print(all_recipes)
+        # print(all_recipes)
         return JsonResponse({'data': all_recipes})
 
 # crawling function

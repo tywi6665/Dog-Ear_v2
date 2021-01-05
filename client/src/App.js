@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useRef} from 'react';
-// import axios from 'axios';
+import api from './utils/api';
 
 function App() {
 
-  const [url, setUrl] = useState('https://omnivorescookbook.com/milk-bread-rolls/');
+  const [url, setUrl] = useState('https://food52.com/recipes/84746-best-beef-goulash-recipe');
   const [crawlingStatus, setCrawlingStatus] = useState(null);
   const [data, setData] = useState(null);
   const [taskID, setTaskID] = useState(null);
@@ -12,13 +12,8 @@ function App() {
   let statusInterval = 1;
 
   useEffect(() => {
-    fetch('api/recipes', {
-      method: 'GET',
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-      })
+    let data = api.getAllRecipes()
+    setData(data)
   }, [])
 
   async function startCrawl() {

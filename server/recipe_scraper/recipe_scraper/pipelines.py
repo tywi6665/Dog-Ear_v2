@@ -9,6 +9,7 @@ from itemadapter import ItemAdapter
 from main.models import RecipeItem
 import json
 import logging
+import re
 
 class RecipeScraperPipeline:
     def __init__(self, unique_id, *args, **kwargs):
@@ -39,6 +40,7 @@ class RecipeScraperPipeline:
         self.items.append(item['url'])
         self.items.append(item['title'])
         self.items.append(item['author'])
+        re.sub('/<([^>]+)>/', '', item['description'])
         self.items.append(item['description'])
         self.items.append(item['img_src'])
         self.items.append(item['tags'])
