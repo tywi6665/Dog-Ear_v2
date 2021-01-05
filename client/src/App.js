@@ -11,10 +11,15 @@ function App() {
   // const [statusInterval, setStatusInterval] = useState(1);
   let statusInterval = 1;
 
-  // useEffect(() => {
-  //   statusInterval = setInterval(checkCrawlStatus, 2000)
-  //   return () => clearInterval(statusInterval)
-  // }, [taskID, uniqueID, crawlingStatus])
+  useEffect(() => {
+    fetch('api/recipes', {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+      })
+  }, [])
 
   async function startCrawl() {
     if(!url) {
@@ -76,7 +81,6 @@ function App() {
   return (
     <div className="App">
       <button onClick={() => startCrawl()}>Click Me!</button>
-      <p>Be sure to change USER_AGENT in Settings before deploying</p>
     </div>
   );
 }

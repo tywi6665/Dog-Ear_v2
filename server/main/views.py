@@ -29,6 +29,13 @@ def is_valid_url(url):
 # specifies accepted http methods
 @require_http_methods(['POST', 'GET'])
 
+# api routes
+def recipes(request):
+        # return all DB entries
+        all_recipes = list(RecipeItem.objects.values())
+        print(all_recipes)
+        return JsonResponse({'data': all_recipes})
+
 # crawling function
 def crawl(request):
     # POST requests == new crawling task
