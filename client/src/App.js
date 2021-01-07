@@ -3,7 +3,7 @@ import api from './utils/api';
 
 function App() {
 
-  const [url, setUrl] = useState('https://food52.com/recipes/84746-best-beef-goulash-recipe');
+  const [url, setUrl] = useState('https://thewoksoflife.com/easy-scallion-pancakes/');
   const [crawlingStatus, setCrawlingStatus] = useState(null);
   const [data, setData] = useState(null);
   const [taskID, setTaskID] = useState(null);

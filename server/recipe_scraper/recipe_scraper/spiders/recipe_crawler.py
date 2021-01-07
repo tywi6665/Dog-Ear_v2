@@ -123,6 +123,14 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
             except:
                 print('An error has occurred')
+        elif self.domain == 'thewoksoflife.com':
+            try:
+                item['title'] = response.xpath("//meta[@property='og:title']/@content")[0].extract().title()
+                item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
+                item['author'] = response.css("span.entry-author > a.entry-author-link > span.entry-author-name::text").get().title()
+                item['description'] = response.css("//meta[@property='og:description']/@content")[0].extract()
+            except:
+                print('An error has occurred')
 
         self.logger.info('--------Item------- %s', item)
         
