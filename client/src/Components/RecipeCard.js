@@ -125,15 +125,15 @@ const Card = ({ docID, title, imgSrc, author, rating, description, timestamp, ha
         )
     }
 
-    const join = (value) => {
-        setQuickTag(value)
-        if (tagsToAdd.length === 0) {
-            setTagsToAdd(value)
-        } else {
-            let combinedTags = tagsToAdd + "," + value
-            setTagsToAdd(combinedTags)
-        }
-    }
+    // const join = (value) => {
+    //     setQuickTag(value)
+    //     if (tagsToAdd.length === 0) {
+    //         setTagsToAdd(value)
+    //     } else {
+    //         let combinedTags = tagsToAdd + "," + value
+    //         setTagsToAdd(combinedTags)
+    //     }
+    // }
 
     const renderTab2 = () => {
         return (

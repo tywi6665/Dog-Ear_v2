@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import Editable from "../components/Editable";
+import Editable from "./Editable";
 // import firebase from "../utils/firebase";
 
 const Card = ({ recipe, url, setRecipe, setIsOverlay, setUrl }) => {
