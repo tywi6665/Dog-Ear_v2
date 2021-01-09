@@ -6,9 +6,9 @@ import api from './utils/api';
 
 function App() {
 
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState('https://food52.com/blog/25722-what-is-marzipan');
   const [crawlingStatus, setCrawlingStatus] = useState(null);
-  const [data, setData] = useState(null);
+  const [allRecipes, setAllRecipes] = useState(null);
   const [taskID, setTaskID] = useState(null);
   const [uniqueID, setUniqueID] = useState(null);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
@@ -21,8 +21,15 @@ function App() {
   let statusInterval = 1;
 
   useEffect(() => {
-    let data = api.getAllRecipes()
-    setData(data)
+     fetch('api/recipes', {
+          method: 'GET',
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data)
+          setAllRecipes(data.data)
+      setFilteredRecipes(data.data)
+      })
   }, [])
 
   async function startCrawl() {
@@ -72,7 +79,7 @@ function App() {
         console.log(data)
         if (data.data) {
           clearInterval(statusInterval)
-          setData(data.data)
+          setAllRecipes(data.data)
         } else if (data.error) {
           clearInterval(statusInterval)
           console.log(data.error)
@@ -179,23 +186,23 @@ function App() {
         </div>
       </div>
       <div className="card-container">
-        {filteredRecipes.map((recipe) => (
+        {filteredRecipes ? filteredRecipes.map((recipe) => (
           <RecipeCard
-            key={recipe.id}
-            docID={recipe.id}
+            key={recipe.unique_id}
+            docID={recipe.unique_id}
             title={recipe.title}
-            imgSrc={recipe.imgSrc}
+            imgSrc={recipe.img_src}
             author={recipe.author}
             rating={recipe.rating}
             description={recipe.description}
             timestamp={recipe.timestamp}
-            hasMade={recipe.hasMade}
+            hasMade={recipe.has_made}
             tags={recipe.tags}
             tagsList={tagsList}
             notes={recipe.notes}
             url={recipe.url}
           />
-        ))}
+        )) : <p>Fetching Saved Recipes</p>}
       </div>
     </div>
   );

@@ -31,15 +31,27 @@ def is_valid_url(url):
 
 # api routes
 def recipes(request):
-        # return all DB entries
-        all_recipes = list(RecipeItem.objects.values())
-        # print(all_recipes)
-        return JsonResponse({'data': all_recipes})
+    # return all DB entries
+    all_recipes = list(RecipeItem.objects.values())
+    # print(all_recipes)
+    return JsonResponse({'data': all_recipes})
+
+def delete(request):
+    print('------request------', request)
+    # delete recipe entry
+    data = json.loads(request.body.decode('utf-8'))
+    print('------data------', data)
+    # unique_id = data.get('unique_id', None)
+    # print('------ID------', unique_id)
+    # RecipeItem.objects.get(unique_id=unique_id).delete()
+    # return JsonResponse({'Deletion of ${unique_id} was successful'})
+    return JsonResponse({'Hi'})
 
 # crawling function
 def crawl(request):
     # POST requests == new crawling task
     data = json.loads(request.body.decode('utf-8'))
+    print(data)
     if data.get('method') == 'POST':
         # take url from client
         print('POST', data)

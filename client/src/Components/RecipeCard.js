@@ -3,7 +3,7 @@ import moment from "moment";
 import ShowMoreText from 'react-show-more-text';
 import Popup from 'reactjs-popup';
 import StarRatings from 'react-star-ratings';
-// import { addItems, deleteEntry, removeItems, updateItem, updateRating } from "../helpers/functions";
+import api from '../utils/api';
 
 const Card = ({ docID, title, imgSrc, author, rating, description, timestamp, hasMade, notes, tags, tagsList, url }) => {
 
@@ -181,7 +181,7 @@ const Card = ({ docID, title, imgSrc, author, rating, description, timestamp, ha
                         <ul className="tags">
                             {tags.map((tag, i) => (
                                 <li
-                                    key={docID + i}
+                                    key={docID}
                                 >{tag}
                                     <div className="delete-tag" 
                                     // onClick={(e) => remove(e, "tags")}
@@ -248,7 +248,7 @@ const Card = ({ docID, title, imgSrc, author, rating, description, timestamp, ha
                             <button className="close" onClick={close}>X</button>
                             <div className="header">Are You Sure that You Want to Delete this Recipe???</div>
                             <button className="delete" 
-                            // onClick={() => deleteEntry(docID)}
+                            onClick={() => api.delete(docID)}
                             >Delete this Recipe Entry</button>
                         </div>
                     )}

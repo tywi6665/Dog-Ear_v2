@@ -1,5 +1,5 @@
-const api = {
-    getAllRecipes: function() {
+export default {
+    getAllRecipes: async function() {
         fetch('api/recipes', {
             method: 'GET',
         })
@@ -9,8 +9,19 @@ const api = {
             return data
         })
     },
-
+    delete: async function(unique_id) {
+        console.log(unique_id)
+        const id = JSON.stringify(unique_id)
+        fetch('api/delete/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+              },  
+            body: {
+                unique_id: id
+            }
+        })
+    }
     
 }
 
-export default api
