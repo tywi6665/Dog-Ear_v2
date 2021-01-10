@@ -39,6 +39,12 @@ function App() {
       case "rating":
         api.updateRating(unique_id, value, stateReferences);
         break;
+      case "notes_add":
+        api.addNotes(unique_id, value, stateReferences);
+        break;
+      case "notes_remove":
+        api.removeNotes(unique_id, value, stateReferences);
+        break;
       default:
         break;
     }
@@ -99,7 +105,7 @@ function App() {
         console.log(data);
         if (data.data) {
           clearInterval(statusInterval);
-          api.getAll();
+          stateReferences();
         } else if (data.error) {
           clearInterval(statusInterval);
           console.log(data.error);

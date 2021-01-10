@@ -28,3 +28,15 @@ export async function updateRating(unique_id, rating, callback) {
     .put(`api/recipes/${unique_id}/`, { field: "rating", rating: rating })
     .then((res) => callback());
 }
+
+export async function addNotes(unique_id, notes, callback) {
+  axios
+    .put(`api/recipes/${unique_id}/`, { field: "notes_add", notes: notes })
+    .then((res) => callback());
+}
+
+export async function removeNotes(unique_id, notes, callback) {
+  axios
+    .put(`api/recipes/${unique_id}/`, { field: "notes_remove", notes: notes })
+    .then((res) => callback());
+}

@@ -11,9 +11,9 @@ class RecipeItem(models.Model):
     description = models.TextField(max_length=None, blank=True)
     has_made = models.BooleanField(default=False)
     img_src = models.CharField(max_length=200, blank=True)
-    notes = models.TextField(max_length=None, blank=True)
+    notes = models.JSONField(default=list)
     rating = models.IntegerField(default=0)
-    tags = models.JSONField(default=[])
+    tags = models.JSONField(default=list)
     timestamp = models.DateTimeField(default=timezone.now)
 
     # This is for basic and custom serialization to return it to client as a JSON.

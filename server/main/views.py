@@ -45,10 +45,20 @@ class RecipeItemView(viewsets.ModelViewSet):
         instance = self.get_object()
         if field == 'has_made':
             instance.has_made = request.data.get('has_made')
-            instance.save()
         elif field == 'rating':
             instance.rating = request.data.get('rating')
-            instance.save()
+        elif field == 'notes_add':
+            new_note = request.data.get('notes')
+            print(new_note)
+            instance.notes.append(new_note)
+            print(instance.notes)
+        elif field == 'notes_remove':
+            new_note = request.data.get('notes')
+            print(new_note)
+            instance.notes.remove(new_note)
+            print(instance.notes)
+        
+        instance.save()
 
         # serializer = self.get_serializer(instance)
         # serializer.is_valid(raise_exception=True)

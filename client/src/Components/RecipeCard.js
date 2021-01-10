@@ -31,56 +31,56 @@ const Card = ({
   const [currentTab, setCurrentTab] = useState(1);
   const closeModal = () => [setOpen(false), setCurrentTab(1)];
 
-  // const add = (e, field) => {
-  //     e.preventDefault();
-  //     setIsEditing(false);
-  //     setQuickTag("");
+  const add = (e, field) => {
+    e.preventDefault();
+    setIsEditing(false);
+    //     setQuickTag("");
 
-  //     switch (field) {
-  //         case "tags":
-  //             let newTags = tagsToAdd;
-  //             if (newTags.length) {
-  //                 if (newTags.length === 1) {
-  //                     addItems(unique_id, "tags", newTags);
-  //                 } else {
-  //                     newTags = newTags.split(",")
-  //                     newTags.forEach(tag => {
-  //                         addItems(unique_id, "tags", tag);
-  //                     });
-  //                 }
-  //                 setTagsToAdd("");
-  //             }
-  //             break;
-  //         case "notes":
-  //             let newNotes = notesToAdd
-  //             if (newNotes.length) {
-  //                 let newNotes = notesToAdd.split("\n\n");
-  //                 newNotes.forEach(note => {
-  //                     addItems(unique_id, "notes", note);
-  //                 });
-  //                 setNotesToAdd("");
-  //             }
-  //             break;
-  //         default:
-  //             break;
-  //     }
-  // }
+    switch (field) {
+      //         case "tags":
+      //             let newTags = tagsToAdd;
+      //             if (newTags.length) {
+      //                 if (newTags.length === 1) {
+      //                     addItems(unique_id, "tags", newTags);
+      //                 } else {
+      //                     newTags = newTags.split(",")
+      //                     newTags.forEach(tag => {
+      //                         addItems(unique_id, "tags", tag);
+      //                     });
+      //                 }
+      //                 setTagsToAdd("");
+      //             }
+      //             break;
+      case "notes":
+        let newNotes = notesToAdd;
+        if (newNotes.length) {
+          // let newNotes = notesToAdd.split("\n\n");
+          // newNotes.forEach((note) => {
+          updateRecipe("notes_add", unique_id, notesToAdd.trim());
+          // });
+          setNotesToAdd("");
+        }
+        break;
+      default:
+        break;
+    }
+  };
 
-  // const remove = (e, field) => {
-  //     e.preventDefault();
-  //     let itemToRemove = e.target.closest("li").textContent.slice(0, -1);
+  const remove = (e, field) => {
+    e.preventDefault();
+    let itemToRemove = e.target.closest("li").textContent.slice(0, -1);
 
-  //     switch (field) {
-  //         case "tags":
-  //             removeItems(unique_id, "tags", itemToRemove)
-  //             break;
-  //         case "notes":
-  //             removeItems(unique_id, "notes", itemToRemove)
-  //             break;
-  //         default:
-  //             break;
-  //     }
-  // }
+    switch (field) {
+      // case "tags":
+      //     removeItems(unique_id, "tags", itemToRemove)
+      //     break;
+      case "notes":
+        updateRecipe("notes_remove", unique_id, itemToRemove.trim());
+        break;
+      default:
+        break;
+    }
+  };
 
   const ratingChanged = (rating) => {
     setNewRating(rating);
@@ -210,7 +210,7 @@ const Card = ({
         {tags.length > 0 ? (
           <ul className="tags">
             {tags.map((tag, i) => (
-              <li key={unique_id}>
+              <li key={uuidv4()}>
                 {tag}
                 <div
                   className="delete-tag"
@@ -231,11 +231,11 @@ const Card = ({
             {notes.length > 0 ? (
               <ol>
                 {notes.map((note) => (
-                  <li key={note}>
+                  <li key={uuidv4()}>
                     {note}
                     <div
                       className="delete-note"
-                      // onClick={(e) => remove(e, "notes")}
+                      onClick={(e) => remove(e, "notes")}
                     >
                       <span>x</span>
                     </div>
@@ -249,9 +249,7 @@ const Card = ({
             )}
           </div>
           <div className="add-notes">
-            <form
-            // onSubmit={e => add(e, "notes")}
-            >
+            <form onSubmit={(e) => add(e, "notes")}>
               <textarea
                 name="notes"
                 placeholder="Add additional notes here."
