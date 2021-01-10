@@ -33,9 +33,22 @@ def is_valid_url(url):
 
 # api routes
 class RecipeItemView(viewsets.ModelViewSet):
+    authentication_classes = []
     lookup_field = 'unique_id'
     serializer_class = RecipeItemSerializer
     queryset = RecipeItem.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        print('-----PUT-----', request)
+        instance = self.get_object()
+        instance.has_made = request.data.get("has_made")
+        instance.save()
+
+        # serializer = self.get_serializer(instance)
+        # serializer.is_valid(raise_exception=True)
+        # self.perform_update(serializer)
+
+        return JsonResponse({'Success': 'Entry Updated'})
 
 # def recipes(request):
 #     # return all DB entries

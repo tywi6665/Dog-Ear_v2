@@ -23,7 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 # from django.views.generic import TemplateView
 
 from .views import hello
-from main.views import RecipeItemView
+from main.views import RecipeItemView, crawl
 
 app_name = 'dog-ear-server'
 # websocket = path
@@ -34,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('hello/', csrf_exempt(hello), name='hello'),
-    # url(r'^api/crawl/', csrf_exempt(crawl), name='crawl'),
+    url('crawl/', csrf_exempt(crawl), name='crawl'),
     # url(r'^api/recipes/', csrf_exempt(recipes), name='recipes'),
     # url(r'^api/delete/', csrf_exempt(delete), name='delete'),
 ]
