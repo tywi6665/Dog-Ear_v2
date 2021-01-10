@@ -14,23 +14,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include             
+from rest_framework import routers                  
+from main import views   
 from django.conf import settings
 from django.conf.urls import url,static
 from django.views.decorators.csrf import csrf_exempt
 # from django.views.generic import TemplateView
 
 from .views import hello
-from main.views import crawl, recipes, delete
+from main.views import RecipeItemView
 
 app_name = 'dog-ear-server'
-websocket = path
+# websocket = path
+router = routers.DefaultRouter()                
+router.register(r'recipes', RecipeItemView, 'recipe') 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # url(r'^$', home_view, name='home'),
-    path('api/hello/', csrf_exempt(hello), name='hello'),
-    url(r'^api/crawl/', csrf_exempt(crawl), name='crawl'),
-    url(r'^api/recipes/', csrf_exempt(recipes), name='recipes'),
-    url(r'^api/delete/', csrf_exempt(delete), name='delete'),
+    path('api/', include(router.urls)),
+    path('hello/', csrf_exempt(hello), name='hello'),
+    # url(r'^api/crawl/', csrf_exempt(crawl), name='crawl'),
+    # url(r'^api/recipes/', csrf_exempt(recipes), name='recipes'),
+    # url(r'^api/delete/', csrf_exempt(delete), name='delete'),
 ]
 

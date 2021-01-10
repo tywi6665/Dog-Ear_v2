@@ -4,6 +4,8 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.views.decorators.http import require_POST, require_http_methods
 from django.shortcuts import render
+from rest_framework import viewsets 
+from .serializers import RecipeItemSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from scrapyd_api import ScrapydAPI
@@ -24,28 +26,33 @@ def is_valid_url(url):
     return True
 
 # csrf security token exemption
-@csrf_exempt
+# @csrf_exempt
 
 # specifies accepted http methods
-@require_http_methods(['POST', 'GET'])
+# @require_http_methods(['POST', 'GET'])
 
 # api routes
-def recipes(request):
-    # return all DB entries
-    all_recipes = list(RecipeItem.objects.values())
-    # print(all_recipes)
-    return JsonResponse({'data': all_recipes})
+class RecipeItemView(viewsets.ModelViewSet):
+    lookup_field = 'unique_id'
+    serializer_class = RecipeItemSerializer
+    queryset = RecipeItem.objects.all()
 
-def delete(request):
-    print('------request------', request)
-    # delete recipe entry
-    data = json.loads(request.body.decode('utf-8'))
-    print('------data------', data)
-    # unique_id = data.get('unique_id', None)
-    # print('------ID------', unique_id)
-    # RecipeItem.objects.get(unique_id=unique_id).delete()
-    # return JsonResponse({'Deletion of ${unique_id} was successful'})
-    return JsonResponse({'Hi'})
+# def recipes(request):
+#     # return all DB entries
+#     all_recipes = list(RecipeItem.objects.values())
+#     # print(all_recipes)
+#     return JsonResponse({'data': all_recipes})
+
+# def delete(request):
+#     print('------request------', request)
+#     # delete recipe entry
+#     data = json.loads(request.body.decode('utf-8'))
+#     print('------data------', data)
+#     # unique_id = data.get('unique_id', None)
+#     # print('------ID------', unique_id)
+#     # RecipeItem.objects.get(unique_id=unique_id).delete()
+#     # return JsonResponse({'Deletion of ${unique_id} was successful'})
+#     return JsonResponse({'Hi'})
 
 # crawling function
 def crawl(request):
