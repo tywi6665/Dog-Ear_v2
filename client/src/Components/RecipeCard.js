@@ -7,7 +7,7 @@ import * as api from "../utils/api";
 import { v4 as uuidv4 } from "uuid";
 
 const Card = ({
-  docID,
+  unique_id,
   title,
   imgSrc,
   author,
@@ -41,11 +41,11 @@ const Card = ({
   //             let newTags = tagsToAdd;
   //             if (newTags.length) {
   //                 if (newTags.length === 1) {
-  //                     addItems(docID, "tags", newTags);
+  //                     addItems(unique_id, "tags", newTags);
   //                 } else {
   //                     newTags = newTags.split(",")
   //                     newTags.forEach(tag => {
-  //                         addItems(docID, "tags", tag);
+  //                         addItems(unique_id, "tags", tag);
   //                     });
   //                 }
   //                 setTagsToAdd("");
@@ -56,7 +56,7 @@ const Card = ({
   //             if (newNotes.length) {
   //                 let newNotes = notesToAdd.split("\n\n");
   //                 newNotes.forEach(note => {
-  //                     addItems(docID, "notes", note);
+  //                     addItems(unique_id, "notes", note);
   //                 });
   //                 setNotesToAdd("");
   //             }
@@ -72,20 +72,20 @@ const Card = ({
 
   //     switch (field) {
   //         case "tags":
-  //             removeItems(docID, "tags", itemToRemove)
+  //             removeItems(unique_id, "tags", itemToRemove)
   //             break;
   //         case "notes":
-  //             removeItems(docID, "notes", itemToRemove)
+  //             removeItems(unique_id, "notes", itemToRemove)
   //             break;
   //         default:
   //             break;
   //     }
   // }
 
-  // const ratingChanged = (rating) => {
-  //     setNewRating(rating)
-  //     updateRating(docID, rating)
-  // }
+  const ratingChanged = (rating) => {
+    setNewRating(rating);
+    updateRecipe("rating", unique_id, rating);
+  };
 
   const renderTab1 = () => {
     return (
@@ -107,17 +107,13 @@ const Card = ({
               rating={newRating}
               starRatedColor="#f04a26"
               starEmptyColor="#808080"
-              // changeRating={ratingChanged}
+              changeRating={ratingChanged}
               numberOfStars={5}
               starDimension="25px"
               starSpacing="3px"
               name="rating"
             />
-            <button
-            // onClick={() => ratingChanged(0)}
-            >
-              Reset
-            </button>
+            <button onClick={() => ratingChanged(0)}>Reset</button>
           </div>
           <div className="has-made">
             <input
@@ -128,7 +124,10 @@ const Card = ({
               onChange={() => console.log("click")}
               checked={hasMade}
             />
-            <label htmlFor="check" onClick={() => updateRecipe(docID, hasMade)}>
+            <label
+              htmlFor="check"
+              onClick={() => updateRecipe("has_made", unique_id, hasMade)}
+            >
               Cooked
             </label>
           </div>
@@ -211,7 +210,7 @@ const Card = ({
         {tags.length > 0 ? (
           <ul className="tags">
             {tags.map((tag, i) => (
-              <li key={docID}>
+              <li key={unique_id}>
                 {tag}
                 <div
                   className="delete-tag"
@@ -284,7 +283,10 @@ const Card = ({
               <div className="header">
                 Are You Sure that You Want to Delete this Recipe???
               </div>
-              <button className="delete" onClick={() => deleteRecipe(docID)}>
+              <button
+                className="delete"
+                onClick={() => deleteRecipe(unique_id)}
+              >
                 Delete this Recipe Entry
               </button>
             </div>
@@ -300,7 +302,7 @@ const Card = ({
                 rating={newRating}
                 starRatedColor="#f04a26"
                 starEmptyColor="#808080"
-                // changeRating={ratingChanged}
+                changeRating={ratingChanged}
                 numberOfStars={5}
                 starDimension="22px"
                 starSpacing="2px"
@@ -318,7 +320,7 @@ const Card = ({
               />
               <label
                 htmlFor="check"
-                onClick={() => updateRecipe(docID, hasMade)}
+                onClick={() => updateRecipe("has_made", unique_id, hasMade)}
               >
                 Cooked
               </label>

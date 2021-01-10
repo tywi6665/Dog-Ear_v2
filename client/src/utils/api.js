@@ -10,20 +10,21 @@ export async function getAll(stateFunction1, stateFunction2) {
     .catch((err) => console.log(err));
 }
 
-export async function deleteRecipe(unique_id, stateFunction1, stateFunction2) {
-  axios
-    .delete(`api/recipes/${unique_id}`)
-    .then((res) => getAll(stateFunction1, stateFunction2));
+export async function deleteRecipe(unique_id, callback) {
+  axios.delete(`api/recipes/${unique_id}`).then((res) => callback());
 }
 
-export async function updateHasMade(
-  unique_id,
-  boolean,
-  stateFunction1,
-  stateFunction2
-) {
-  //   console.log(unique_id, boolean);
+export async function updateHasMade(unique_id, prevState, callback) {
   axios
-    .put(`api/recipes/${unique_id}/`, { has_made: !boolean })
-    .then((res) => getAll(stateFunction1, stateFunction2));
+    .put(`api/recipes/${unique_id}/`, {
+      field: "has_made",
+      has_made: !prevState,
+    })
+    .then((res) => callback());
+}
+
+export async function updateRating(unique_id, rating, callback) {
+  axios
+    .put(`api/recipes/${unique_id}/`, { field: "rating", rating: rating })
+    .then((res) => callback());
 }

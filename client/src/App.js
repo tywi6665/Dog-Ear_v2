@@ -23,15 +23,29 @@ function App() {
   let statusInterval = 1;
 
   useEffect(() => {
-    api.getAll(setAllRecipes, setFilteredRecipes);
+    stateReferences();
   }, []);
 
   async function handleDelete(unique_id) {
-    api.deleteRecipe(unique_id, setAllRecipes, setFilteredRecipes);
+    api.deleteRecipe(unique_id, stateReferences);
   }
 
-  async function handleUpdate(unique_id, boolean) {
-    api.updateHasMade(unique_id, boolean, setAllRecipes, setFilteredRecipes);
+  async function handleUpdate(field, unique_id, value) {
+    console.log(field);
+    switch (field) {
+      case "has_made":
+        api.updateHasMade(unique_id, value, stateReferences);
+        break;
+      case "rating":
+        api.updateRating(unique_id, value, stateReferences);
+        break;
+      default:
+        break;
+    }
+  }
+
+  async function stateReferences() {
+    api.getAll(setAllRecipes, setFilteredRecipes);
   }
 
   async function startCrawl() {
@@ -215,7 +229,7 @@ function App() {
           filteredRecipes.map((recipe) => (
             <RecipeCard
               key={recipe.unique_id}
-              docID={recipe.unique_id}
+              unique_id={recipe.unique_id}
               title={recipe.title}
               imgSrc={recipe.img_src}
               author={recipe.author}

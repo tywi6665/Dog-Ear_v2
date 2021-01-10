@@ -39,10 +39,16 @@ class RecipeItemView(viewsets.ModelViewSet):
     queryset = RecipeItem.objects.all()
 
     def update(self, request, *args, **kwargs):
-        print('-----PUT-----', request)
+        print('-----PUT-----', json.loads(request.body.decode('utf-8')))
+        field = json.loads(request.body.decode('utf-8')).get('field')
+        print(field)
         instance = self.get_object()
-        instance.has_made = request.data.get("has_made")
-        instance.save()
+        if field == 'has_made':
+            instance.has_made = request.data.get('has_made')
+            instance.save()
+        elif field == 'rating':
+            instance.rating = request.data.get('rating')
+            instance.save()
 
         # serializer = self.get_serializer(instance)
         # serializer.is_valid(raise_exception=True)
