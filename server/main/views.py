@@ -53,9 +53,20 @@ class RecipeItemView(viewsets.ModelViewSet):
             instance.notes.append(new_note)
             print(instance.notes)
         elif field == 'notes_remove':
-            new_note = request.data.get('notes')
-            print(new_note)
-            instance.notes.remove(new_note)
+            note_to_remove = request.data.get('note')
+            print(note_to_remove)
+            instance.notes.remove(note_to_remove)
+            print(instance.notes)
+        elif field == 'tags_add':
+            new_tags = request.data.get('tags').split(',')
+            print(new_tags)
+            for tag in new_tags:
+               instance.tags.append(tag) 
+            print(instance.tags)
+        elif field == 'tags_remove':
+            tag_to_remove = request.data.get('tag')
+            print(tag_to_remove)
+            instance.tags.remove(tag_to_remove)
             print(instance.notes)
         
         instance.save()

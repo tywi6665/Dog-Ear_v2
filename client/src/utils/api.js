@@ -35,8 +35,20 @@ export async function addNotes(unique_id, notes, callback) {
     .then((res) => callback());
 }
 
-export async function removeNotes(unique_id, notes, callback) {
+export async function removeNotes(unique_id, note, callback) {
   axios
-    .put(`api/recipes/${unique_id}/`, { field: "notes_remove", notes: notes })
+    .put(`api/recipes/${unique_id}/`, { field: "notes_remove", note: note })
+    .then((res) => callback());
+}
+
+export async function addTags(unique_id, tags, callback) {
+  axios
+    .put(`api/recipes/${unique_id}/`, { field: "tags_add", tags: tags })
+    .then((res) => callback());
+}
+
+export async function removeTags(unique_id, tag, callback) {
+  axios
+    .put(`api/recipes/${unique_id}/`, { field: "tags_remove", tag: tag })
     .then((res) => callback());
 }

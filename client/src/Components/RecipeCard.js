@@ -37,26 +37,26 @@ const Card = ({
     //     setQuickTag("");
 
     switch (field) {
-      //         case "tags":
-      //             let newTags = tagsToAdd;
-      //             if (newTags.length) {
-      //                 if (newTags.length === 1) {
-      //                     addItems(unique_id, "tags", newTags);
-      //                 } else {
-      //                     newTags = newTags.split(",")
-      //                     newTags.forEach(tag => {
-      //                         addItems(unique_id, "tags", tag);
-      //                     });
-      //                 }
-      //                 setTagsToAdd("");
-      //             }
-      //             break;
+      case "tags":
+        let newTags = tagsToAdd.trim();
+        if (newTags.length) {
+          // if (newTags.length === 1) {
+          updateRecipe("tags_add", unique_id, newTags);
+          // } else {
+          //   newTags = newTags.split(",");
+          // newTags.forEach((tag) => {
+          // updateRecipe("tags_add", unique_id, newTags);
+          // });
+        }
+        setTagsToAdd("");
+        // }
+        break;
       case "notes":
-        let newNotes = notesToAdd;
+        let newNotes = notesToAdd.trim();
         if (newNotes.length) {
           // let newNotes = notesToAdd.split("\n\n");
           // newNotes.forEach((note) => {
-          updateRecipe("notes_add", unique_id, notesToAdd.trim());
+          updateRecipe("notes_add", unique_id, notesToAdd);
           // });
           setNotesToAdd("");
         }
@@ -71,9 +71,9 @@ const Card = ({
     let itemToRemove = e.target.closest("li").textContent.slice(0, -1);
 
     switch (field) {
-      // case "tags":
-      //     removeItems(unique_id, "tags", itemToRemove)
-      //     break;
+      case "tags":
+        updateRecipe("tags_remove", unique_id, itemToRemove.trim());
+        break;
       case "notes":
         updateRecipe("notes_remove", unique_id, itemToRemove.trim());
         break;
@@ -170,9 +170,7 @@ const Card = ({
             <strong>Tagged As:</strong>
           </p>
           {isEditing ? (
-            <form
-            // onSubmit={e => add(e, "tags")}
-            >
+            <form onSubmit={(e) => add(e, "tags")}>
               <div className="inner-form">
                 <textarea
                   name="tags"
@@ -212,10 +210,7 @@ const Card = ({
             {tags.map((tag, i) => (
               <li key={uuidv4()}>
                 {tag}
-                <div
-                  className="delete-tag"
-                  // onClick={(e) => remove(e, "tags")}
-                >
+                <div className="delete-tag" onClick={(e) => remove(e, "tags")}>
                   <span>x</span>
                 </div>
               </li>

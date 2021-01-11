@@ -7,7 +7,7 @@ import * as api from "./utils/api";
 
 function App() {
   const [url, setUrl] = useState(
-    "https://food52.com/blog/25722-what-is-marzipan"
+    "https://www.justonecookbook.com/basque-burnt-cheesecake/"
   );
   const [crawlingStatus, setCrawlingStatus] = useState(null);
   const [allRecipes, setAllRecipes] = useState(null);
@@ -23,34 +23,40 @@ function App() {
   let statusInterval = 1;
 
   useEffect(() => {
-    stateReferences();
+    apiStateReferences();
   }, []);
 
   async function handleDelete(unique_id) {
-    api.deleteRecipe(unique_id, stateReferences);
+    api.deleteRecipe(unique_id, apiStateReferences);
   }
 
   async function handleUpdate(field, unique_id, value) {
     console.log(field);
     switch (field) {
       case "has_made":
-        api.updateHasMade(unique_id, value, stateReferences);
+        api.updateHasMade(unique_id, value, apiStateReferences);
         break;
       case "rating":
-        api.updateRating(unique_id, value, stateReferences);
+        api.updateRating(unique_id, value, apiStateReferences);
         break;
       case "notes_add":
-        api.addNotes(unique_id, value, stateReferences);
+        api.addNotes(unique_id, value, apiStateReferences);
         break;
       case "notes_remove":
-        api.removeNotes(unique_id, value, stateReferences);
+        api.removeNotes(unique_id, value, apiStateReferences);
+        break;
+      case "tags_add":
+        api.addTags(unique_id, value, apiStateReferences);
+        break;
+      case "tags_remove":
+        api.removeTags(unique_id, value, apiStateReferences);
         break;
       default:
         break;
     }
   }
 
-  async function stateReferences() {
+  async function apiStateReferences() {
     api.getAll(setAllRecipes, setFilteredRecipes);
   }
 
@@ -105,7 +111,7 @@ function App() {
         console.log(data);
         if (data.data) {
           clearInterval(statusInterval);
-          stateReferences();
+          apiStateReferences();
         } else if (data.error) {
           clearInterval(statusInterval);
           console.log(data.error);

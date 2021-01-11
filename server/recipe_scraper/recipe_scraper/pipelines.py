@@ -34,6 +34,7 @@ class RecipeScraperPipeline:
         item.description = self.items[3]
         item.img_src = self.items[4]
         item.tags = self.items[5]
+        item.tags = [tag.strip() for tag in item.tags]
         item.save()
 
     def process_item(self, item, spider):
