@@ -1,8 +1,14 @@
 import axios from "axios";
 
-export async function getAll(stateFunction1, stateFunction2) {
+export async function getAll(stateFunction1, stateFunction2, filter) {
+  let url = "";
+  if (filter == "-timestamp" || filter == "timestamp") {
+    url = `api/recipes/?ordering=${filter}`;
+  } else {
+    url = `api/recipes/?ordering=${filter},-timestamp`;
+  }
   axios
-    .get("api/recipes")
+    .get(url)
     .then((res) => {
       stateFunction1(res.data);
       stateFunction2(res.data);

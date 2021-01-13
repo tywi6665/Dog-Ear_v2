@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from scrapyd_api import ScrapydAPI
 # from main.utils import URLUtil
 from main.models import RecipeItem
+from django_filters import rest_framework as filters
+from rest_framework.filters import SearchFilter, OrderingFilter
 import json
 
 # connect to scrapyd service
@@ -37,6 +39,9 @@ class RecipeItemView(viewsets.ModelViewSet):
     lookup_field = 'unique_id'
     serializer_class = RecipeItemSerializer
     queryset = RecipeItem.objects.all()
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
+    filter_fields = ['timestamp', 'title', 'has_made']
+    # filterset_fields = ['-timestamp']
 
     def update(self, request, *args, **kwargs):
         print('-----PUT-----', json.loads(request.body.decode('utf-8')))

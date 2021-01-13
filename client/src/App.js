@@ -15,7 +15,7 @@ function App() {
   const [uniqueID, setUniqueID] = useState(null);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [tagsList, setTagsList] = useState([]);
-  const [sortBy, setSortBy] = useState("TIME_DESC");
+  const [sortBy, setSortBy] = useState("-timestamp");
   const [query, setQuery] = useState("");
   const [isOverlay, setIsOverlay] = useState(false);
   const [recipe, setRecipe] = useState({});
@@ -24,7 +24,7 @@ function App() {
 
   useEffect(() => {
     apiStateReferences();
-  }, []);
+  }, [sortBy]);
 
   async function handleDelete(unique_id) {
     api.deleteRecipe(unique_id, apiStateReferences);
@@ -57,7 +57,7 @@ function App() {
   }
 
   async function apiStateReferences() {
-    api.getAll(setAllRecipes, setFilteredRecipes);
+    api.getAll(setAllRecipes, setFilteredRecipes, sortBy);
   }
 
   async function startCrawl() {
@@ -190,12 +190,12 @@ function App() {
               value={sortBy}
               onChange={(e) => setSortBy(e.currentTarget.value)}
             >
-              <option value="TIME_DESC">Newest</option>
-              <option value="TIME_ASC">Oldest</option>
-              <option value="TITLE_ASC">Title A-Z</option>
-              <option value="TITLE_DESC">Title Z-A</option>
-              <option value="COOKED">Has Been Cooked</option>
-              <option value="NOT_COOKED">Has NOT Been Cooked</option>
+              <option value="-timestamp">Newest</option>
+              <option value="timestamp">Oldest</option>
+              <option value="title">Title A-Z</option>
+              <option value="-title">Title Z-A</option>
+              <option value="-has_made">Has Been Cooked</option>
+              <option value="has_made">Has NOT Been Cooked</option>
             </select>
           </div>
           <div className="search-wrapper">
