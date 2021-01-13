@@ -40,7 +40,7 @@ class RecipeItemView(viewsets.ModelViewSet):
     serializer_class = RecipeItemSerializer
     queryset = RecipeItem.objects.all()
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
-    filter_fields = ['timestamp', 'title', 'has_made']
+    filter_fields = ['timestamp', 'rating', 'title', 'has_made']
     # filterset_fields = ['-timestamp']
 
     def update(self, request, *args, **kwargs):

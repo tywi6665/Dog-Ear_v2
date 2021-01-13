@@ -23,7 +23,9 @@ function App() {
   let statusInterval = 1;
 
   useEffect(() => {
+    // if (!query || !sortBy) {
     apiStateReferences();
+    // }
   }, [sortBy]);
 
   async function handleDelete(unique_id) {
@@ -111,6 +113,7 @@ function App() {
         console.log(data);
         if (data.data) {
           clearInterval(statusInterval);
+          setCrawlingStatus("finished");
           apiStateReferences();
         } else if (data.error) {
           clearInterval(statusInterval);
@@ -120,6 +123,36 @@ function App() {
         }
       });
   }
+
+  useEffect(() => {
+    if (allRecipes) {
+      let arr = [];
+      allRecipes.forEach((recipe) => {
+        let tags = recipe.tags;
+        tags.forEach((tag) => {
+          let cleanedTag = tag.toLowerCase().trim();
+          if (!arr.includes(cleanedTag)) {
+            arr.push(cleanedTag);
+          }
+        });
+      });
+      setTagsList(arr.sort());
+    }
+  }, [allRecipes]);
+
+  useEffect(() => {
+    if (allRecipes) {
+      const searchAllRegex = query && new RegExp(`${query}`, "gi");
+      const result = allRecipes.filter(
+        (recipe) =>
+          !searchAllRegex ||
+          searchAllRegex.test(recipe.title) +
+            searchAllRegex.test(recipe.author) +
+            searchAllRegex.test(recipe.tags)
+      );
+      setFilteredRecipes(result);
+    }
+  }, [query]);
 
   return (
     <div id="client_page">
@@ -192,6 +225,7 @@ function App() {
             >
               <option value="-timestamp">Newest</option>
               <option value="timestamp">Oldest</option>
+              <option value="-rating">Highest Rated</option>
               <option value="title">Title A-Z</option>
               <option value="-title">Title Z-A</option>
               <option value="-has_made">Has Been Cooked</option>

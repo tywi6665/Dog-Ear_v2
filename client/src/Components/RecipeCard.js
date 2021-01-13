@@ -23,7 +23,7 @@ const Card = ({
   updateRecipe,
 }) => {
   const [tagsToAdd, setTagsToAdd] = useState("");
-  // const [quickTag, setQuickTag] = useState("");
+  const [quickTag, setQuickTag] = useState("");
   const [notesToAdd, setNotesToAdd] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false);
@@ -152,15 +152,15 @@ const Card = ({
     );
   };
 
-  // const join = (value) => {
-  //     setQuickTag(value)
-  //     if (tagsToAdd.length === 0) {
-  //         setTagsToAdd(value)
-  //     } else {
-  //         let combinedTags = tagsToAdd + "," + value
-  //         setTagsToAdd(combinedTags)
-  //     }
-  // }
+  const join = (value) => {
+    setQuickTag(value);
+    if (tagsToAdd.length === 0) {
+      setTagsToAdd(value);
+    } else {
+      let combinedTags = tagsToAdd + "," + value;
+      setTagsToAdd(combinedTags);
+    }
+  };
 
   const renderTab2 = () => {
     return (
@@ -179,21 +179,23 @@ const Card = ({
                   value={tagsToAdd}
                   onChange={(e) => setTagsToAdd(e.target.value)}
                 />
-                {/* <div className="dropdown">
-                                    <div> */}
-                {/* <select
-                                    value={quickTag}
-                                    onChange={e => join(e.currentTarget.value)}>
-                                    <option value="" disabled={true}>Quick Add Tags</option>
-                                    {tagsList.map((tag, i) => (
-                                        <option
-                                            value={tag}
-                                            key={tag + i}
-                                        >{tag}</option>
-                                    ))}
-                                </select> */}
-                {/* </div>
-                                </div> */}
+                <div className="dropdown">
+                  <div>
+                    <select
+                      value={quickTag}
+                      onChange={(e) => join(e.currentTarget.value)}
+                    >
+                      <option value="" disabled={true}>
+                        Quick Add Tags
+                      </option>
+                      {tagsList.map((tag, i) => (
+                        <option value={tag} key={tag + i}>
+                          {tag}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
               </div>
               <button type="submit">
                 {tagsToAdd.length > 0 ? "Submit" : "Close"}
