@@ -16,8 +16,16 @@ export async function getAll(stateFunction1, stateFunction2, filter) {
     .catch((err) => console.log(err));
 }
 
-export async function deleteRecipe(unique_id, callback) {
-  axios.delete(`api/recipes/${unique_id}`).then((res) => callback());
+export async function createRecipe(recipe, callback) {
+  axios
+    .post("api/recipes/", {
+      data: recipe,
+    })
+    .then((res) => callback());
+}
+
+export async function deleteRecipe(unique_id, route, callback) {
+  axios.delete(`api/${route}/${unique_id}`).then((res) => callback());
 }
 
 export async function updateHasMade(unique_id, prevState, callback) {

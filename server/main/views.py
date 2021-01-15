@@ -5,12 +5,12 @@ from django.core.exceptions import ValidationError
 from django.views.decorators.http import require_POST, require_http_methods
 from django.shortcuts import render
 from rest_framework import viewsets 
-from .serializers import RecipeItemSerializer
+from .serializers import RecipeItemSerializer, CrawledRecipeItemSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from scrapyd_api import ScrapydAPI
 # from main.utils import URLUtil
-from main.models import RecipeItem
+from main.models import RecipeItem, CrawledRecipeItem
 from django_filters import rest_framework as filters
 from rest_framework.filters import SearchFilter, OrderingFilter
 import json
@@ -34,6 +34,12 @@ def is_valid_url(url):
 # @require_http_methods(['POST', 'GET'])
 
 # api routes
+class CrawledRecipeItemView(viewsets.ModelViewSet):
+    authentication_classes = []
+    lookup_field = 'unique_id'
+    serializer_class = CrawledRecipeItemSerializer
+    queryset = CrawledRecipeItem.objects.all()
+
 class RecipeItemView(viewsets.ModelViewSet):
     authentication_classes = []
     lookup_field = 'unique_id'
@@ -41,7 +47,10 @@ class RecipeItemView(viewsets.ModelViewSet):
     queryset = RecipeItem.objects.all()
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
     filter_fields = ['timestamp', 'rating', 'title', 'has_made']
-    # filterset_fields = ['-timestamp']
+
+    def create(self, request):
+        print(request)
+        return JsonResponse({'Success': 'Entry Created'})
 
     def update(self, request, *args, **kwargs):
         print('-----PUT-----', json.loads(request.body.decode('utf-8')))
@@ -169,7 +178,7 @@ def crawl(request):
         if status == 'finished':
             try:
                 # this is the unique_id that was created above
-                item = RecipeItem.objects.get(unique_id=unique_id)
+                item = CrawledRecipeItem.objects.get(unique_id=unique_id)
                 # title = RecipeItem.objects.get('title')
                 print('------Item------', item)
                 return JsonResponse({'data': item.to_dict})

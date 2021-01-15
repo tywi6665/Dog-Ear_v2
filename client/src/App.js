@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import RecipeCard from "./Components/RecipeCard";
 import RecipeEntry from "./Components/RecipeEntry";
 import "./App.scss";
-// import axios from "axios";
 import * as api from "./utils/api";
 
 function App() {
   const [url, setUrl] = useState(
-    "https://www.justonecookbook.com/basque-burnt-cheesecake/"
+    "https://www.seriouseats.com/recipes/2021/01/aloo-paratha.html"
   );
   const [crawlingStatus, setCrawlingStatus] = useState(null);
   const [allRecipes, setAllRecipes] = useState(null);
@@ -18,7 +17,7 @@ function App() {
   const [sortBy, setSortBy] = useState("-timestamp");
   const [query, setQuery] = useState("");
   const [isOverlay, setIsOverlay] = useState(false);
-  const [recipe, setRecipe] = useState({});
+  const [crawledRecipe, setCrawledRecipe] = useState({});
 
   let statusInterval = 1;
 
@@ -28,8 +27,12 @@ function App() {
     // }
   }, [sortBy]);
 
-  async function handleDelete(unique_id) {
-    api.deleteRecipe(unique_id, apiStateReferences);
+  async function handleCreate(recipe) {
+    api.createRecipe(recipe, route, apiStateReferences);
+  }
+
+  async function handleDelete(unique_id, route) {
+    api.deleteRecipe(unique_id, route, apiStateReferences);
   }
 
   async function handleUpdate(field, unique_id, value) {
@@ -114,7 +117,7 @@ function App() {
         if (data.data) {
           clearInterval(statusInterval);
           setCrawlingStatus("finished");
-          apiStateReferences();
+          setCrawledRecipe(data.data);
         } else if (data.error) {
           clearInterval(statusInterval);
           console.log(data.error);
@@ -154,9 +157,20 @@ function App() {
     }
   }, [query]);
 
+  const connect = (e) => {
+    e.preventDefault();
+    startCrawl();
+    setIsOverlay(true);
+  };
+
+  const disconnect = () => {
+    handleDelete(uniqueID, "crawledrecipe");
+    setCrawledRecipe({});
+    setIsOverlay(false);
+  };
+
   return (
     <div id="client_page">
-      <button onClick={() => startCrawl()}>Click Me!</button>
       <div
         className="overlay"
         style={
@@ -167,24 +181,24 @@ function App() {
           // loadClient &&
           url && isOverlay ? (
             <div className="entry_popup">
-              {Object.keys(recipe).length ? (
+              {Object.keys(crawledRecipe).length ? (
                 <>
                   <header className="popup-header">
                     <div className="back">
-                      <button
-                      // onClick={() => disconnect()}
-                      ></button>
+                      <button onClick={() => disconnect()}></button>
                     </div>
                     <h3>
                       <em>Example Recipe Entry:</em>
                     </h3>
                   </header>
                   <RecipeEntry
-                    recipe={recipe}
-                    key={recipe.id}
+                    recipe={crawledRecipe}
+                    key={crawledRecipe.unique_id}
                     url={url}
-                    setRecipe={setRecipe}
+                    setRecipe={setCrawledRecipe}
                     setIsOverlay={setIsOverlay}
+                    handleCreate={handleCreate}
+                    handleDelete={handleDelete}
                     setUrl={setUrl}
                   />
                 </>
@@ -248,9 +262,7 @@ function App() {
         </div>
         <div className="scrape-wrapper">
           <div className="scrape">
-            <form
-            // onSubmit={e => connect(e)}
-            >
+            <form onSubmit={(e) => connect(e)}>
               <label htmlFor="#scrape-input">Create New Recipe Entry:</label>
               <input
                 type="text"

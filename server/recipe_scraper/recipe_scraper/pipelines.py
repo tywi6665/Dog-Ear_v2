@@ -6,7 +6,7 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from main.models import RecipeItem
+from main.models import CrawledRecipeItem
 import json
 import logging
 import re
@@ -25,7 +25,7 @@ class RecipeScraperPipeline:
 
     def close_spider(self, spider):
         # this is where we are saving the crawled data with django models
-        item = RecipeItem()
+        item = CrawledRecipeItem()
         item.unique_id = self.unique_id
         # item.data = json.dumps(self.items)
         item.url = self.items[0]

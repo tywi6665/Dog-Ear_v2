@@ -280,7 +280,7 @@ const Card = ({
               </div>
               <button
                 className="delete"
-                onClick={() => deleteRecipe(unique_id)}
+                onClick={() => deleteRecipe(unique_id, "recipes")}
               >
                 Delete this Recipe Entry
               </button>

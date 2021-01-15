@@ -23,12 +23,13 @@ from django.views.decorators.csrf import csrf_exempt
 # from django.views.generic import TemplateView
 
 from .views import hello
-from main.views import RecipeItemView, crawl
+from main.views import RecipeItemView, CrawledRecipeItemView, crawl
 
 app_name = 'dog-ear-server'
 # websocket = path
 router = routers.DefaultRouter()                
 router.register(r'recipes', RecipeItemView, 'recipe') 
+router.register(r'crawledrecipe', CrawledRecipeItemView, 'recipe') 
 
 urlpatterns = [
     path('admin/', admin.site.urls),

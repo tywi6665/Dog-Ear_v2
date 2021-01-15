@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RecipeItem
+from .models import RecipeItem, CrawledRecipeItem
 
 class RecipeItemAdmin(admin.ModelAdmin):
     list_display = (
@@ -18,3 +18,4 @@ class RecipeItemAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(RecipeItem, RecipeItemAdmin)
+admin.site.register(CrawledRecipeItem, RecipeItemAdmin)
