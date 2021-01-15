@@ -4,6 +4,7 @@ import Editable from "./Editable";
 
 const Card = ({
   recipe,
+  unique_id,
   url,
   setRecipe,
   setIsOverlay,
@@ -15,7 +16,6 @@ const Card = ({
   const [imgSrc, setImgSrc] = useState(recipe.img_src);
   const [description, setDescription] = useState(recipe.description);
   const [author, setAuthor] = useState(recipe.author);
-  const [rating, setRating] = useState(0);
   const [tags, setTags] = useState(recipe.tags);
   const [allNotes, setAllNotes] = useState("");
   const [hasMade, setHasMade] = useState(false);
@@ -25,24 +25,31 @@ const Card = ({
     let notes;
 
     if (allNotes.length > 0) {
-      notes = allNotes.split("\n\n");
+      notes = [allNotes.trim()];
     } else {
       notes = [];
     }
 
     handleCreate({
+      unique_id: unique_id,
       title: title,
+      url: url,
       author: author,
       img_src: imgSrc,
+      description: description,
+      has_made: hasMade,
+      notes: notes,
+      rating: 0,
+      tags: tags,
     });
     setRecipe({});
     setIsOverlay(false);
     handleDelete(recipe.unique_id, "crawledrecipe");
-    // setUrl("");
+    setUrl("");
   };
 
   const splitTags = (tags) => {
-    let split = tags.split(",");
+    let split = tags.split(",").trim();
     setTags(split);
   };
 

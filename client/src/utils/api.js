@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getAll(stateFunction1, stateFunction2, filter) {
   let url = "";
-  if (filter == "-timestamp" || filter == "timestamp") {
+  if (filter === "-timestamp" || filter === "timestamp") {
     url = `api/recipes/?ordering=${filter}`;
   } else {
     url = `api/recipes/?ordering=${filter},-timestamp`;
@@ -17,6 +17,7 @@ export async function getAll(stateFunction1, stateFunction2, filter) {
 }
 
 export async function createRecipe(recipe, callback) {
+  console.log(recipe);
   axios
     .post("api/recipes/", {
       data: recipe,

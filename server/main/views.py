@@ -48,8 +48,12 @@ class RecipeItemView(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
     filter_fields = ['timestamp', 'rating', 'title', 'has_made']
 
-    def create(self, request):
-        print(request)
+    def create(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode('utf-8')).get('data')
+        print('-----POST-----', data)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
         return JsonResponse({'Success': 'Entry Created'})
 
     def update(self, request, *args, **kwargs):
@@ -85,28 +89,7 @@ class RecipeItemView(viewsets.ModelViewSet):
         
         instance.save()
 
-        # serializer = self.get_serializer(instance)
-        # serializer.is_valid(raise_exception=True)
-        # self.perform_update(serializer)
-
         return JsonResponse({'Success': 'Entry Updated'})
-
-# def recipes(request):
-#     # return all DB entries
-#     all_recipes = list(RecipeItem.objects.values())
-#     # print(all_recipes)
-#     return JsonResponse({'data': all_recipes})
-
-# def delete(request):
-#     print('------request------', request)
-#     # delete recipe entry
-#     data = json.loads(request.body.decode('utf-8'))
-#     print('------data------', data)
-#     # unique_id = data.get('unique_id', None)
-#     # print('------ID------', unique_id)
-#     # RecipeItem.objects.get(unique_id=unique_id).delete()
-#     # return JsonResponse({'Deletion of ${unique_id} was successful'})
-#     return JsonResponse({'Hi'})
 
 # crawling function
 def crawl(request):
@@ -115,9 +98,6 @@ def crawl(request):
     print(data)
     if data.get('method') == 'POST':
         # take url from client
-        print('POST', data)
-        # data = json.loads(request.body.decode('utf-8'))
-        # print('Post:', data)
         url = data.get('url', None)
         print("-----URL-----", url)
         # if url does not exist
@@ -132,7 +112,6 @@ def crawl(request):
         print("-----Domain-----", domain)
         # create a unique id
         unique_id = str(uuid4())
-        # print(domain, unique_id)
         # custom settings for scrapy spider
         settings = {
             'unique_id': unique_id, # unique id for each entry in DB
@@ -160,7 +139,6 @@ def crawl(request):
     # GET requests are for checking on status of specific crawling task
     elif data.get('method') == 'GET':
         # if crawling is complete, then crawled data is returned
-        # data = json.loads(request.HEADER.decode('utf-8'))
         print('GET:', data)
         task_id = data.get('task_id', None)
         unique_id = data.get('unique_id', None)

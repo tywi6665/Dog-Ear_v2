@@ -34,30 +34,20 @@ const Card = ({
   const add = (e, field) => {
     e.preventDefault();
     setIsEditing(false);
-    //     setQuickTag("");
+    setQuickTag("");
 
     switch (field) {
       case "tags":
         let newTags = tagsToAdd.trim();
         if (newTags.length) {
-          // if (newTags.length === 1) {
           updateRecipe("tags_add", unique_id, newTags);
-          // } else {
-          //   newTags = newTags.split(",");
-          // newTags.forEach((tag) => {
-          // updateRecipe("tags_add", unique_id, newTags);
-          // });
         }
         setTagsToAdd("");
-        // }
         break;
       case "notes":
         let newNotes = notesToAdd.trim();
         if (newNotes.length) {
-          // let newNotes = notesToAdd.split("\n\n");
-          // newNotes.forEach((note) => {
           updateRecipe("notes_add", unique_id, notesToAdd);
-          // });
           setNotesToAdd("");
         }
         break;
@@ -321,7 +311,6 @@ const Card = ({
               </label>
             </div>
           </div>
-          {/* <p>Author: <strong><em>{author.length ? author : "No Assigned Author"}</em></strong></p> */}
         </div>
         <div className="link-wrapper">
           <div className="link">

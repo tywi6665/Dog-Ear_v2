@@ -28,7 +28,7 @@ function App() {
   }, [sortBy]);
 
   async function handleCreate(recipe) {
-    api.createRecipe(recipe, route, apiStateReferences);
+    api.createRecipe(recipe, apiStateReferences);
   }
 
   async function handleDelete(unique_id, route) {
@@ -36,7 +36,6 @@ function App() {
   }
 
   async function handleUpdate(field, unique_id, value) {
-    console.log(field);
     switch (field) {
       case "has_made":
         api.updateHasMade(unique_id, value, apiStateReferences);
@@ -78,7 +77,6 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
         setTaskID(data.task_id);
         setUniqueID(data.unique_id);
         setCrawlingStatus(data.status);
@@ -87,13 +85,10 @@ function App() {
           2000
         );
       })
-      // .then(statusInterval = setInterval(checkCrawlStatus, 2000))
       .catch((error) => console.error("Error:", error));
   }
 
   async function checkCrawlStatus(task_id, unique_id) {
-    console.log("Checking Crawl Status");
-    console.log(task_id, unique_id);
     const data = JSON.stringify({
       method: "GET",
       task_id: task_id,
@@ -113,7 +108,6 @@ function App() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.data) {
           clearInterval(statusInterval);
           setCrawlingStatus("finished");
@@ -194,6 +188,7 @@ function App() {
                   <RecipeEntry
                     recipe={crawledRecipe}
                     key={crawledRecipe.unique_id}
+                    unique_id={crawledRecipe.unique_id}
                     url={url}
                     setRecipe={setCrawledRecipe}
                     setIsOverlay={setIsOverlay}
@@ -206,7 +201,7 @@ function App() {
                 <>
                   <div className="dog-loader">
                     <div className="dog-head">
-                      <img src="http://www.clker.com/cliparts/j/3/Z/Y/D/5/dog-head-md.png" />
+                      <img src="./graphics/dog-head.png" />
                     </div>
                     <div className="dog-body"></div>
                   </div>
