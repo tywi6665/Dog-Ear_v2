@@ -49,7 +49,7 @@ const Card = ({
   };
 
   const splitTags = (tags) => {
-    let split = tags.split(",").trim();
+    let split = tags.trim().split(",");
     setTags(split);
   };
 

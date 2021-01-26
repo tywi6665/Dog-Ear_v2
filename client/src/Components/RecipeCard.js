@@ -355,7 +355,7 @@ const Card = ({
                       <li>
                         <h4>
                           <a href={url} target="_blank">
-                            GO TO RECIPE
+                            WEBSITE
                           </a>
                         </h4>
                       </li>

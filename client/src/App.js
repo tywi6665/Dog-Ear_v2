@@ -5,9 +5,7 @@ import "./App.scss";
 import * as api from "./utils/api";
 
 function App() {
-  const [url, setUrl] = useState(
-    "https://www.seriouseats.com/recipes/2021/01/aloo-paratha.html"
-  );
+  const [url, setUrl] = useState("");
   const [crawlingStatus, setCrawlingStatus] = useState(null);
   const [allRecipes, setAllRecipes] = useState(null);
   const [taskID, setTaskID] = useState(null);
@@ -226,9 +224,12 @@ function App() {
         </div>
       </header>
       <div className="interaction-wrapper">
-        <div className="search-sort">
-          <div className="dropdown">
+        {/* <div className="search-sort"> */}
+        <div className="box">
+          <p>Sort Recipes by:</p>
+          <div className="dropdown" id="dropdown">
             <select
+              id="select"
               value={sortBy}
               onChange={(e) => setSortBy(e.currentTarget.value)}
             >
@@ -241,6 +242,9 @@ function App() {
               <option value="has_made">Has NOT Been Cooked</option>
             </select>
           </div>
+        </div>
+        <div className="box">
+          <p>Search Recipes by Keyword:</p>
           <div className="search-wrapper">
             <div className="search">
               <input
@@ -255,25 +259,28 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="scrape-wrapper">
-          <div className="scrape">
-            <form onSubmit={(e) => connect(e)}>
-              <label htmlFor="#scrape-input">Create New Recipe Entry:</label>
-              <input
-                type="text"
-                className="scrape-text"
-                id="scrape-input"
-                placeholder="Paste URL Here"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-              <input
-                className="scrape-submit"
-                type="submit"
-                value="Submit"
-                disabled={url.length ? false : true}
-              />
-            </form>
+        {/* </div> */}
+        <div className="box">
+          <div className="scrape-wrapper">
+            <div className="scrape">
+              <form onSubmit={(e) => connect(e)}>
+                <label htmlFor="#scrape-input">Create New Recipe Entry:</label>
+                <input
+                  type="text"
+                  className="scrape-text"
+                  id="scrape-input"
+                  placeholder="Paste URL Here"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                />
+                <input
+                  className="scrape-submit"
+                  type="submit"
+                  value="Submit"
+                  disabled={url.length ? false : true}
+                />
+              </form>
+            </div>
           </div>
         </div>
       </div>
