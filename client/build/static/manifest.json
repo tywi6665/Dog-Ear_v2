@@ -1,0 +1,26 @@
+{
+  "short_name": "Dog-Ear Client",
+  "name": "Dog-Ear Client",
+  "version": "2.0.0",
+  "icons": [
+    {
+      "src": "./favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "./graphics/icon48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "./graphics/icon128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
