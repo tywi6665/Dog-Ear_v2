@@ -256,7 +256,7 @@ const Card = ({
     <div className="card">
       <div className="card-top">
         <img
-          src={imgSrc ? imgSrc : "./graphics/default_image.jpg"}
+          src={imgSrc ? imgSrc : "./static/graphics/default_image.jpg"}
           onClick={() => setOpen((o) => !o)}
         />
         <Popup trigger={<span className="delete"></span>} modal>
@@ -333,7 +333,11 @@ const Card = ({
               </button>
               <div className="modal-img">
                 <div className="modal-img-back">
-                  <img src={imgSrc ? imgSrc : "./graphics/default_image.jpg"} />
+                  <img
+                    src={
+                      imgSrc ? imgSrc : "./static/graphics/default_image.jpg"
+                    }
+                  />
                 </div>
               </div>
               <div className="modal-info">

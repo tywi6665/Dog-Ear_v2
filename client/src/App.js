@@ -177,7 +177,9 @@ function App() {
                 <>
                   <header className="popup-header">
                     <div className="back">
-                      <button onClick={() => disconnect()}></button>
+                      <button
+                        onClick={() => [disconnect(), setUrl("")]}
+                      ></button>
                     </div>
                     <h3>
                       <em>Example Recipe Entry:</em>
@@ -199,7 +201,7 @@ function App() {
                 <>
                   <div className="dog-loader">
                     <div className="dog-head">
-                      <img src="./graphics/dog-head.png" />
+                      <img src="./static/graphics/dog-head.png" />
                     </div>
                     <div className="dog-body"></div>
                   </div>
@@ -220,7 +222,7 @@ function App() {
           <h2>Recipe Repository</h2>
         </div>
         <div className="dog-image">
-          <img src="./graphics/dog.png" alt="Woof woof" />
+          <img src="./static/graphics/dog.png" alt="Woof woof" />
         </div>
       </header>
       <div className="interaction-wrapper">
