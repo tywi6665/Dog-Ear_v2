@@ -1,7 +1,7 @@
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from recipe_scraper.items import RecipeScraperItem
+from recipe_scraper.recipe_scraper.items import RecipeScraperItem
 import re
 
 

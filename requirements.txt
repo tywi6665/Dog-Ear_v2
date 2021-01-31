@@ -51,6 +51,7 @@ regex==2020.11.13
 requests==2.25.1
 Scrapy==2.4.1
 scrapyd==1.2.1
+scrapyd-heroku==0.2.2
 service-identity==18.1.0
 six==1.15.0
 sqlparse==0.4.1

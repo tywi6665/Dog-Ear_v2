@@ -22,8 +22,8 @@ django.setup()
 
 BOT_NAME = 'Dog-Ear'
 
-SPIDER_MODULES = ['recipe_scraper.spiders']
-NEWSPIDER_MODULE = 'recipe_scraper.spiders'
+SPIDER_MODULES = ['recipe_scraper.recipe_scraper.spiders']
+NEWSPIDER_MODULE = 'recipe_scraper.recipe_scraper.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -76,7 +76,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'recipe_scraper.pipelines.RecipeScraperPipeline': 300,
+   'recipe_scraper.recipe_scraper.pipelines.RecipeScraperPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
