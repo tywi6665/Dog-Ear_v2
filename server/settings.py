@@ -131,9 +131,10 @@ USE_TZ = True
 # Configure app for Heroku deployment
 django_on_heroku.settings(locals())
 
-STATIC_URL = '/static/'
-
 # Place static in the same location as webpack build files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(FRONTEND_DIR, 'build', 'static'),
@@ -141,7 +142,7 @@ STATICFILES_DIRS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'graphics')
 MEDIA_URL = '/graphics/'
