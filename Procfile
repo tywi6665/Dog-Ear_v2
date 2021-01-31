@@ -1,1 +1,2 @@
-web: gunicorn server.wsgi --log-file - & scrapyd recipe_scraper
+web: gunicorn server.wsgi --log-file -
+web: scrapyd recipe_scraper
