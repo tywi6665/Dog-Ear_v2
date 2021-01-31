@@ -19,10 +19,10 @@ import django_on_heroku
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # For Local 
-# FRONTEND_DIR = os.path.join(BASE_DIR, 'client')
+FRONTEND_DIR = os.path.join(BASE_DIR, 'client')
 
 # For Heroku Deployment
-FRONTEND_DIR = BASE_DIR
+# FRONTEND_DIR = BASE_DIR
 print("---------", FRONTEND_DIR)
 
 # Quick-start development settings - unsuitable for production

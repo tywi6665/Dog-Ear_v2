@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "heroku-prebuild": "NODE_ENV=production cd client/ && npm install && npm build"
+    "heroku-prebuild": "NODE_ENV=production cd client/ && npm install && npm run build"
   },
   "cacheDirectories": [
     "client/node_modules"
