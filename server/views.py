@@ -14,7 +14,7 @@ def hello(request):
 class FrontendAppView(View):
 
     index_file_path = os.path.join(settings.FRONTEND_DIR, 'build', 'index.html')
-    
+    # print("------index------", index_file_path)
     def get(self, request):
         try:
             with open(self.index_file_path) as f:
