@@ -20,9 +20,10 @@ from main import views
 from django.conf import settings
 from django.conf.urls import url,static
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import never_cache
 # from django.views.generic import TemplateView
 
-from .views import hello, index
+from .views import hello, FrontendAppView
 from main.views import RecipeItemView, CrawledRecipeItemView, crawl
 
 app_name = 'dog-ear-server'
@@ -32,7 +33,7 @@ router.register(r'recipes', RecipeItemView, 'recipe')
 router.register(r'crawledrecipe', CrawledRecipeItemView, 'recipe') 
 
 urlpatterns = [
-    path(r'', index, name='index'),
+    path(r'', never_cache(FrontendAppView.as_view()), name='index'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('hello/', csrf_exempt(hello), name='hello'),
