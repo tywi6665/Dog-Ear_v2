@@ -3,6 +3,7 @@ import RecipeCard from "./Components/RecipeCard";
 import RecipeEntry from "./Components/RecipeEntry";
 import "./App.scss";
 import * as api from "./utils/api";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [url, setUrl] = useState("");
@@ -16,6 +17,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [isOverlay, setIsOverlay] = useState(false);
   const [crawledRecipe, setCrawledRecipe] = useState({});
+  const [hadError, setHadError] = useState(false);
 
   let statusInterval = 1;
 
@@ -114,8 +116,9 @@ function App() {
           console.log(data.error);
           clearInterval(statusInterval);
           setCrawlingStatus("finished");
+          setHadError(true);
           setCrawledRecipe({
-            unique_id: uniqueID,
+            unique_id: taskID,
             url: url,
             title: "",
             author: "",
@@ -170,7 +173,11 @@ function App() {
   };
 
   const disconnect = () => {
-    handleDelete(uniqueID, "crawledrecipe");
+    if (hadError == true) {
+      setHadError(false);
+    } else {
+      handleDelete(uniqueID, "crawledrecipe");
+    }
     setCrawledRecipe({});
     setIsOverlay(false);
   };
@@ -209,6 +216,7 @@ function App() {
                     handleCreate={handleCreate}
                     handleDelete={handleDelete}
                     setUrl={setUrl}
+                    hadError={hadError}
                   />
                 </>
               ) : (
