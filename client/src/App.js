@@ -111,9 +111,22 @@ function App() {
           setCrawlingStatus("finished");
           setCrawledRecipe(data.data);
         } else if (data.error) {
-          clearInterval(statusInterval);
           console.log(data.error);
+          clearInterval(statusInterval);
           setCrawlingStatus("finished");
+          setCrawledRecipe({
+            unique_id: uniqueID,
+            url: url,
+            title: "",
+            author: "",
+            description: "",
+            has_made: false,
+            img_src: "",
+            notes: [],
+            rating: 0,
+            tags: [],
+            timestamp: Date.now(),
+          });
         } else if (data.status) {
           setCrawlingStatus(data.status);
         }
