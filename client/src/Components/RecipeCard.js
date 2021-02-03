@@ -179,7 +179,7 @@ const Card = ({
                         Quick Add Tags
                       </option>
                       {tagsList.map((tag, i) => (
-                        <option value={tag} key={tag + i}>
+                        <option value={tag} key={uuidv4()}>
                           {tag}
                         </option>
                       ))}
