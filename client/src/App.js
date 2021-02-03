@@ -113,6 +113,7 @@ function App() {
         } else if (data.error) {
           clearInterval(statusInterval);
           console.log(data.error);
+          setCrawlingStatus("finished");
         } else if (data.status) {
           setCrawlingStatus(data.status);
         }
