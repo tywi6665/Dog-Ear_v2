@@ -117,8 +117,9 @@ function App() {
           clearInterval(statusInterval);
           setCrawlingStatus("finished");
           setHadError(true);
+          let newID = uuidv4();
           setCrawledRecipe({
-            unique_id: taskID,
+            unique_id: newID,
             url: url,
             title: "",
             author: "",
