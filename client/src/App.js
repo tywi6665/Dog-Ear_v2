@@ -203,9 +203,18 @@ function App() {
                         onClick={() => [disconnect(), setUrl("")]}
                       ></button>
                     </div>
-                    <h3>
-                      <em>Example Recipe Entry:</em>
-                    </h3>
+                    {hadError ? (
+                      <h3>
+                        <em>
+                          The Recipe could not be scraped. Please input the
+                          recipe information manually:
+                        </em>
+                      </h3>
+                    ) : (
+                      <h3>
+                        <em>Example Recipe Entry:</em>
+                      </h3>
+                    )}
                   </header>
                   <RecipeEntry
                     recipe={crawledRecipe}
@@ -250,41 +259,42 @@ function App() {
       </header>
       <div className="interaction-wrapper">
         {/* <div className="search-sort"> */}
-        <div className="box">
-          <p>Sort Recipes by:</p>
-          <div className="dropdown" id="dropdown">
-            <select
-              id="select"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.currentTarget.value)}
-            >
-              <option value="-timestamp">Newest</option>
-              <option value="timestamp">Oldest</option>
-              <option value="-rating">Highest Rated</option>
-              <option value="title">Title A-Z</option>
-              <option value="-title">Title Z-A</option>
-              <option value="-has_made">Has Been Cooked</option>
-              <option value="has_made">Has NOT Been Cooked</option>
-            </select>
+        <div className="bigger-box">
+          <div className="box">
+            <p>Sort Recipes by:</p>
+            <div className="dropdown" id="dropdown">
+              <select
+                id="select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.currentTarget.value)}
+              >
+                <option value="-timestamp">Newest</option>
+                <option value="timestamp">Oldest</option>
+                <option value="-rating">Highest Rated</option>
+                <option value="title">Title A-Z</option>
+                <option value="-title">Title Z-A</option>
+                <option value="-has_made">Has Been Cooked</option>
+                <option value="has_made">Has NOT Been Cooked</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div className="box">
-          <p>Search Recipes by Keyword:</p>
-          <div className="search-wrapper">
-            <div className="search">
-              <input
-                type="search"
-                placeholder="Search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <span className="cancel" onClick={() => setQuery("")}>
-                x
-              </span>
+          <div className="box">
+            <p>Search Recipes by Keyword:</p>
+            <div className="search-wrapper">
+              <div className="search">
+                <input
+                  type="search"
+                  placeholder="Search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                <span className="cancel" onClick={() => setQuery("")}>
+                  x
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        {/* </div> */}
         <div className="box">
           <div className="scrape-wrapper">
             <div className="scrape">

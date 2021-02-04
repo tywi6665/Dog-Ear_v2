@@ -136,7 +136,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
                 item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
                 item['author'] = titlecase(response.css("span.entry-author > a.entry-author-link > span.entry-author-name::text").get())
-                item['description'] = response.css("//meta[@property='og:description']/@content")[0].extract()
+                item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
             except:
                 print('An error has occurred')
 

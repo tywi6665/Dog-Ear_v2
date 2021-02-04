@@ -40,6 +40,10 @@
       margin: 0 0 5px 5px;
     }
 
+    .bigger-box {
+      display: flex;
+    }
+
     .box {
       margin: 8px;
     }
@@ -180,6 +184,16 @@
   right: 0;
   bottom: 0;
   z-index: 11;
+  animation: fadeIn 0.3s ease-in;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
   &::-webkit-scrollbar {
     display: none;
