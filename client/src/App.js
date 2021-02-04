@@ -191,62 +191,61 @@ function App() {
           isOverlay && url.length ? { display: "block" } : { display: "none" }
         }
       >
-        {
-          // loadClient &&
-          url && isOverlay ? (
-            <div className="entry_popup">
-              {Object.keys(crawledRecipe).length ? (
-                <>
-                  <header className="popup-header">
-                    <div className="back">
-                      <button
-                        onClick={() => [disconnect(), setUrl("")]}
-                      ></button>
-                    </div>
-                    {hadError ? (
-                      <h3>
-                        <em>
-                          The Recipe could not be scraped. Please input the
-                          recipe information manually:
-                        </em>
-                      </h3>
-                    ) : (
-                      <h3>
-                        <em>Example Recipe Entry:</em>
-                      </h3>
-                    )}
-                  </header>
-                  <RecipeEntry
-                    recipe={crawledRecipe}
-                    key={crawledRecipe.unique_id}
-                    unique_id={crawledRecipe.unique_id}
-                    url={url}
-                    setRecipe={setCrawledRecipe}
-                    setIsOverlay={setIsOverlay}
-                    handleCreate={handleCreate}
-                    handleDelete={handleDelete}
-                    setUrl={setUrl}
-                    hadError={hadError}
-                  />
-                </>
-              ) : (
-                <>
-                  <div className="dog-loader">
-                    <div className="dog-head">
-                      <img src="./static/graphics/dog-head.png" />
-                    </div>
-                    <div className="dog-body"></div>
+        {url && isOverlay ? (
+          <div
+            className={
+              url && isOverlay ? "entry_popup fadeIn" : "entry_popup fadeOut"
+            }
+          >
+            {Object.keys(crawledRecipe).length ? (
+              <>
+                <header className="popup-header">
+                  <div className="back">
+                    <button onClick={() => [disconnect(), setUrl("")]}></button>
                   </div>
-                  <p className="dog-loader-p">
-                    <em>Scraping data...</em>
-                  </p>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )
-        }
+                  {hadError ? (
+                    <h3>
+                      <em>
+                        The Recipe could not be scraped. Please input the recipe
+                        information manually:
+                      </em>
+                    </h3>
+                  ) : (
+                    <h3>
+                      <em>Example Recipe Entry:</em>
+                    </h3>
+                  )}
+                </header>
+                <RecipeEntry
+                  recipe={crawledRecipe}
+                  key={crawledRecipe.unique_id}
+                  unique_id={crawledRecipe.unique_id}
+                  url={url}
+                  setRecipe={setCrawledRecipe}
+                  setIsOverlay={setIsOverlay}
+                  handleCreate={handleCreate}
+                  handleDelete={handleDelete}
+                  setUrl={setUrl}
+                  hadError={hadError}
+                />
+              </>
+            ) : (
+              <>
+                <div className="dog-loader">
+                  <div className="dog-head">
+                    <img src="./static/graphics/dog-head.png" />
+                  </div>
+                  <div className="dog-body"></div>
+                </div>
+                <p className="dog-loader-p">
+                  <em>Scraping data...</em>
+                </p>
+              </>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       <header className="page-header">
         <div className="titles">

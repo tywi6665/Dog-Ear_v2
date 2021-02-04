@@ -186,15 +186,6 @@
   z-index: 11;
   animation: fadeIn 0.3s ease-in;
 
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
   &::-webkit-scrollbar {
     display: none;
   }
@@ -208,6 +199,14 @@
     background: #fff;
     border-radius: 8px;
     z-index: 100;
+
+    &.fadeIn {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    &.fadeOut {
+      animation: fadeOut 0.3s ease-in-out;
+    }
 
     .card {
       height: fit-content;
@@ -1019,5 +1018,23 @@ button.close {
     form {
       margin-top: 10px;
     }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
