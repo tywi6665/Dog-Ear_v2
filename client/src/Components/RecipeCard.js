@@ -119,7 +119,12 @@ const Card = ({ recipeProp, tagsList, deleteRecipe, updateRecipe }) => {
             <label
               htmlFor="check"
               onClick={() =>
-                updateRecipe("has_made", recipe.unique_id, recipe.has_made)
+                updateRecipe(
+                  "has_made",
+                  recipe.unique_id,
+                  recipe.has_made,
+                  setRecipe
+                )
               }
             >
               Cooked
