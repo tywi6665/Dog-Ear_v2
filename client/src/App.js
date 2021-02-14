@@ -22,9 +22,7 @@ function App() {
   let statusInterval = 1;
 
   useEffect(() => {
-    // if (!query || !sortBy) {
     apiStateReferences();
-    // }
   }, [sortBy]);
 
   async function handleCreate(recipe) {
@@ -35,29 +33,31 @@ function App() {
     api.deleteRecipe(unique_id, route, apiStateReferences);
   }
 
-  async function handleUpdate(field, unique_id, value) {
+  async function handleUpdate(field, unique_id, value, setState) {
     switch (field) {
       case "has_made":
-        api.updateHasMade(unique_id, value, apiStateReferences);
+        api.updateHasMade(unique_id, value, setState);
         break;
       case "rating":
-        api.updateRating(unique_id, value, apiStateReferences);
+        api.updateRating(unique_id, value, setState);
         break;
       case "notes_add":
-        api.addNotes(unique_id, value, apiStateReferences);
+        api.addNotes(unique_id, value, setState);
         break;
       case "notes_remove":
-        api.removeNotes(unique_id, value, apiStateReferences);
+        api.removeNotes(unique_id, value, setState);
         break;
       case "tags_add":
-        api.addTags(unique_id, value, apiStateReferences);
+        api.addTags(unique_id, value, setState);
         break;
       case "tags_remove":
-        api.removeTags(unique_id, value, apiStateReferences);
+        api.removeTags(unique_id, value, setState);
         break;
       default:
         break;
     }
+    // setSortBy("-timestamp");
+    // setQuery("");
   }
 
   async function apiStateReferences() {
@@ -192,11 +192,7 @@ function App() {
         }
       >
         {url && isOverlay ? (
-          <div
-            className={
-              url && isOverlay ? "entry_popup fadeIn" : "entry_popup fadeOut"
-            }
-          >
+          <div className="entry_popup fadeIn">
             {Object.keys(crawledRecipe).length ? (
               <>
                 <header className="popup-header">
@@ -265,7 +261,10 @@ function App() {
               <select
                 id="select"
                 value={sortBy}
-                onChange={(e) => setSortBy(e.currentTarget.value)}
+                onChange={(e) => [
+                  setSortBy(e.currentTarget.value),
+                  setQuery(""),
+                ]}
               >
                 <option value="-timestamp">Newest</option>
                 <option value="timestamp">Oldest</option>
@@ -323,18 +322,8 @@ function App() {
           filteredRecipes.map((recipe) => (
             <RecipeCard
               key={recipe.unique_id}
-              unique_id={recipe.unique_id}
-              title={recipe.title}
-              imgSrc={recipe.img_src}
-              author={recipe.author}
-              rating={recipe.rating}
-              description={recipe.description}
-              timestamp={recipe.timestamp}
-              hasMade={recipe.has_made}
-              tags={recipe.tags}
+              recipeProp={recipe}
               tagsList={tagsList}
-              notes={recipe.notes}
-              url={recipe.url}
               deleteRecipe={handleDelete}
               updateRecipe={handleUpdate}
             />

@@ -1,35 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import ShowMoreText from "react-show-more-text";
 import Popup from "reactjs-popup";
 import StarRatings from "react-star-ratings";
-import * as api from "../utils/api";
 import { v4 as uuidv4 } from "uuid";
 
-const Card = ({
-  unique_id,
-  title,
-  imgSrc,
-  author,
-  rating,
-  description,
-  timestamp,
-  hasMade,
-  notes,
-  tags,
-  tagsList,
-  url,
-  deleteRecipe,
-  updateRecipe,
-}) => {
+const Card = ({ recipeProp, tagsList, deleteRecipe, updateRecipe }) => {
+  const [recipe, setRecipe] = useState(recipeProp);
   const [tagsToAdd, setTagsToAdd] = useState("");
   const [quickTag, setQuickTag] = useState("");
   const [notesToAdd, setNotesToAdd] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false);
-  const [newRating, setNewRating] = useState(rating);
+  const [newRating, setNewRating] = useState(recipe.rating);
   const [currentTab, setCurrentTab] = useState(1);
   const closeModal = () => [setOpen(false), setCurrentTab(1)];
+
+  useEffect(() => {
+    setRecipe(recipeProp);
+    setNewRating(recipeProp.rating);
+  }, [recipeProp]);
 
   const add = (e, field) => {
     e.preventDefault();
@@ -40,14 +30,14 @@ const Card = ({
       case "tags":
         let newTags = tagsToAdd.trim();
         if (newTags.length) {
-          updateRecipe("tags_add", unique_id, newTags);
+          updateRecipe("tags_add", recipe.unique_id, newTags, setRecipe);
         }
         setTagsToAdd("");
         break;
       case "notes":
         let newNotes = notesToAdd.trim();
         if (newNotes.length) {
-          updateRecipe("notes_add", unique_id, notesToAdd);
+          updateRecipe("notes_add", recipe.unique_id, notesToAdd, setRecipe);
           setNotesToAdd("");
         }
         break;
@@ -62,10 +52,20 @@ const Card = ({
 
     switch (field) {
       case "tags":
-        updateRecipe("tags_remove", unique_id, itemToRemove.trim());
+        updateRecipe(
+          "tags_remove",
+          recipe.unique_id,
+          itemToRemove.trim(),
+          setRecipe
+        );
         break;
       case "notes":
-        updateRecipe("notes_remove", unique_id, itemToRemove.trim());
+        updateRecipe(
+          "notes_remove",
+          recipe.unique_id,
+          itemToRemove.trim(),
+          setRecipe
+        );
         break;
       default:
         break;
@@ -74,20 +74,22 @@ const Card = ({
 
   const ratingChanged = (rating) => {
     setNewRating(rating);
-    updateRecipe("rating", unique_id, rating);
+    updateRecipe("rating", recipe.unique_id, rating, setRecipe);
   };
 
   const renderTab1 = () => {
     return (
       <>
         <div className="title">
-          <h2>{title}</h2>
+          <h2>{recipe.title}</h2>
         </div>
         <div className="title">
           <p>
             Author:{" "}
             <strong>
-              <em>{author.length ? author : "No Assigned Author"}</em>
+              <em>
+                {recipe.author.length ? recipe.author : "No Assigned Author"}
+              </em>
             </strong>
           </p>
         </div>
@@ -110,20 +112,24 @@ const Card = ({
               type="checkbox"
               className="check"
               name="check"
-              value={hasMade}
+              value={recipe.has_made}
               onChange={() => console.log("click")}
-              checked={hasMade}
+              checked={recipe.has_made}
             />
             <label
               htmlFor="check"
-              onClick={() => updateRecipe("has_made", unique_id, hasMade)}
+              onClick={() =>
+                updateRecipe("has_made", recipe.unique_id, recipe.has_made)
+              }
             >
               Cooked
             </label>
           </div>
         </div>
         <div
-          className={description ? "description" : "description description-em"}
+          className={
+            recipe.description ? "description" : "description description-em"
+          }
         >
           <ShowMoreText
             lines={5}
@@ -133,9 +139,9 @@ const Card = ({
             expanded={false}
             width={0}
           >
-            {description
-              ? description
-              : "There is no description for this recipe."}
+            {recipe.description
+              ? recipe.description
+              : "There is no description for this "}
           </ShowMoreText>
         </div>
       </>
@@ -197,9 +203,9 @@ const Card = ({
             </p>
           )}
         </div>
-        {tags.length > 0 ? (
+        {recipe.tags.length > 0 ? (
           <ul className="tags">
-            {tags.map((tag, i) => (
+            {recipe.tags.map((tag, i) => (
               <li key={uuidv4()}>
                 {tag}
                 <div className="delete-tag" onClick={(e) => remove(e, "tags")}>
@@ -215,9 +221,9 @@ const Card = ({
         )}
         <div className="notes-wrapper">
           <div className="notes">
-            {notes.length > 0 ? (
+            {recipe.notes.length > 0 ? (
               <ol>
-                {notes.map((note) => (
+                {recipe.notes.map((note) => (
                   <li key={uuidv4()}>
                     {note}
                     <div
@@ -256,7 +262,11 @@ const Card = ({
     <div className="card">
       <div className="card-top">
         <img
-          src={imgSrc ? imgSrc : "./static/graphics/default_image.jpg"}
+          src={
+            recipe.img_src
+              ? recipe.img_src
+              : "./static/graphics/default_image.jpg"
+          }
           onClick={() => setOpen((o) => !o)}
         />
         <Popup trigger={<span className="delete"></span>} modal>
@@ -270,7 +280,7 @@ const Card = ({
               </div>
               <button
                 className="delete"
-                onClick={() => deleteRecipe(unique_id, "recipes")}
+                onClick={() => deleteRecipe(recipe.unique_id, "recipes")}
               >
                 Delete this Recipe Entry
               </button>
@@ -280,7 +290,7 @@ const Card = ({
       </div>
       <div className="card-bottom">
         <div className="title-wrapper">
-          <h4 onClick={() => setOpen((o) => !o)}>{title}</h4>
+          <h4 onClick={() => setOpen((o) => !o)}>{recipe.title}</h4>
           <div className="rating-hasMade">
             <div className="rating">
               <StarRatings
@@ -299,13 +309,20 @@ const Card = ({
                 type="checkbox"
                 className="check"
                 name="check"
-                value={hasMade}
+                value={recipe.has_made}
                 onChange={() => console.log("click")}
-                checked={hasMade}
+                checked={recipe.has_made}
               />
               <label
                 htmlFor="check"
-                onClick={() => updateRecipe("has_made", unique_id, hasMade)}
+                onClick={() =>
+                  updateRecipe(
+                    "has_made",
+                    recipe.unique_id,
+                    recipe.has_made,
+                    setRecipe
+                  )
+                }
               >
                 Cooked
               </label>
@@ -314,12 +331,12 @@ const Card = ({
         </div>
         <div className="link-wrapper">
           <div className="link">
-            <a href={url} target="_blank">
+            <a href={recipe.url} target="_blank">
               Recipe Link
             </a>
           </div>
           <span className="timestamp">
-            Saved On: {moment(timestamp).format("MMMM Do YYYY")}
+            Saved On: {moment(recipe.timestamp).format("MMMM Do YYYY")}
           </span>
         </div>
       </div>
@@ -335,7 +352,9 @@ const Card = ({
                 <div className="modal-img-back">
                   <img
                     src={
-                      imgSrc ? imgSrc : "./static/graphics/default_image.jpg"
+                      recipe.img_src
+                        ? recipe.img_src
+                        : "./static/graphics/default_image.jpg"
                     }
                   />
                 </div>
@@ -358,7 +377,7 @@ const Card = ({
                       </li>
                       <li>
                         <h4>
-                          <a href={url} target="_blank">
+                          <a href={recipe.url} target="_blank">
                             WEBSITE
                           </a>
                         </h4>

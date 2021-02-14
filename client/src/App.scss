@@ -204,10 +204,6 @@
       animation: fadeIn 0.3s ease-in-out;
     }
 
-    &.fadeOut {
-      animation: fadeOut 0.3s ease-in-out;
-    }
-
     .card {
       height: fit-content;
       width: 100%;
@@ -1027,14 +1023,5 @@ button.close {
   }
   100% {
     opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
   }
 }
