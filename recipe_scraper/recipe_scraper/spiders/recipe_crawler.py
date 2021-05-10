@@ -141,20 +141,18 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 print('An error has occurred')
         elif self.domain == 'cookscountry.com':
             try:
-               item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
+                item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
                 item['img_src'] = response.css("img.recipe-detail-header__image::attr(src)").get()
                 item['author'] = "Cooks Country"
-                # if response.css("span.toggle") is not None:
                 item['description'] = response.css("div.recipe-detail-header__why > div > div > p::text").get()
                 item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
             except:
                 print('An error has occurred')
         elif self.domain == 'americastestkitchen.com':
             try:
-               item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
+                item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
                 item['img_src'] = response.css("img.recipe-detail-header__image::attr(src)").get()
-                item['author'] = "America's Test Kitchen
-                # if response.css("span.toggle") is not None:
+                item['author'] = "America's Test Kitchen"
                 item['description'] = response.css("div.recipe-detail-header__why > div > div > p::text").get()
                 item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
             except:
