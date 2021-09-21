@@ -157,6 +157,30 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
             except:
                 print('An error has occurred')
+        elif self.domain == 'norecipes.com':
+            try:
+                item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
+                item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
+                item['author'] = titlecase(response.xpath("//meta[@name='twitter:data1']/@content")[0].extract())
+                item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
+            except:
+                print('An error has occurred')
+        elif self.domain == 'okonomikitchen.com':
+            try:
+                item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
+                item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
+                item['author'] = titlecase(response.xpath("//meta[@name='twitter:data1']/@content")[0].extract())
+                item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
+            except:
+                print('An error has occurred')
+        elif self.domain == 'woonheng.com':
+            try:
+                item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
+                item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
+                item['author'] = titlecase(response.xpath("//meta[@name='twitter:data1']/@content")[0].extract())
+                item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
+            except:
+                print('An error has occurred')
 
         self.logger.info('--------Item------- %s', item)
         
