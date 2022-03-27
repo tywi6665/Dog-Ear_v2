@@ -1,16 +1,31 @@
-import React, { useState, useRef } from "react";
-import Editable from "./Editable";
-// import firebase from "../utils/firebase";
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import Checkbox from "@mui/material/Checkbox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { Button } from "@mui/material";
+import Icon from "@mdi/react";
+import { mdiDog } from "@mdi/js";
 
-const Card = ({
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+const filter = createFilterOptions();
+
+const RecipeEntry = ({
   recipe,
   unique_id,
   url,
   setRecipe,
-  setIsOverlay,
+  setOpenOverlay,
   setUrl,
   handleCreate,
   handleDelete,
+  quickTagOptions,
+  type,
+  setType,
 }) => {
   const [title, setTitle] = useState(recipe.title);
   const [imgSrc, setImgSrc] = useState(recipe.img_src);
@@ -19,7 +34,6 @@ const Card = ({
   const [tags, setTags] = useState(recipe.tags);
   const [allNotes, setAllNotes] = useState("");
   const [hasMade, setHasMade] = useState(false);
-  const inputRef = useRef();
 
   const createEntry = () => {
     let notes;
@@ -43,144 +57,198 @@ const Card = ({
       tags: tags,
     });
     setRecipe({});
-    setIsOverlay(false);
-    handleDelete(recipe.unique_id, "crawledrecipe");
+    setOpenOverlay(false);
+    if (type === "crawl") {
+      handleDelete(recipe.unique_id, "crawledrecipe");
+    }
     setUrl("");
-  };
-
-  const splitTags = (tags) => {
-    let split = tags.trim().split(",");
-    setTags(split);
+    setType("");
   };
 
   return (
-    <div className="card">
-      <div className="card-top">
-        {imgSrc ? (
-          <img src={imgSrc} />
-        ) : (
-          <Editable
-            text={imgSrc}
-            placeholder='Right click on image, and click "copy image address". Paste address here.'
-            childRef={inputRef}
-            type="textarea"
-          >
-            <textarea
-              ref={inputRef}
-              name="image source"
-              placeholder='Right click on image, and click "copy image address". Paste address here.'
-              rows="5"
-              value={imgSrc}
-              onChange={(e) => setImgSrc(e.target.value)}
-            />
-          </Editable>
-        )}
-      </div>
-      <div className="card-bottom">
-        <div className="title-wrapper">
-          <h3>Title:</h3>
+    <Box component="div">
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": {
+            display: "flex",
+            justifyContent: "center",
+          },
+        }}
+        autoComplete="off"
+      >
+        {type === "blank" ? (
           <div>
-            <label htmlFor="has-made">Has Made:</label>
-            <input
-              type="checkbox"
-              id="has-made"
-              name="has-made"
-              value={hasMade}
-              onClick={() => setHasMade(!hasMade)}
+            <TextField
+              id="standard-helperText"
+              label="Recipe URL"
+              variant="filled"
+              required
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              sx={{ m: 2 }}
             />
           </div>
+        ) : null}
+        <div style={{ textAlign: "center" }}>
+          {imgSrc ? (
+            <img
+              src={imgSrc}
+              style={{ maxWidth: "225px", maxHeight: "225px" }}
+            />
+          ) : (
+            <TextField
+              id="standard-helperText"
+              label="Recipe Image"
+              placeholder='Right click on image, and click "copy image address". Paste address here.'
+              variant="filled"
+              value={imgSrc}
+              onChange={(e) => setImgSrc(e.target.value)}
+              sx={{ m: 2 }}
+            />
+          )}
         </div>
-        <Editable
-          text={title}
-          placeholder="Click Here to Add Recipe Title"
-          childRef={inputRef}
-          type="textarea"
-        >
-          <textarea
-            ref={inputRef}
-            name="title"
-            placeholder="Click Here to Add Recipe Title"
-            rows="5"
+        <div>
+          <FormControlLabel
+            value="Has Made?"
+            control={
+              <Checkbox value={hasMade} onClick={() => setHasMade(!hasMade)} />
+            }
+            label="Has Made?"
+            labelPlacement="start"
+          />
+        </div>
+        <div>
+          <TextField
+            id="standard-helperText"
+            label="Recipe Title"
+            variant="filled"
+            required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            sx={{ m: 2 }}
           />
-        </Editable>
-        <h3>Author:</h3>
-        <Editable
-          text={author}
-          placeholder="Click Here to Add Recipe Author"
-          childRef={inputRef}
-          type="textarea"
-        >
-          <textarea
-            ref={inputRef}
-            name="author"
-            placeholder="Click Here to Add Recipe Author"
-            rows="5"
+        </div>
+        <div>
+          <TextField
+            id="standard-helperText"
+            label="Recipe Author"
+            variant="filled"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
+            sx={{ m: 2 }}
           />
-        </Editable>
-        <div className="description">
-          <h3>Description:</h3>
-          <Editable
-            text={description}
-            placeholder="Click Here to Add Recipe Description"
-            childRef={inputRef}
-            type="textarea"
-          >
-            <textarea
-              ref={inputRef}
-              name="description"
-              placeholder="Click Here to Add Recipe Description"
-              rows="5"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </Editable>
         </div>
         <div>
-          <h3>Tagged As:</h3>
-          <Editable
-            text={tags.join(",")}
-            placeholder="Click Here to Add Recipe Tags"
-            childRef={inputRef}
-            type="textarea"
-          >
-            <textarea
-              ref={inputRef}
-              name="tags"
-              placeholder="Enter ',' separated tags here"
-              rows="5"
-              value={tags.join(",")}
-              onChange={(e) => splitTags(e.target.value)}
-            />
-          </Editable>
+          <TextField
+            id="standard-helperText"
+            label="Recipe Description"
+            variant="filled"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            sx={{ m: 2 }}
+            multiline
+            maxRows={4}
+          />
         </div>
         <div>
-          <h3>Additional Notes:</h3>
-          <Editable
-            text={allNotes}
-            placeholder="Click Here to Add Additional Notes"
-            childRef={inputRef}
-            type="textarea"
-          >
-            <textarea
-              ref={inputRef}
-              name="notes"
-              placeholder="Add additional notes here."
-              rows="10"
-              value={allNotes}
-              onChange={(e) => setAllNotes(e.target.value)}
+          <Autocomplete
+            sx={{ m: 2 }}
+            options={quickTagOptions.sort(
+              (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+            )}
+            onChange={(e, value) => {
+              let tags = [];
+              value.forEach((val) => tags.push(val.tag.trim()));
+              setTags(tags);
+            }}
+            multiple={true}
+            freeSolo
+            disableCloseOnSelect
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
+
+              const { inputValue } = params;
+              // Suggest the creation of a new value
+              const isExisting = options.some(
+                (option) => inputValue === option.tag
+              );
+              if (inputValue !== "" && !isExisting) {
+                filtered.push({
+                  inputValue,
+                  tag: inputValue,
+                });
+              }
+              return filtered;
+            }}
+            selectOnFocus
+            clearOnBlur
+            handleHomeEndKeys
+            groupBy={(option) => option.firstLetter}
+            getOptionLabel={(option) => {
+              if (typeof option === "string") {
+                return option;
+              }
+              if (option.inputValue) {
+                return option.inputValue;
+              }
+              return option.tag;
+            }}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.tag}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField {...params} label="Add Tags" variant="filled" />
+            )}
+          />
+        </div>
+        <div>
+          <TextField
+            id="standard-helperText"
+            label="Add Notes"
+            variant="filled"
+            value={allNotes}
+            onChange={(e) => setAllNotes(e.target.value)}
+            sx={{ m: 2 }}
+            multiline
+            maxRows={4}
+          />
+        </div>
+        <Button
+          type="submit"
+          variant="contained"
+          color="error"
+          disabled={title.length && url.length ? false : true}
+          onClick={createEntry}
+          endIcon={
+            <Icon
+              path={mdiDog}
+              title="Dog"
+              size={1}
+              horizontal
+              vertical
+              rotate={180}
+              color={title.length ? "white" : "darkgray"}
             />
-          </Editable>
-        </div>
-        <div className="link">
-          <button onClick={createEntry}>Create Entry</button>
-        </div>
-      </div>
-    </div>
+          }
+          sx={{
+            margin: "0 8px 8px 0px",
+            width: "100%",
+          }}
+        >
+          {"Create Entry"}
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
-export default Card;
+export default RecipeEntry;

@@ -57,7 +57,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
                 item['author'] = titlecase(response.xpath("//meta[@name='sailthru.author']/@content")[0].extract())
                 item['description'] = response.xpath("//meta[@name='description']/@content")[0].extract()
-                item['tags'] = response.xpath("//meta[@name='sailthru.tags']/@content")[0].extract().split(",")
+                # item['tags'] = response.xpath("//meta[@name='sailthru.tags']/@content")[0].extract().split(",")
             except:
                 print('An error has occurred')
         elif self.domain == 'www.seriouseats.com':
@@ -75,7 +75,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
                 item['author'] = titlecase(response.xpath("//meta[@name='author']/@content")[0].extract())
                 item['description'] = response.xpath("//meta[@name='description']/@content")[0].extract()
-                item['tags'] = response.xpath("//meta[@name='keywords']/@content")[0].extract().split(",")
+                # item['tags'] = response.xpath("//meta[@name='keywords']/@content")[0].extract().split(",")
             except:
                 print('An error has occurred')
         elif self.domain == 'cooking.nytimes.com':
@@ -84,7 +84,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
                 item['author'] = titlecase(response.css("div.nytc---recipebyline---bylinePart > a::text").get())
                 item['description'] = response.xpath("//meta[@name='description']/@content")[0].extract()
-                item['tags'] = response.css("div.tags-nutrition-container > a::text").getall()
+                # item['tags'] = response.css("div.tags-nutrition-container > a::text").getall()
             except:
                 print('An error has occurred')
         elif self.domain == 'www.cooksillustrated.com':
@@ -92,9 +92,8 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
                 item['img_src'] = response.css("img.recipe-detail-header__image::attr(src)").get()
                 item['author'] = "Cooks Illustrated"
-                # if response.css("span.toggle") is not None:
                 item['description'] = response.css("div.recipe-detail-header__why > div > div > p::text").get()
-                item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
+                # item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
             except:
                 print('An error has occurred')
         elif self.domain == 'smittenkitchen.com':
@@ -103,7 +102,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
                 item['author'] = "Smitten Kitchen"
                 item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
-                item['tags'] = response.css("span.cat-links > a::text").getall()
+                # item['tags'] = response.css("span.cat-links > a::text").getall()
             except:
                 print('An error has occurred')
         elif self.domain == 'www.justonecookbook.com':
@@ -112,7 +111,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
                 item['author'] = "Namiko Chen"
                 item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
-                item['tags'] = response.css("div.wprm-recipe-keyword-container > span.wprm-recipe-keyword::text").getall()
+                # item['tags'] = response.css("div.wprm-recipe-keyword-container > span.wprm-recipe-keyword::text").getall()
             except:
                 print('An error has occurred')
         elif self.domain == 'www.101cookbooks.com':
@@ -145,7 +144,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['img_src'] = response.css("img.recipe-detail-header__image::attr(src)").get()
                 item['author'] = "Cooks Country"
                 item['description'] = response.css("div.recipe-detail-header__why > div > div > p::text").get()
-                item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
+                # item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
             except:
                 print('An error has occurred')
         elif self.domain == 'americastestkitchen.com':
@@ -154,7 +153,7 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['img_src'] = response.css("img.recipe-detail-header__image::attr(src)").get()
                 item['author'] = "America's Test Kitchen"
                 item['description'] = response.css("div.recipe-detail-header__why > div > div > p::text").get()
-                item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
+                # item['tags'] = response.xpath("//meta[@name='atk:keywords']/@content")[0].extract().split(',')
             except:
                 print('An error has occurred')
         elif self.domain == 'norecipes.com':
@@ -178,6 +177,14 @@ class RecipeCrawlerSpider(scrapy.Spider):
                 item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
                 item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
                 item['author'] = titlecase(response.xpath("//meta[@name='twitter:data1']/@content")[0].extract())
+                item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
+            except:
+                print('An error has occurred')
+        elif self.domain == '177milkstreet.com':
+            try:
+                item['title'] = titlecase(response.xpath("//meta[@property='og:title']/@content")[0].extract())
+                item['img_src'] = response.xpath("//meta[@property='og:image']/@content")[0].extract()
+                item['author'] = response.css("#main > article > header > div.recipe-header__content > p > span.recipe-header__byline-name::text").get()
                 item['description'] = response.xpath("//meta[@property='og:description']/@content")[0].extract()
             except:
                 print('An error has occurred')
