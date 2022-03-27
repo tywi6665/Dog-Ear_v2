@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RecipeCard from "./Components/RecipeCard";
 import RecipeEntry from "./Components/RecipeEntry";
-import "./App.scss";
+import "./App.css";
 import * as api from "./utils/api";
 import { v4 as uuidv4 } from "uuid";
 import Grid from "@mui/material/Grid";
