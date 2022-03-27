@@ -194,17 +194,17 @@ function App(props) {
           arr.allOptions.push(cleanedTitle);
         }
       });
-      // let options = arr.tags.map((option) => {
-      //   const firstLetter = option[0].toUpperCase();
-      //   option = option.split(" ").map(function (word) {
-      //     return word.replace(word[0], word[0].toUpperCase());
-      //   });
-      //   return {
-      //     firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
-      //     tag: option[0],
-      //   };
-      // });
-      // arr.tags = options;
+      let options = arr.tags.map((option) => {
+        const firstLetter = option[0].toUpperCase();
+        option = option.split(" ").map(function (word) {
+          return word.replace(word[0], word[0].toUpperCase());
+        });
+        return {
+          firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+          tag: option[0],
+        };
+      });
+      arr.tags = options;
       arr.allOptions.sort();
       setSearchOptions(arr);
     }
