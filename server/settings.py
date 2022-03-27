@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = os.path.join(BASE_DIR, 'client')
 # print("---------", FRONTEND_DIR)
 
-# dotenv_file = os.path.join(BASE_DIR, ".env")
-# if os.path.isfile(dotenv_file):
-#     dotenv.load_dotenv(dotenv_file)
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -92,17 +92,17 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 # Local DB
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Heroku DB
 # load database from the DATABASE_URL environment variable
-# DATABASES = {}
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -159,6 +159,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'graphics')
 MEDIA_URL = '/graphics/'
 
+options = DATABASES['default'].get('OPTIONS', {})
+options.pop('sslmode', None)
 
 
 # CORS_ORIGIN_WHITELIST = (
