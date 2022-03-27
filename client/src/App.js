@@ -505,13 +505,13 @@ function App(props) {
             {filteredRecipes.length ? (
               filteredRecipes.map((recipe) => (
                 <Grid item xs="auto" key={uuidv4()}>
-                  <RecipeCard
+                  {/* <RecipeCard
                     recipeInfo={recipe}
                     quickTagOptions={searchOptions.tags}
                     deleteRecipe={handleDelete}
                     updateRecipe={handleUpdate}
                     key={uuidv4()}
-                  />
+                  /> */}
                 </Grid>
               ))
             ) : (
