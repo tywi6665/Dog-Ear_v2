@@ -172,57 +172,57 @@ function App(props) {
       });
   }
 
-  useEffect(() => {
-    if (allRecipes !== null) {
-      let arr = {
-        tags: [],
-        allOptions: [],
-      };
-      allRecipes.forEach((recipe) => {
-        let tags = recipe.tags;
-        let cleanedTitle = recipe.title.trim();
-        tags.forEach((tag) => {
-          let cleanedTag = tag.toLowerCase().trim();
-          if (!arr.tags.includes(cleanedTag)) {
-            arr.tags.push(cleanedTag);
-          }
-          if (!arr.allOptions.includes(cleanedTag)) {
-            arr.allOptions.push(cleanedTag);
-          }
-        });
-        if (!arr.allOptions.includes(cleanedTitle)) {
-          arr.allOptions.push(cleanedTitle);
-        }
-      });
-      let options = arr.tags.map((option) => {
-        const firstLetter = option[0].toUpperCase();
-        option = option.split(" ").map(function (word) {
-          return word.replace(word[0], word[0].toUpperCase());
-        });
-        return {
-          firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
-          tag: option[0],
-        };
-      });
-      arr.tags = options;
-      arr.allOptions.sort();
-      setSearchOptions(arr);
-    }
-  }, [allRecipes]);
+  // useEffect(() => {
+  //   if (allRecipes !== null) {
+  //     let arr = {
+  //       tags: [],
+  //       allOptions: [],
+  //     };
+  //     allRecipes.forEach((recipe) => {
+  //       let tags = recipe.tags;
+  //       let cleanedTitle = recipe.title.trim();
+  //       tags.forEach((tag) => {
+  //         let cleanedTag = tag.toLowerCase().trim();
+  //         if (!arr.tags.includes(cleanedTag)) {
+  //           arr.tags.push(cleanedTag);
+  //         }
+  //         if (!arr.allOptions.includes(cleanedTag)) {
+  //           arr.allOptions.push(cleanedTag);
+  //         }
+  //       });
+  //       if (!arr.allOptions.includes(cleanedTitle)) {
+  //         arr.allOptions.push(cleanedTitle);
+  //       }
+  //     });
+  //     let options = arr.tags.map((option) => {
+  //       const firstLetter = option[0].toUpperCase();
+  //       option = option.split(" ").map(function (word) {
+  //         return word.replace(word[0], word[0].toUpperCase());
+  //       });
+  //       return {
+  //         firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+  //         tag: option[0],
+  //       };
+  //     });
+  //     arr.tags = options;
+  //     arr.allOptions.sort();
+  //     setSearchOptions(arr);
+  //   }
+  // }, [allRecipes]);
 
-  useEffect(() => {
-    if (allRecipes !== null) {
-      const searchAllRegex = query && new RegExp(`${query}`, "gi");
-      const result = allRecipes.filter(
-        (recipe) =>
-          !searchAllRegex ||
-          searchAllRegex.test(recipe.title) +
-            searchAllRegex.test(recipe.author) +
-            searchAllRegex.test(recipe.tags)
-      );
-      setFilteredRecipes(result);
-    }
-  }, [query]);
+  // useEffect(() => {
+  //   if (allRecipes !== null) {
+  //     const searchAllRegex = query && new RegExp(`${query}`, "gi");
+  //     const result = allRecipes.filter(
+  //       (recipe) =>
+  //         !searchAllRegex ||
+  //         searchAllRegex.test(recipe.title) +
+  //           searchAllRegex.test(recipe.author) +
+  //           searchAllRegex.test(recipe.tags)
+  //     );
+  //     setFilteredRecipes(result);
+  //   }
+  // }, [query]);
 
   const connect = (e, type) => {
     e.preventDefault();
@@ -290,7 +290,7 @@ function App(props) {
           </ListItem>
           <ListItem sx={{ justifyContent: "center" }}>
             <div>
-              {searchOptions.allOptions ? (
+              {/* {searchOptions.allOptions ? (
                 <Autocomplete
                   freeSolo
                   sx={{ m: 1, minWidth: 180 }}
@@ -314,7 +314,7 @@ function App(props) {
                     />
                   )}
                 />
-              ) : null}
+              ) : null} */}
             </div>
           </ListItem>
         </List>
@@ -579,7 +579,7 @@ function App(props) {
                     <em>Example Recipe Entry:</em>
                   </Typography>
                 )}
-                <RecipeEntry
+                {/* <RecipeEntry
                   // recipe={{
                   //   title: "My awesome title",
                   //   author: "My awesome author",
@@ -601,7 +601,7 @@ function App(props) {
                   quickTagOptions={searchOptions.tags}
                   type={recipeEntryType}
                   setType={setRecipeEntryType}
-                />
+                /> */}
               </Box>
             ) : (
               <>
