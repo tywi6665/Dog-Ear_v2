@@ -173,7 +173,7 @@ function App(props) {
   }
 
   useEffect(() => {
-    if (allRecipes) {
+    if (allRecipes !== null) {
       let arr = {
         tags: [],
         allOptions: [],
@@ -211,7 +211,7 @@ function App(props) {
   }, [allRecipes]);
 
   useEffect(() => {
-    if (allRecipes) {
+    if (allRecipes !== null) {
       const searchAllRegex = query && new RegExp(`${query}`, "gi");
       const result = allRecipes.filter(
         (recipe) =>
