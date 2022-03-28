@@ -24,7 +24,6 @@ async function getOne(unique_id, setState) {
 }
 
 export async function createRecipe(recipe, callback) {
-  console.log(recipe);
   axios
     .post("api/recipes/", {
       data: recipe,

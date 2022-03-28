@@ -231,7 +231,7 @@ function App(props) {
   const connect = (e, type) => {
     e.preventDefault();
     if (type === "crawl") {
-      // startCrawl();
+      startCrawl();
     } else {
       setCrawledRecipe({
         unique_id: uuidv4(),
