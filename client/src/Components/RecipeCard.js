@@ -392,16 +392,20 @@ const RecipeCard = ({
                             style={{ display: "flex", flexWrap: "wrap" }}
                           >
                             {recipe.tags.length > 0 ? (
-                              recipe.tags.map((tag, i) => (
-                                <Chip
-                                  key={uuidv4()}
-                                  label={tag}
-                                  variant="outlined"
-                                  color="error"
-                                  onDelete={(e) => remove(e, "tags")}
-                                  style={{ margin: "8px 0 0 8px" }}
-                                />
-                              ))
+                              recipe.tags.map((tag, i) => {
+                                if (tag.length) {
+                                  return (
+                                    <Chip
+                                      key={uuidv4()}
+                                      label={tag}
+                                      variant="outlined"
+                                      color="error"
+                                      onDelete={(e) => remove(e, "tags")}
+                                      style={{ margin: "8px 0 0 8px" }}
+                                    />
+                                  );
+                                }
+                              })
                             ) : (
                               <Typography variant="body2" component="p">
                                 <em>This recipe has not been tagged yet</em>
