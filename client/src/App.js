@@ -180,7 +180,7 @@ function App(props) {
       };
       allRecipes.forEach((recipe) => {
         let tags = recipe.tags;
-        let cleanedTitle = recipe.title.trim();
+        let cleanedTitle = titleCase(recipe.title.trim());
         tags.forEach((tag) => {
           if (tag.length) {
             let cleanedTag = tag.toLowerCase().trim();
@@ -259,6 +259,16 @@ function App(props) {
     setCrawledRecipe({});
     setRecipeEntryType("");
     setOpenOverlay(false);
+  };
+
+  const titleCase = (str) => {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(function (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
   };
 
   const drawer = (

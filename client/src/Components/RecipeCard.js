@@ -142,6 +142,16 @@ const RecipeCard = ({
   const deletePopoverOpen = Boolean(deleteAnchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  const titleCase = (str) => {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(function (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  };
+
   return (
     <>
       <Card sx={{ width: 345, position: "relative" }}>
@@ -234,7 +244,7 @@ const RecipeCard = ({
                 overflow: "hidden",
               }}
             >
-              <strong>{recipe.title}</strong>
+              <strong>{titleCase(recipe.title)}</strong>
             </Typography>
             <Typography variant="caption" color="text.secondary">
               Saved On: {moment(recipe.timestamp).format("MMMM Do YYYY")}
