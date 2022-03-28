@@ -567,6 +567,7 @@ function App(props) {
               zIndex: 10,
               position: "relative",
             }}
+            id="recipeEntry-modal"
           >
             {Object.keys(crawledRecipe).length ? (
               <Box component="div">

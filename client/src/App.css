@@ -322,4 +322,16 @@
     display: none;
   }
 }
+
+@media screen and (max-width: 600px) {
+  #recipeEntry-modal {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #recipeEntry-modal {
+    width: 100%;
+  }
+}
 /*# sourceMappingURL=App.css.map */
