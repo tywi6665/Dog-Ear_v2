@@ -303,6 +303,10 @@
   text-align: center;
 }
 
+.css-6od3lo-MuiChip-label {
+  white-space: break-spaces !important;
+}
+
 @-webkit-keyframes head-move {
   50% {
     -webkit-transform: rotate(-10.5deg);

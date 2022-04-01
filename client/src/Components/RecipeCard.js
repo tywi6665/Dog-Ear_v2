@@ -122,7 +122,11 @@ const RecipeCard = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleTabChange = (e, newValue) => {
-    setTabValue(newValue);
+    if (newValue === "1" || newValue === "2") {
+      setTabValue(newValue);
+    } else {
+      window.open(newValue, "_blank");
+    }
   };
   const handleClickPopover = (e, type) => {
     setPopoverType(type);
@@ -141,16 +145,6 @@ const RecipeCard = ({
   const popoverOpen = Boolean(anchorEl);
   const deletePopoverOpen = Boolean(deleteAnchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  const titleCase = (str) => {
-    return str
-      .toLowerCase()
-      .split(" ")
-      .map(function (word) {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      })
-      .join(" ");
-  };
 
   return (
     <>
@@ -244,7 +238,7 @@ const RecipeCard = ({
                 overflow: "hidden",
               }}
             >
-              <strong>{titleCase(recipe.title)}</strong>
+              <strong>{recipe.title}</strong>
             </Typography>
             <Typography variant="caption" color="text.secondary">
               Saved On: {moment(recipe.timestamp).format("MMMM Do YYYY")}
@@ -345,6 +339,7 @@ const RecipeCard = ({
                         >
                           <Tab value="1" label="Info" />
                           <Tab value="2" label="Tags/Notes" />
+                          <Tab value={recipe.url} label="Website" />
                         </TabList>
                         <TabPanel value="1">
                           <Typography variant="body1" component="p" mb={1}>
@@ -463,6 +458,9 @@ const RecipeCard = ({
                                     color: "#000",
                                     display: "flex",
                                     justifyContent: "space-between",
+                                    height: "fit-content",
+                                    padding: "4px 0",
+                                    maxWidth: "100%",
                                   }}
                                 />
                               ))
