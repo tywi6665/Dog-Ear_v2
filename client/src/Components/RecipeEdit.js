@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Checkbox from "@mui/material/Checkbox";
@@ -24,55 +25,52 @@ const titleCase = (str) => {
     .join(" ");
 };
 
-const RecipeEntry = ({
+const RecipeEdit = ({
   recipe,
-  unique_id,
-  url,
   setRecipe,
-  setOpenOverlay,
-  setUrl,
-  handleCreate,
-  handleDelete,
   quickTagOptions,
-  type,
-  setType,
+  setIsEditing,
+  updateRecipe,
 }) => {
   const [title, setTitle] = useState(titleCase(recipe.title));
   const [imgSrc, setImgSrc] = useState(recipe.img_src);
   const [description, setDescription] = useState(recipe.description);
   const [author, setAuthor] = useState(recipe.author);
-  const [tags, setTags] = useState(recipe.tags);
-  const [allNotes, setAllNotes] = useState("");
-  const [hasMade, setHasMade] = useState(false);
+  const [allTags, setAllTags] = useState(recipe.tags);
+  const [allNotes, setAllNotes] = useState(recipe.notes);
+  const [hasMade, setHasMade] = useState(recipe.has_made);
+  const [rating, setRating] = useState(recipe.rating);
 
-  const createEntry = () => {
-    let notes;
+  const handleNotes = (note, index) => {
+    const updatedNotes = [...allNotes];
+    updatedNotes[index] = note;
+    setAllNotes(updatedNotes);
+  };
 
-    if (allNotes.length > 0) {
-      notes = [allNotes.trim()];
+  const editEntry = () => {
+    let notes = [...allNotes];
+
+    if (notes.length > 0) {
+      notes = notes.map((note) => {
+        return note.trim();
+      });
     } else {
       notes = [];
     }
 
-    handleCreate({
-      unique_id: unique_id,
+    const updatedRecipe = {
       title: title,
-      url: url,
       author: author,
       img_src: imgSrc,
       description: description,
       has_made: hasMade,
+      rating: rating,
       notes: notes,
-      rating: 0,
-      tags: tags,
-    });
-    setRecipe({});
-    setOpenOverlay(false);
-    if (type === "crawl") {
-      handleDelete(recipe.unique_id, "crawledrecipe");
-    }
-    setUrl("");
-    setType("");
+      tags: allTags,
+    };
+
+    updateRecipe("edit_entry", recipe.unique_id, updatedRecipe, setRecipe);
+    setIsEditing(false);
   };
 
   return (
@@ -100,18 +98,6 @@ const RecipeEntry = ({
             />
           )}
         </div>
-        {type === "blank" ? (
-          <div>
-            <TextField
-              label="Recipe URL"
-              variant="filled"
-              required
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              sx={{ m: 2 }}
-            />
-          </div>
-        ) : null}
         <div>
           <TextField
             label="Recipe Image"
@@ -122,14 +108,28 @@ const RecipeEntry = ({
             sx={{ m: 2 }}
           />
         </div>
-        <div>
+        <div style={{ marginLeft: "4px" }}>
           <FormControlLabel
             value="Has Made?"
             control={
-              <Checkbox value={hasMade} onClick={() => setHasMade(!hasMade)} />
+              <Checkbox
+                value={hasMade}
+                checked={hasMade}
+                onClick={() => setHasMade(!hasMade)}
+              />
             }
             label="Has Made?"
             labelPlacement="start"
+          />
+        </div>
+        <div>
+          <Rating
+            name="rating"
+            value={rating}
+            onChange={(e, rating) => {
+              setRating(rating);
+            }}
+            sx={{ ml: 2 }}
           />
         </div>
         <div>
@@ -164,14 +164,21 @@ const RecipeEntry = ({
         </div>
         <div>
           <Autocomplete
+            value={allTags}
             sx={{ m: 2 }}
             options={quickTagOptions.sort(
               (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
             )}
             onChange={(e, value) => {
               let tags = [];
-              value.forEach((val) => tags.push(val.tag.trim()));
-              setTags(tags);
+              value.forEach((val) => {
+                if (typeof val === "string") {
+                  tags.push(val.trim());
+                } else {
+                  tags.push(val.tag.trim());
+                }
+              });
+              setAllTags(tags);
             }}
             multiple={true}
             freeSolo
@@ -217,27 +224,41 @@ const RecipeEntry = ({
               </li>
             )}
             renderInput={(params) => (
-              <TextField {...params} label="Add Tags" variant="filled" />
+              <TextField {...params} label="Edit Tags" variant="filled" />
             )}
           />
         </div>
         <div>
-          <TextField
-            label="Add Notes"
-            variant="filled"
-            value={allNotes}
-            onChange={(e) => setAllNotes(e.target.value)}
-            sx={{ m: 2 }}
-            multiline
-            maxRows={4}
-          />
+          {allNotes.length > 1 ? (
+            allNotes.map((note, index) => (
+              <TextField
+                label="Edit Note"
+                variant="filled"
+                value={note}
+                onChange={(e) => handleNotes(e.target.value, index)}
+                sx={{ m: 2 }}
+                multiline
+                maxRows={4}
+              />
+            ))
+          ) : (
+            <TextField
+              label="Add Note"
+              variant="filled"
+              value={allNotes}
+              onChange={(e) => setAllNotes([e.target.value])}
+              sx={{ m: 2 }}
+              multiline
+              maxRows={4}
+            />
+          )}
         </div>
         <Button
-          type="submit"
+          type="button"
           variant="contained"
           color="error"
-          disabled={title.length && url.length ? false : true}
-          onClick={createEntry}
+          disabled={title.length && recipe.url.length ? false : true}
+          onClick={editEntry}
           endIcon={
             <Icon
               path={mdiDog}
@@ -254,11 +275,11 @@ const RecipeEntry = ({
             width: "100%",
           }}
         >
-          Create Entry
+          Save
         </Button>
       </Box>
     </Box>
   );
 };
 
-export default RecipeEntry;
+export default RecipeEdit;

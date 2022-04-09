@@ -8,6 +8,7 @@
 #client_page {
   height: 100%;
   margin: 1em;
+  scroll-behavior: smooth;
 }
 
 .blog-slider {
@@ -325,16 +326,27 @@
   #subtitle {
     display: none;
   }
+  .recipe-card-text-input {
+    max-width: 100%;
+  }
+}
+
+#recipeEntry-modal,
+#recipeEdit-modal {
+  max-height: 95%;
+  overflow: scroll;
 }
 
 @media screen and (max-width: 600px) {
-  #recipeEntry-modal {
+  #recipeEntry-modal,
+  #recipeEdit-modal {
     width: 95%;
   }
 }
 
 @media screen and (max-width: 400px) {
-  #recipeEntry-modal {
+  #recipeEntry-modal,
+  #recipeEdit-modal {
     width: 100%;
   }
 }

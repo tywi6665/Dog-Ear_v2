@@ -31,6 +31,8 @@ import Checkbox from "@mui/material/Checkbox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import EditIcon from "@mui/icons-material/Edit";
+import RecipeEdit from "./RecipeEdit";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -51,6 +53,7 @@ const RecipeCard = ({
   const [tabValue, setTabValue] = useState("1");
   const [anchorEl, setAnchorEl] = useState(null);
   const [deleteAnchorEl, setDeleteAnchorEl] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setRecipe(recipeInfo);
@@ -120,7 +123,7 @@ const RecipeCard = ({
   };
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => [setOpen(false), setIsEditing(false)];
   const handleTabChange = (e, newValue) => {
     if (newValue === "1" || newValue === "2") {
       setTabValue(newValue);
@@ -254,11 +257,7 @@ const RecipeCard = ({
               alignItems: "center",
             }}
           >
-            <Rating
-              name="simple-controlled"
-              value={newRating}
-              onChange={ratingChanged}
-            />
+            <Rating name="rating" value={newRating} onChange={ratingChanged} />
             <Stack direction="row" spacing={1}>
               <Chip
                 label="Cooked"
@@ -296,8 +295,6 @@ const RecipeCard = ({
         </CardActions>
       </Card>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -315,323 +312,390 @@ const RecipeCard = ({
         }}
       >
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
-          <div className="blog-slider">
-            <div className="blog-slider__wrp swiper-wrapper">
-              <div className="blog-slider__item swiper-slide">
-                <div className="blog-slider__img">
-                  <img
-                    src={
-                      recipe.img_src
-                        ? recipe.img_src
-                        : "./static/graphics/default_image.jpg"
-                    }
-                  />
-                </div>
-                <div className="blog-slider__content">
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <TabContext value={tabValue} sx={{ color: "error" }}>
-                        <TabList
-                          value={tabValue}
-                          onChange={handleTabChange}
-                          indicatorColor="primary"
-                          aria-label="secondary tabs example"
-                        >
-                          <Tab value="1" label="Info" />
-                          <Tab value="2" label="Tags/Notes" />
-                          <Tab value={recipe.url} label="Website" />
-                        </TabList>
-                        <TabPanel value="1">
-                          <Typography variant="body1" component="p" mb={1}>
-                            <strong>{recipe.title}</strong>
-                          </Typography>
-                          <Typography variant="body1" component="p" mb={1}>
-                            <strong>Author:</strong>{" "}
-                            <em>
-                              {recipe.author.length
-                                ? recipe.author
-                                : "No Assigned Author"}
-                            </em>
-                          </Typography>
-                          <Typography variant="body1" component="p">
-                            {recipe.description
-                              ? recipe.description
-                              : "There is no description for this "}
-                          </Typography>
-                        </TabPanel>
-                        <TabPanel value="2">
-                          <Typography
-                            variant="body1"
-                            component="p"
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                            }}
+          {!isEditing ? (
+            <div className="blog-slider">
+              <div className="blog-slider__wrp swiper-wrapper">
+                <div className="blog-slider__item swiper-slide">
+                  <div className="blog-slider__img">
+                    <img
+                      src={
+                        recipe.img_src
+                          ? recipe.img_src
+                          : "./static/graphics/default_image.jpg"
+                      }
+                    />
+                  </div>
+                  <div className="blog-slider__content">
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <TabContext value={tabValue} sx={{ color: "error" }}>
+                          <TabList
+                            value={tabValue}
+                            onChange={handleTabChange}
+                            indicatorColor="primary"
+                            aria-label="secondary tabs example"
                           >
-                            <strong>
-                              <em>Tagged As:</em>
-                            </strong>
-                            <Fab
-                              aria-describedby={id}
-                              size="small"
-                              color="error"
-                              aria-label="add"
+                            <Tab value="1" label="Info" />
+                            <Tab value="2" label="Tags/Notes" />
+                            <Tab value={recipe.url} label="Website" />
+                          </TabList>
+                          <TabPanel value="1">
+                            <Typography variant="body1" component="p" mb={1}>
+                              <strong>{recipe.title}</strong>
+                            </Typography>
+                            <Typography variant="body1" component="p" mb={1}>
+                              <strong>Author:</strong>{" "}
+                              <em>
+                                {recipe.author.length
+                                  ? recipe.author
+                                  : "No Assigned Author"}
+                              </em>
+                            </Typography>
+                            <Stack
+                              direction="row"
+                              spacing={1}
                               style={{
-                                width: "30px",
-                                height: "30px",
-                                minHeight: "30px",
+                                display: "flex",
+                                alignItems: "center",
                               }}
-                              onClick={(e) => handleClickPopover(e, "tags")}
+                              mb={2}
                             >
-                              <AddIcon />
-                            </Fab>
-                          </Typography>
-                          <Divider
-                            variant="left"
-                            style={{ marginTop: "5px", marginBottom: "10px" }}
-                          />
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            style={{ display: "flex", flexWrap: "wrap" }}
-                          >
-                            {recipe.tags.length > 0 ? (
-                              recipe.tags.map((tag, i) => (
-                                <Chip
-                                  key={uuidv4()}
-                                  label={tag}
-                                  variant="outlined"
-                                  color="error"
-                                  onDelete={(e) => remove(e, "tags")}
-                                  style={{ margin: "8px 0 0 8px" }}
-                                />
-                              ))
-                            ) : (
-                              <Typography variant="body2" component="p">
-                                <em>This recipe has not been tagged yet</em>
-                              </Typography>
-                            )}
-                          </Stack>
-                          <Typography
-                            variant="body1"
-                            component="p"
-                            mt={2}
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                            }}
-                          >
-                            <strong>
-                              <em>Notes: </em>
-                            </strong>
-                            <Fab
-                              aria-describedby={id}
-                              size="small"
-                              color="error"
-                              aria-label="add"
+                              <Chip
+                                label="Cooked"
+                                variant={recipe.has_made ? null : "outlined"}
+                                onClick={handleHasMade}
+                                color="error"
+                              />
+                              <Rating
+                                name="rating"
+                                value={newRating}
+                                onChange={ratingChanged}
+                              />
+                            </Stack>
+                            <Typography variant="body1" component="p">
+                              {recipe.description
+                                ? recipe.description
+                                : "There is no description for this "}
+                            </Typography>
+                          </TabPanel>
+                          <TabPanel value="2">
+                            <Typography
+                              variant="body1"
+                              component="p"
                               style={{
-                                width: "30px",
-                                height: "30px",
-                                minHeight: "30px",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                               }}
-                              onClick={(e) => handleClickPopover(e, "notes")}
                             >
-                              <AddIcon />
-                            </Fab>
-                          </Typography>
-                          <Divider
-                            variant="left"
-                            style={{ marginTop: "5px", marginBottom: "10px" }}
-                          />
-                          <Stack direction="column" spacing={1}>
-                            {recipe.notes.length > 0 ? (
-                              recipe.notes.map((note, i) => (
-                                <Chip
-                                  key={uuidv4()}
-                                  label={note}
-                                  variant="outlined"
-                                  color="error"
-                                  onDelete={(e) => remove(e, "notes")}
-                                  style={{
-                                    color: "#000",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    height: "fit-content",
-                                    padding: "4px 0",
-                                    maxWidth: "100%",
-                                  }}
-                                />
-                              ))
-                            ) : (
-                              <Typography variant="body2" component="p">
-                                <em>This recipe has no notes yet</em>
-                              </Typography>
-                            )}
-                          </Stack>
-                          <Popover
-                            id={id}
-                            open={popoverOpen}
-                            anchorEl={anchorEl}
-                            onClose={handleClosePopover}
-                            anchorOrigin={{
-                              vertical: "top",
-                              horizontal: "left",
-                            }}
-                            transformOrigin={{
-                              vertical: "center",
-                              horizontal: "right",
-                            }}
-                          >
-                            {popoverType === "notes" ? (
-                              <Box
-                                component="form"
-                                sx={{
-                                  "& .MuiTextField-root": {
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                  },
+                              <strong>
+                                <em>Tagged As:</em>
+                              </strong>
+                              <Fab
+                                aria-describedby={id}
+                                size="small"
+                                color="error"
+                                aria-label="add"
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  minHeight: "30px",
                                 }}
-                                onSubmit={(e) => add(e, "notes")}
-                                noValidate
-                                autoComplete="off"
+                                onClick={(e) => handleClickPopover(e, "tags")}
                               >
-                                <div style={{ width: 400, padding: 8 }}>
-                                  <TextField
-                                    id="outlined-basic"
-                                    label="Notes"
-                                    placeholder="Add new notes here..."
+                                <AddIcon />
+                              </Fab>
+                            </Typography>
+                            <Divider
+                              variant="left"
+                              style={{ marginTop: "5px", marginBottom: "10px" }}
+                            />
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              style={{ display: "flex", flexWrap: "wrap" }}
+                            >
+                              {recipe.tags.length > 0 ? (
+                                recipe.tags.map((tag, i) => (
+                                  <Chip
+                                    key={uuidv4()}
+                                    label={tag}
                                     variant="outlined"
-                                    multiline
-                                    rows={4}
-                                    onChange={(e) =>
-                                      setNotesToAdd(e.target.value.trim())
-                                    }
-                                  />
-                                  <Button
-                                    type="submit"
-                                    variant="contained"
                                     color="error"
-                                    endIcon={<SaveIcon />}
-                                    sx={{
-                                      margin: "0 8px 8px 0px",
-                                      width: "100%",
-                                    }}
-                                  >
-                                    {"Save"}
-                                  </Button>
-                                </div>
-                              </Box>
-                            ) : (
-                              <Box
-                                component="form"
-                                sx={{
-                                  "& .MuiTextField-root": {
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                  },
+                                    onDelete={(e) => remove(e, "tags")}
+                                    style={{ margin: "8px 0 0 8px" }}
+                                  />
+                                ))
+                              ) : (
+                                <Typography variant="body2" component="p">
+                                  <em>This recipe has not been tagged yet</em>
+                                </Typography>
+                              )}
+                            </Stack>
+                            <Typography
+                              variant="body1"
+                              component="p"
+                              mt={2}
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                              }}
+                            >
+                              <strong>
+                                <em>Notes: </em>
+                              </strong>
+                              <Fab
+                                aria-describedby={id}
+                                size="small"
+                                color="error"
+                                aria-label="add"
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  minHeight: "30px",
                                 }}
-                                onSubmit={(e) => add(e, "tags")}
-                                noValidate
-                                autoComplete="off"
+                                onClick={(e) => handleClickPopover(e, "notes")}
                               >
-                                <div style={{ width: 300, padding: 8 }}>
-                                  <Autocomplete
-                                    sx={{ margin: 0 }}
-                                    options={quickTagOptions.sort(
-                                      (a, b) =>
-                                        -b.firstLetter.localeCompare(
-                                          a.firstLetter
-                                        )
-                                    )}
-                                    onChange={(e, value) => {
-                                      let tags = [];
-                                      value.forEach((val) =>
-                                        tags.push(val.tag.trim())
-                                      );
-                                      setTagsToAdd(tags);
-                                    }}
-                                    multiple={true}
-                                    freeSolo
-                                    disableCloseOnSelect
-                                    filterOptions={(options, params) => {
-                                      const filtered = filter(options, params);
-
-                                      const { inputValue } = params;
-                                      // Suggest the creation of a new value
-                                      const isExisting = options.some(
-                                        (option) => inputValue === option.tag
-                                      );
-                                      if (inputValue !== "" && !isExisting) {
-                                        filtered.push({
-                                          inputValue,
-                                          tag: inputValue,
-                                        });
-                                      }
-                                      return filtered;
-                                    }}
-                                    selectOnFocus
-                                    clearOnBlur
-                                    handleHomeEndKeys
-                                    groupBy={(option) => option.firstLetter}
-                                    getOptionLabel={(option) => {
-                                      if (typeof option === "string") {
-                                        return option;
-                                      }
-                                      if (option.inputValue) {
-                                        return option.inputValue;
-                                      }
-                                      return option.tag;
-                                    }}
-                                    renderOption={(
-                                      props,
-                                      option,
-                                      { selected }
-                                    ) => (
-                                      <li {...props}>
-                                        <Checkbox
-                                          icon={icon}
-                                          checkedIcon={checkedIcon}
-                                          style={{ marginRight: 8 }}
-                                          checked={selected}
-                                        />
-                                        {option.tag}
-                                      </li>
-                                    )}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        label="Tags"
-                                        placeholder="Add tags here"
-                                      />
-                                    )}
-                                  />
-                                  <Button
-                                    type="submit"
-                                    variant="contained"
+                                <AddIcon />
+                              </Fab>
+                            </Typography>
+                            <Divider
+                              variant="left"
+                              style={{ marginTop: "5px", marginBottom: "10px" }}
+                            />
+                            <Stack direction="column" spacing={1}>
+                              {recipe.notes.length > 0 ? (
+                                recipe.notes.map((note, i) => (
+                                  <Chip
+                                    key={uuidv4()}
+                                    label={note}
+                                    variant="outlined"
                                     color="error"
-                                    endIcon={<SaveIcon />}
-                                    sx={{
-                                      margin: "0 8px 8px 0px",
-                                      width: "100%",
+                                    onDelete={(e) => remove(e, "notes")}
+                                    style={{
+                                      color: "#000",
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      height: "fit-content",
+                                      padding: "4px 0",
+                                      maxWidth: "100%",
                                     }}
+                                  />
+                                ))
+                              ) : (
+                                <Typography variant="body2" component="p">
+                                  <em>This recipe has no notes yet</em>
+                                </Typography>
+                              )}
+                            </Stack>
+                            <Popover
+                              id={id}
+                              open={popoverOpen}
+                              anchorEl={anchorEl}
+                              onClose={handleClosePopover}
+                              anchorOrigin={{
+                                vertical: "top",
+                                horizontal: "left",
+                              }}
+                              transformOrigin={{
+                                vertical: "center",
+                                horizontal: "right",
+                              }}
+                            >
+                              {popoverType === "notes" ? (
+                                <Box
+                                  component="form"
+                                  className="recipe-card-text-input"
+                                  sx={{
+                                    "& .MuiTextField-root": {
+                                      display: "flex",
+                                      justifyContent: "flex-end",
+                                    },
+                                  }}
+                                  onSubmit={(e) => add(e, "notes")}
+                                  noValidate
+                                  autoComplete="off"
+                                >
+                                  <div
+                                    className="recipe-card-text-input"
+                                    style={{ width: 400, padding: 8 }}
                                   >
-                                    {"Save"}
-                                  </Button>
-                                </div>
-                              </Box>
-                            )}
-                          </Popover>
-                        </TabPanel>
-                      </TabContext>
+                                    <TextField
+                                      label="Notes"
+                                      placeholder="Add new notes here..."
+                                      variant="outlined"
+                                      multiline
+                                      rows={4}
+                                      onChange={(e) =>
+                                        setNotesToAdd(e.target.value.trim())
+                                      }
+                                    />
+                                    <Button
+                                      type="submit"
+                                      variant="contained"
+                                      color="error"
+                                      endIcon={<SaveIcon />}
+                                      sx={{
+                                        margin: "0 8px 8px 0px",
+                                        width: "100%",
+                                      }}
+                                    >
+                                      {"Save"}
+                                    </Button>
+                                  </div>
+                                </Box>
+                              ) : (
+                                <Box
+                                  component="form"
+                                  sx={{
+                                    "& .MuiTextField-root": {
+                                      display: "flex",
+                                      justifyContent: "flex-end",
+                                    },
+                                  }}
+                                  onSubmit={(e) => add(e, "tags")}
+                                  noValidate
+                                  autoComplete="off"
+                                >
+                                  <div
+                                    className="recipe-card-text-input"
+                                    style={{ width: 300, padding: 8 }}
+                                  >
+                                    <Autocomplete
+                                      sx={{ margin: 0 }}
+                                      options={quickTagOptions.sort(
+                                        (a, b) =>
+                                          -b.firstLetter.localeCompare(
+                                            a.firstLetter
+                                          )
+                                      )}
+                                      onChange={(e, value) => {
+                                        let tags = [];
+                                        value.forEach((val) =>
+                                          tags.push(val.tag.trim())
+                                        );
+                                        setTagsToAdd(tags);
+                                      }}
+                                      multiple={true}
+                                      freeSolo
+                                      disableCloseOnSelect
+                                      filterOptions={(options, params) => {
+                                        const filtered = filter(
+                                          options,
+                                          params
+                                        );
+
+                                        const { inputValue } = params;
+                                        // Suggest the creation of a new value
+                                        const isExisting = options.some(
+                                          (option) => inputValue === option.tag
+                                        );
+                                        if (inputValue !== "" && !isExisting) {
+                                          filtered.push({
+                                            inputValue,
+                                            tag: inputValue,
+                                          });
+                                        }
+                                        return filtered;
+                                      }}
+                                      selectOnFocus
+                                      clearOnBlur
+                                      handleHomeEndKeys
+                                      groupBy={(option) => option.firstLetter}
+                                      getOptionLabel={(option) => {
+                                        if (typeof option === "string") {
+                                          return option;
+                                        }
+                                        if (option.inputValue) {
+                                          return option.inputValue;
+                                        }
+                                        return option.tag;
+                                      }}
+                                      renderOption={(
+                                        props,
+                                        option,
+                                        { selected }
+                                      ) => (
+                                        <li {...props}>
+                                          <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={selected}
+                                          />
+                                          {option.tag}
+                                        </li>
+                                      )}
+                                      renderInput={(params) => (
+                                        <TextField
+                                          {...params}
+                                          label="Tags"
+                                          placeholder="Add tags here"
+                                        />
+                                      )}
+                                    />
+                                    <Button
+                                      type="submit"
+                                      variant="contained"
+                                      color="error"
+                                      endIcon={<SaveIcon />}
+                                      sx={{
+                                        margin: "0 8px 8px 0px",
+                                        width: "100%",
+                                      }}
+                                    >
+                                      {"Save"}
+                                    </Button>
+                                  </div>
+                                </Box>
+                              )}
+                            </Popover>
+                          </TabPanel>
+                        </TabContext>
+                      </Grid>
                     </Grid>
-                  </Grid>
+                    <Box
+                      onClick={() => setIsEditing(true)}
+                      role="presentation"
+                      sx={{ position: "absolute", top: 16, right: 16 }}
+                    >
+                      <Fab color="error" size="small">
+                        <EditIcon />
+                      </Fab>
+                    </Box>
+                  </div>
                 </div>
               </div>
+              <div className="blog-slider__pagination"></div>
             </div>
-            <div className="blog-slider__pagination"></div>
-          </div>
+          ) : (
+            <Box
+              sx={{
+                width: "50%",
+                background: "white",
+                borderRadius: "4px",
+                border: "1px solid #f04a26",
+                boxShadow: 24,
+                p: 4,
+                zIndex: 10,
+                position: "relative",
+              }}
+              id="recipeEdit-modal"
+              key={uuidv4()}
+            >
+              <Typography variant="body1" component="p" mb={1}>
+                <em>Edit Recipe Details Below:</em>
+              </Typography>
+              <RecipeEdit
+                recipe={recipe}
+                setRecipe={setRecipe}
+                quickTagOptions={quickTagOptions}
+                setIsEditing={setIsEditing}
+                updateRecipe={updateRecipe}
+              />
+            </Box>
+          )}
         </Slide>
       </Modal>
     </>

@@ -79,3 +79,13 @@ export async function removeTags(unique_id, tag, callback) {
     // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }
+
+export async function editEntry(unique_id, newInfo, callback) {
+  axios
+    .put(`api/recipes/${unique_id}/`, {
+      field: "edit_entry",
+      editedEntry: newInfo,
+    })
+    // .then((res) => callback());
+    .then((res) => getOne(unique_id, callback));
+}
