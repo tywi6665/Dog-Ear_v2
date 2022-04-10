@@ -86,7 +86,7 @@ class RecipeItemView(viewsets.ModelViewSet):
             print(tag_to_remove)
             instance.tags.remove(tag_to_remove)
             print(instance.notes)
-        elif field == "'edit_entry'":
+        elif field == 'edit_entry':
             editedEntry = request.data.get('editedEntry')
             print(editedEntry)
             instance.title = editedEntry.get('title')
