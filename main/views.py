@@ -86,7 +86,19 @@ class RecipeItemView(viewsets.ModelViewSet):
             print(tag_to_remove)
             instance.tags.remove(tag_to_remove)
             print(instance.notes)
-        
+        elif field == "'edit_entry'":
+            editedEntry = request.data.get('editedEntry')
+            print(editedEntry)
+            instance.title = editedEntry.get('title')
+            instance.author = editedEntry.get('author')
+            instance.img_src = editedEntry.get('img_src')
+            instance.description = editedEntry.get('description')
+            instance.has_made = editedEntry.get('has_made')
+            instance.rating = editedEntry.get('rating')
+            instance.notes = editedEntry.get('notes')
+            instance.tags = editedEntry.get('tags')
+            print(instance)
+
         instance.save()
 
         return JsonResponse({'Success': 'Entry Updated'})
