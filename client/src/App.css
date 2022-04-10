@@ -304,8 +304,8 @@
   text-align: center;
 }
 
-.css-6od3lo-MuiChip-label {
-  white-space: break-spaces !important;
+.MuiChip-label {
+  white-space: normal !important;
 }
 
 @-webkit-keyframes head-move {
