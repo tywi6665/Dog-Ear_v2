@@ -352,12 +352,14 @@ const RecipeCard = ({
                               </em>
                             </Typography>
                             <Stack
+                              id="stack-rating-has_cooked"
                               direction="row"
                               spacing={1}
                               style={{
                                 display: "flex",
                                 alignItems: "center",
                               }}
+                              mt={2}
                               mb={2}
                             >
                               <Chip

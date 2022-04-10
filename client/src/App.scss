@@ -241,6 +241,12 @@
   }
 }
 
+@media screen and (max-width: 770px) {
+  #stack-rating-has_cooked {
+    justify-content: center;
+  }
+}
+
 @media screen and (max-width: 400px) {
   #recipeEntry-modal,
   #recipeEdit-modal {
