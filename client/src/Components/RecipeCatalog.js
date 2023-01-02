@@ -214,8 +214,7 @@ function RecipeCatalog() {
     }
   }, [query, allRecipes]);
 
-  const connect = (e, type) => {
-    e.preventDefault;
+  const connect = (type) => {
     if (type === "crawl") {
       startCrawl();
     } else {
@@ -517,7 +516,7 @@ function RecipeCatalog() {
               onClick={(e) => [
                 setIsSubmitted(true),
                 showModal("blank"),
-                connect(e, "blank"),
+                connect("blank"),
               ]}
               tooltip={<div>Blank Template</div>}
             />
@@ -882,7 +881,7 @@ function RecipeCatalog() {
                 e.preventDefault,
                 setEntryType("crawl"),
                 setIsSubmitted(true),
-                connect(e, "crawl"),
+                connect("crawl"),
               ]}
             >
               <Form.Item name="url" label="URL" rules={[{ required: true }]}>
