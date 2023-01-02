@@ -54,6 +54,7 @@ const RecipeEntry = ({
   const [hasMade, setHasMade] = useState(false);
   const [rating, setRating] = useState(0);
 
+  const [form] = Form.useForm();
   const { TextArea } = Input;
 
   useEffect(() => {
@@ -119,6 +120,7 @@ const RecipeEntry = ({
       )}
       <Form
         name="form"
+        form={form}
         style={{
           width: "100%",
         }}
