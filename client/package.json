@@ -1,6 +1,9 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "engines": {
+    "node": "14.15.3"
+  },
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.8.1",
@@ -13,6 +16,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
+    "antd": "^5.1.2",
     "axios": "^0.21.1",
     "moment": "^2.29.1",
     "react": "^17.0.1",

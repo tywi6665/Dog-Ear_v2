@@ -1,6 +1,9 @@
 {
   "name": "dog-ear-client",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.15.3"
+  },
   "repository": "",
   "author": "Tyler Winstead",
   "license": "MIT",
