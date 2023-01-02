@@ -89,6 +89,7 @@ class RecipeItemView(viewsets.ModelViewSet):
         elif field == 'edit_entry':
             editedEntry = request.data.get('editedEntry')
             print(editedEntry)
+            instance.url = editedEntry.get('url')
             instance.title = editedEntry.get('title')
             instance.author = editedEntry.get('author')
             instance.img_src = editedEntry.get('img_src')

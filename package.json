@@ -10,5 +10,8 @@
   },
   "cacheDirectories": [
     "client/node_modules"
-  ]
+  ],
+  "dependencies": {
+    "antd": "^5.0.7"
+  }
 }
