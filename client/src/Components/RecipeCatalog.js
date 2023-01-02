@@ -215,7 +215,7 @@ function RecipeCatalog() {
   }, [query, allRecipes]);
 
   const connect = (e, type) => {
-    e.preventDefault();
+    e.preventDefault;
     if (type === "crawl") {
       startCrawl();
     } else {
