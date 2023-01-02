@@ -87,7 +87,7 @@ const RecipeEntry = ({
     handleCreate({
       unique_id: unique_id,
       title: title,
-      url: url,
+      url: recipeUrl,
       author: author,
       img_src: imgSrc,
       description: description,
@@ -216,8 +216,8 @@ const RecipeEntry = ({
           <Button
             type="primary"
             htmlType="submit"
-            className={title.length && url.length ? "btn-active" : "btn"}
-            disabled={title.length && url.length ? false : true}
+            className={title.length && recipeUrl.length ? "btn-active" : "btn"}
+            disabled={title.length && recipeUrl.length ? false : true}
             onClick={createEntry}
             danger
             block
