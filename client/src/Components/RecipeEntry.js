@@ -67,7 +67,7 @@ const RecipeEntry = ({
         description: description,
         tags: tags,
         notes: allNotes,
-        hasMade: hasMade,
+        has_made: hasMade,
         rating: rating,
       });
     }
@@ -145,7 +145,7 @@ const RecipeEntry = ({
           />
         </Form.Item>
 
-        <Form.Item label="Recipe Image" name="image">
+        <Form.Item label="Recipe Image" name="imgSrc">
           <Input
             value={imgSrc}
             onChange={(e) => setImgSrc(e.target.value)}
