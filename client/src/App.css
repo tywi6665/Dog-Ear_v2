@@ -1,275 +1,213 @@
-*,
-*::before,
-*::after {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-#client_page {
-  height: 100%;
-  margin: 1em;
-  scroll-behavior: smooth;
-}
-
-.blog-slider {
-  width: 95%;
-  position: relative;
-  max-width: 80%;
-  margin: auto;
-  background: #fff;
-  -webkit-box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-          box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-  padding: 25px;
-  border-radius: 10px;
-  height: auto;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-}
-
-@media screen and (max-width: 992px) {
-  .blog-slider {
-    max-width: 680px;
-    height: auto;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .blog-slider {
-    min-height: 500px;
-    height: auto;
-  }
-}
-
-@media screen and (max-height: 500px) and (min-width: 992px) {
-  .blog-slider {
-    height: auto;
-  }
-}
-
-.blog-slider__wrp {
+html, #root {
+  min-height: 100% !important;
   height: 100%;
 }
 
-.blog-slider__item {
+#log-in-title {
+  height: 50px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 25px;
 }
 
-@media screen and (max-width: 768px) {
-  .blog-slider__item {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-  }
+#header div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-.blog-slider__item.swiper-slide-active .blog-slider__img img {
-  opacity: 1;
-  -webkit-transition-delay: 0.3s;
-          transition-delay: 0.3s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > * {
-  opacity: 1;
-  -webkit-transform: none;
-          transform: none;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(1) {
-  -webkit-transition-delay: 0.3s;
-          transition-delay: 0.3s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(2) {
-  -webkit-transition-delay: 0.4s;
-          transition-delay: 0.4s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(3) {
-  -webkit-transition-delay: 0.5s;
-          transition-delay: 0.5s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(4) {
-  -webkit-transition-delay: 0.6s;
-          transition-delay: 0.6s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(5) {
-  -webkit-transition-delay: 0.7s;
-          transition-delay: 0.7s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(6) {
-  -webkit-transition-delay: 0.8s;
-          transition-delay: 0.8s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(7) {
-  -webkit-transition-delay: 0.9s;
-          transition-delay: 0.9s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(8) {
-  -webkit-transition-delay: 1s;
-          transition-delay: 1s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(9) {
-  -webkit-transition-delay: 1.1s;
-          transition-delay: 1.1s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(10) {
-  -webkit-transition-delay: 1.2s;
-          transition-delay: 1.2s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(11) {
-  -webkit-transition-delay: 1.3s;
-          transition-delay: 1.3s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(12) {
-  -webkit-transition-delay: 1.4s;
-          transition-delay: 1.4s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(13) {
-  -webkit-transition-delay: 1.5s;
-          transition-delay: 1.5s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(14) {
-  -webkit-transition-delay: 1.6s;
-          transition-delay: 1.6s;
-}
-
-.blog-slider__item.swiper-slide-active .blog-slider__content > *:nth-child(15) {
-  -webkit-transition-delay: 1.7s;
-          transition-delay: 1.7s;
-}
-
-.blog-slider__img {
-  width: 300px;
-  -ms-flex-negative: 0;
-      flex-shrink: 0;
-  height: 350px;
-  -webkit-box-shadow: 4px 13px 30px 1px rgba(252, 56, 56, 0.2);
-          box-shadow: 4px 13px 30px 1px rgba(252, 56, 56, 0.2);
-  border-radius: 8px;
-  -webkit-transform: translateX(-80px);
-          transform: translateX(-80px);
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-  overflow: hidden;
-}
-
-.blog-slider__img:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  opacity: 0.8;
-}
-
-.blog-slider__img img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  display: block;
-  border-radius: 8px;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-}
-
-@media screen and (max-width: 768px) {
-  .blog-slider__img {
-    -webkit-transform: translateY(-25%);
-            transform: translateY(-25%);
-    width: 90%;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .blog-slider__img {
-    width: 95%;
-  }
-}
-
-@media screen and (max-height: 500px) and (min-width: 992px) {
-  .blog-slider__img {
-    height: 270px;
-  }
-}
-
-.blog-slider__content {
-  padding-right: 25px;
+#header div:first-of-type {
   width: 100%;
 }
 
-@media screen and (max-width: 768px) {
-  .blog-slider__content {
-    margin-top: -80px;
-    text-align: center;
-    padding: 0 30px;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .blog-slider__content {
-    padding: 0;
-  }
-}
-
-.blog-slider__content > * {
-  -webkit-transition: all 0.4s;
-  transition: all 0.4s;
-}
-
-.blog-slider__code {
-  color: #7b7992;
-  margin-bottom: 15px;
-  display: block;
-  font-weight: 500;
-}
-
-.blog-slider__title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #0d0925;
-  margin-bottom: 20px;
-}
-
-.blog-slider__text {
-  color: #4e4a67;
-  margin-bottom: 30px;
-  line-height: 1.5em;
-}
-
-.css-1aquho2-MuiTabs-indicator {
-  background-color: rgba(211, 47, 47, 0.7) !important;
-}
-
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
-  color: rgba(211, 47, 47, 0.7) !important;
+.ant-ribbon-wrapper {
+  width: 100%;
 }
 
 .dog-image {
-  text-align: center;
-  margin-top: 20px;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  height: 100%;
 }
 
 .dog-image img {
-  max-width: 60%;
+  max-height: 100%;
+}
+
+.ant-card-cover {
+  max-width: 300px;
+  height: 200px;
+  overflow: hidden;
+}
+
+.ant-card-cover img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.ant-card-body {
+  height: 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ant-card-body .ant-card-meta-description {
+  color: rgba(0, 0, 0, 0.88) !important;
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ant-float-btn-group-wrap button {
+  border: 1px #d32f2f solid;
+}
+
+.drawer-div {
+  width: 100%;
+}
+
+.drawer-div img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.drawer-div-actions {
+  -ms-flex-pack: distribute !important;
+      justify-content: space-around !important;
+  margin-bottom: 1em;
+}
+
+.drawer-div div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.drawer-div div button {
+  margin-bottom: 1em;
+}
+
+.btn {
+  background-color: transparent !important;
+  color: #d32f2f !important;
+  border-color: #d32f2f !important;
+}
+
+.btn-active {
+  background-color: #d32f2f !important;
+  color: #fff !important;
+}
+
+.ant-tabs-tab:hover {
+  color: #d32f2f !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #d32f2f !important;
+}
+
+.ant-tabs-ink-bar {
+  background: #d32f2f !important;
+}
+
+.ant-tag {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.tag-input {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-right: 8px;
+  vertical-align: top;
+}
+
+#new-tag-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#new-tag-form .tag-input {
+  margin-top: 4px;
+  margin-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#new-tag-form .btn-active {
+  margin-top: 4px;
+  height: 24px;
+  padding: 0 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#recipe-entry .ant-space-item, #recipe-edit .ant-space-item {
+  width: 100%;
+  text-align: center;
+}
+
+#recipe-entry img, #recipe-edit img {
+  margin: 0 auto 15px auto;
+  width: 225px;
+  height: 225px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
+}
+
+#recipe-edit .ant-space-item:nth-child(2) .ant-form-item:nth-child(7) .ant-col:nth-child(2) {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 230px;
+          flex: 1 1 230px;
+}
+
+#recipe-entry .ant-space-item:nth-child(2) .ant-form-item:nth-child(7) .ant-col:nth-child(2) {
+  -webkit-box-flex: 1 !important;
+      -ms-flex: 1 1 210px !important;
+          flex: 1 1 210px !important;
+}
+
+#new-note-textarea {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#new-note-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .dog-loader {
@@ -304,10 +242,6 @@
   text-align: center;
 }
 
-.MuiChip-label {
-  white-space: normal !important;
-}
-
 @-webkit-keyframes head-move {
   50% {
     -webkit-transform: rotate(-10.5deg);
@@ -319,43 +253,6 @@
   50% {
     -webkit-transform: rotate(-10.5deg);
             transform: rotate(-10.5deg);
-  }
-}
-
-@media screen and (max-width: 500px) {
-  #subtitle {
-    display: none;
-  }
-  .recipe-card-text-input {
-    max-width: 100%;
-  }
-}
-
-#recipeEntry-modal,
-#recipeEdit-modal {
-  max-height: 95%;
-  overflow: scroll;
-}
-
-@media screen and (max-width: 600px) {
-  #recipeEntry-modal,
-  #recipeEdit-modal {
-    width: 95%;
-  }
-}
-
-@media screen and (max-width: 770px) {
-  #stack-rating-has_cooked {
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  #recipeEntry-modal,
-  #recipeEdit-modal {
-    width: 100%;
   }
 }
 /*# sourceMappingURL=App.css.map */

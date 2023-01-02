@@ -1,181 +1,213 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-#client_page {
+html, #root {
+  min-height: 100% !important;
   height: 100%;
-  margin: 1em;
-  scroll-behavior: smooth;
 }
 
-.blog-slider {
-  width: 95%;
-  position: relative;
-  max-width: 80%;
-  margin: auto;
-  background: #fff;
-  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-  padding: 25px;
-  border-radius: 10px;
-  height: auto;
-  transition: all 0.3s;
+#log-in-title {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
 
-  @media screen and (max-width: 992px) {
-    max-width: 680px;
-    height: auto;
-  }
-
-  @media screen and (max-width: 768px) {
-    min-height: 500px;
-    height: auto;
-  }
-
-  @media screen and (max-height: 500px) and (min-width: 992px) {
-    height: auto;
-  }
-
-  &__wrp {
-    height: 100%;
-  }
-
-  &__item {
+#header {
+  div {
     display: flex;
-    // align-items: center;
-    height: 100%;
+    flex-direction: row;
+    align-items: center;
 
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-    }
-
-    &.swiper-slide-active {
-      .blog-slider__img {
-        img {
-          opacity: 1;
-          transition-delay: 0.3s;
-        }
-      }
-      .blog-slider__content {
-        > * {
-          opacity: 1;
-          transform: none;
-
-          @for $i from 0 to 15 {
-            &:nth-child(#{$i + 1}) {
-              transition-delay: $i * 0.1 + 0.3s;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  &__img {
-    // width: 40%;
-    width: 300px;
-    flex-shrink: 0;
-    height: 350px;
-    box-shadow: 4px 13px 30px 1px rgba(252, 56, 56, 0.2);
-    border-radius: 8px;
-    transform: translateX(-80px);
-    align-self: center;
-    overflow: hidden;
-
-    &:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
+    &:first-of-type {
       width: 100%;
-      height: 100%;
-      border-radius: 8px;
-      opacity: 0.8;
     }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      border-radius: 8px;
-      transition: all 0.3s;
-    }
-
-    @media screen and (max-width: 992px) {
-      // width: 45%;
-    }
-    @media screen and (max-width: 768px) {
-      transform: translateY(-25%);
-      width: 90%;
-    }
-    @media screen and (max-width: 576px) {
-      width: 95%;
-    }
-    @media screen and (max-height: 500px) and (min-width: 992px) {
-      height: 270px;
-    }
-  }
-
-  &__content {
-    // width: 60%;
-    padding-right: 25px;
-    width: 100%;
-
-    @media screen and (max-width: 992px) {
-      // width: 55%;
-    }
-    @media screen and (max-width: 768px) {
-      margin-top: -80px;
-      text-align: center;
-      padding: 0 30px;
-    }
-
-    @media screen and (max-width: 576px) {
-      padding: 0;
-    }
-    > * {
-      // transform: translateY(25px);
-      transition: all 0.4s;
-    }
-  }
-
-  &__code {
-    color: #7b7992;
-    margin-bottom: 15px;
-    display: block;
-    font-weight: 500;
-  }
-
-  &__title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #0d0925;
-    margin-bottom: 20px;
-  }
-
-  &__text {
-    color: #4e4a67;
-    margin-bottom: 30px;
-    line-height: 1.5em;
   }
 }
 
-.css-1aquho2-MuiTabs-indicator {
-  background-color: rgba(211, 47, 47, 0.7) !important;
-}
-
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
-  color: rgba(211, 47, 47, 0.7) !important;
+.ant-ribbon-wrapper {
+  width: 100%;
 }
 
 .dog-image {
-  text-align: center;
-  margin-top: 20px;
+  justify-content: flex-end;
+  height: 100%;
 
   img {
-    max-width: 60%;
+    max-height: 100%;
   }
+}
+
+.ant-card-cover {
+  // width: 100%;
+  max-width: 300px;
+  // width: 300px;
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.ant-card-body {
+  height: 60px;
+  display: flex;
+  align-items: center;
+
+  .ant-card-meta-description {
+    color: rgba(0, 0, 0, 0.88) !important;
+    width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+.ant-float-btn-group-wrap {
+  button {
+    border: 1px #d32f2f solid;
+  }
+}
+
+
+// .ant-card-meta-detail {
+//   display: grid;
+
+//   .ant-card-meta-title {
+//     font-size: 12px;
+//   }
+// }
+
+.drawer-div {
+  width: 100%;
+  
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  &-actions {
+    justify-content: space-around !important;
+    margin-bottom: 1em;
+  } 
+
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      margin-bottom: 1em;
+    }
+  }
+}
+
+.btn {
+  background-color: transparent !important;
+  color: #d32f2f !important;
+  border-color: #d32f2f !important;
+
+  &-active {
+    background-color: #d32f2f !important;
+    color: #fff !important;
+  }
+}
+
+.ant-tabs-tab {
+  &:hover {
+    color: #d32f2f !important;
+  }
+}
+
+.ant-tabs-tab-active {
+  .ant-tabs-tab-btn {
+    color: #d32f2f !important;
+  }
+}
+
+.ant-tabs-ink-bar {
+  background: #d32f2f !important;
+}
+
+.ant-tag {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.tag-input {
+  width: fit-content;
+  // max-width: 100px;
+  margin-right: 8px;
+  vertical-align: top;
+}
+
+#new-tag-form {
+  display: flex;
+  
+  .tag-input {
+    margin-top: 4px;
+    margin-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .btn-active {
+    margin-top: 4px;
+    height: 24px;
+    padding: 0 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+#recipe-entry, #recipe-edit {
+  .ant-space-item {
+    width: 100%;
+    text-align: center;
+    // &:nth-child(2) {
+    //   text-align: center;
+    // }
+  }
+
+  img {
+    margin: 0 auto 15px auto;
+    width: 225px;
+     height: 225px;
+     object-fit: cover;
+    border-radius: 8px;
+  }
+}
+
+#recipe-edit {
+  .ant-space-item:nth-child(2) {
+    .ant-form-item:nth-child(7) {
+       .ant-col:nth-child(2) {
+        flex: 1 1 230px
+       }
+    }
+  }
+}
+
+#recipe-entry {
+  .ant-space-item:nth-child(2) {
+    .ant-form-item:nth-child(7) {
+       .ant-col:nth-child(2) {
+        flex: 1 1 210px !important;
+       }
+    }
+  }
+}
+
+#new-note-textarea {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#new-note-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .dog-loader {
@@ -209,47 +241,256 @@
   text-align: center;
 }
 
-.MuiChip-label {
-  white-space: normal !important;
-}
-
 @keyframes head-move {
   50% {
     transform: rotate(-10.5deg);
   }
 }
 
-@media screen and (max-width: 500px) {
-  #subtitle {
-    display: none;
-  }
-  .recipe-card-text-input {
-    max-width: 100%;
-  }
-}
 
-#recipeEntry-modal,
-#recipeEdit-modal {
-  max-height: 95%;
-  overflow: scroll;
-}
+// *,
+// *::before,
+// *::after {
+//   box-sizing: content-box;
+// }
 
-@media screen and (max-width: 600px) {
-  #recipeEntry-modal,
-  #recipeEdit-modal {
-    width: 95%;
-  }
-}
+// #client_page {
+//   height: 100%;
+//   margin: 1em;
+//   scroll-behavior: smooth;
+// }
 
-@media screen and (max-width: 770px) {
-  #stack-rating-has_cooked {
-    justify-content: center;
-  }
-}
+// .blog-slider {
+//   width: 95%;
+//   position: relative;
+//   max-width: 80%;
+//   margin: auto;
+//   background: #fff;
+//   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+//   padding: 25px;
+//   border-radius: 10px;
+//   height: auto;
+//   transition: all 0.3s;
 
-@media screen and (max-width: 400px) {
-  #recipeEntry-modal,
-  #recipeEdit-modal {
-    width: 100%;
-  }
-}
+//   @media screen and (max-width: 992px) {
+//     max-width: 680px;
+//     height: auto;
+//   }
+
+//   @media screen and (max-width: 768px) {
+//     min-height: 500px;
+//     height: auto;
+//   }
+
+//   @media screen and (max-height: 500px) and (min-width: 992px) {
+//     height: auto;
+//   }
+
+//   &__wrp {
+//     height: 100%;
+//   }
+
+//   &__item {
+//     display: flex;
+//     // align-items: center;
+//     height: 100%;
+
+//     @media screen and (max-width: 768px) {
+//       flex-direction: column;
+//     }
+
+//     &.swiper-slide-active {
+//       .blog-slider__img {
+//         img {
+//           opacity: 1;
+//           transition-delay: 0.3s;
+//         }
+//       }
+//       .blog-slider__content {
+//         > * {
+//           opacity: 1;
+//           transform: none;
+
+//           @for $i from 0 to 15 {
+//             &:nth-child(#{$i + 1}) {
+//               transition-delay: $i * 0.1 + 0.3s;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+
+//   &__img {
+//     // width: 40%;
+//     width: 300px;
+//     flex-shrink: 0;
+//     height: 350px;
+//     box-shadow: 4px 13px 30px 1px rgba(252, 56, 56, 0.2);
+//     border-radius: 8px;
+//     transform: translateX(-80px);
+//     align-self: center;
+//     overflow: hidden;
+
+//     &:after {
+//       content: "";
+//       position: absolute;
+//       top: 0;
+//       left: 0;
+//       width: 100%;
+//       height: 100%;
+//       border-radius: 8px;
+//       opacity: 0.8;
+//     }
+
+//     img {
+//       width: 100%;
+//       height: 100%;
+//       object-fit: cover;
+//       display: block;
+//       border-radius: 8px;
+//       transition: all 0.3s;
+//     }
+
+//     @media screen and (max-width: 992px) {
+//       // width: 45%;
+//     }
+//     @media screen and (max-width: 768px) {
+//       transform: translateY(-25%);
+//       width: 90%;
+//     }
+//     @media screen and (max-width: 576px) {
+//       width: 95%;
+//     }
+//     @media screen and (max-height: 500px) and (min-width: 992px) {
+//       height: 270px;
+//     }
+//   }
+
+//   &__content {
+//     // width: 60%;
+//     padding-right: 25px;
+//     width: 100%;
+
+//     @media screen and (max-width: 992px) {
+//       // width: 55%;
+//     }
+//     @media screen and (max-width: 768px) {
+//       margin-top: -80px;
+//       text-align: center;
+//       padding: 0 30px;
+//     }
+
+//     @media screen and (max-width: 576px) {
+//       padding: 0;
+//     }
+//     > * {
+//       // transform: translateY(25px);
+//       transition: all 0.4s;
+//     }
+//   }
+
+//   &__code {
+//     color: #7b7992;
+//     margin-bottom: 15px;
+//     display: block;
+//     font-weight: 500;
+//   }
+
+//   &__title {
+//     font-size: 24px;
+//     font-weight: 700;
+//     color: #0d0925;
+//     margin-bottom: 20px;
+//   }
+
+//   &__text {
+//     color: #4e4a67;
+//     margin-bottom: 30px;
+//     line-height: 1.5em;
+//   }
+// }
+
+// .css-1aquho2-MuiTabs-indicator {
+//   background-color: rgba(211, 47, 47, 0.7) !important;
+// }
+
+// .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+//   color: rgba(211, 47, 47, 0.7) !important;
+// }
+
+// .dog-loader {
+//   width: 100px;
+//   height: 100px;
+//   margin: 15px auto 50px auto;
+//   text-align: center;
+
+//   .dog-head {
+//     z-index: 100;
+//     animation: head-move 1s ease-in-out infinite;
+
+//     img {
+//       width: 100%;
+//       height: 100%;
+//     }
+//   }
+
+//   .dog-body {
+//     height: 100%;
+//     width: 100%;
+//     margin: -62px auto 10px auto;
+//     background-image: url("http://www.clker.com/cliparts/T/0/9/J/e/4/dog-body-md.png");
+//     background-size: contain;
+//     background-position: center;
+//     background-repeat: no-repeat;
+//   }
+// }
+
+// .dog-loader-p {
+//   text-align: center;
+// }
+
+// .MuiChip-label {
+//   white-space: normal !important;
+// }
+
+// @keyframes head-move {
+//   50% {
+//     transform: rotate(-10.5deg);
+//   }
+// }
+
+// @media screen and (max-width: 500px) {
+//   #subtitle {
+//     display: none;
+//   }
+//   .recipe-card-text-input {
+//     max-width: 100%;
+//   }
+// }
+
+// #recipeEntry-modal,
+// #recipeEdit-modal {
+//   max-height: 95%;
+//   overflow: scroll;
+// }
+
+// @media screen and (max-width: 600px) {
+//   #recipeEntry-modal,
+//   #recipeEdit-modal {
+//     width: 95%;
+//   }
+// }
+
+// @media screen and (max-width: 770px) {
+//   #stack-rating-has_cooked {
+//     justify-content: center;
+//   }
+// }
+
+// @media screen and (max-width: 400px) {
+//   #recipeEntry-modal,
+//   #recipeEdit-modal {
+//     width: 100%;
+//   }
+// }

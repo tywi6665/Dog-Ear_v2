@@ -1,51 +1,69 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Rating from "@mui/material/Rating";
-import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import Checkbox from "@mui/material/Checkbox";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Button } from "@mui/material";
-import Icon from "@mdi/react";
-import { mdiDog } from "@mdi/js";
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
-const filter = createFilterOptions();
+import React, { useEffect, useState } from "react";
+import {
+  Space,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  TreeSelect,
+  Rate,
+  Tooltip,
+} from "antd";
 
 const titleCase = (str) => {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map(function (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
+  if (str) {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(function (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  } else {
+    return "";
+  }
+};
+
+const titleCaseArr = (arr) => {
+  return arr.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
 };
 
 const RecipeEdit = ({
   recipe,
-  setRecipe,
+  updateFocusedRecipe,
   quickTagOptions,
   setIsEditing,
   updateRecipe,
 }) => {
+  const [url, setUrl] = useState(recipe.url);
   const [title, setTitle] = useState(titleCase(recipe.title));
   const [imgSrc, setImgSrc] = useState(recipe.img_src);
   const [description, setDescription] = useState(recipe.description);
   const [author, setAuthor] = useState(recipe.author);
-  const [allTags, setAllTags] = useState(recipe.tags);
+  const [allTags, setAllTags] = useState(titleCaseArr(recipe.tags));
   const [allNotes, setAllNotes] = useState(recipe.notes);
   const [hasMade, setHasMade] = useState(recipe.has_made);
   const [rating, setRating] = useState(recipe.rating);
 
-  const handleNotes = (note, index) => {
-    const updatedNotes = [...allNotes];
-    updatedNotes[index] = note;
-    setAllNotes(updatedNotes);
-  };
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({
+      url: url,
+      imgSrc: imgSrc,
+      title: title,
+      author: author,
+      description: description,
+      tags: allTags,
+      notes: allNotes,
+      hasMade: hasMade,
+      rating: rating,
+    });
+  }, []);
+
+  const { TextArea } = Input;
 
   const editEntry = () => {
     let notes = [...allNotes];
@@ -59,6 +77,7 @@ const RecipeEdit = ({
     }
 
     const updatedRecipe = {
+      url: url,
       title: title,
       author: author,
       img_src: imgSrc,
@@ -69,216 +88,153 @@ const RecipeEdit = ({
       tags: allTags,
     };
 
-    updateRecipe("edit_entry", recipe.unique_id, updatedRecipe, setRecipe);
+    updateRecipe(
+      "edit_entry",
+      recipe.unique_id,
+      updatedRecipe,
+      updateFocusedRecipe
+    );
     setIsEditing(false);
   };
 
   return (
-    <Box component="div">
-      <Box
-        component="form"
-        sx={{
-          "& .MuiTextField-root": {
-            display: "flex",
-            justifyContent: "center",
-          },
+    <Space
+      id="recipe-edit"
+      direction="vertical"
+      size="small"
+      style={{ display: "flex", width: "100%" }}
+    >
+      <Button
+        className="btn-active"
+        type="primary"
+        block
+        style={{ marginBottom: "10px" }}
+        danger
+        onClick={() => setIsEditing(false)}
+      >
+        Cancel
+      </Button>
+      {imgSrc ? (
+        <img src={imgSrc} style={{ maxWidth: "225px", maxHeight: "225px" }} />
+      ) : (
+        <img src={"./static/graphics/default_image.jpg"} />
+      )}
+      <Form
+        name="form"
+        form={form}
+        style={{
+          width: "100%",
         }}
+        labelCol={{ flex: "100px" }}
+        labelAlign="left"
+        labelWrap
+        wrapperCol={{ flex: 1 }}
+        colon={false}
         autoComplete="off"
       >
-        <div style={{ textAlign: "center" }}>
-          {imgSrc ? (
-            <img
-              src={imgSrc}
-              style={{ maxWidth: "225px", maxHeight: "225px" }}
-            />
-          ) : (
-            <img
-              src={"./static/graphics/default_image.jpg"}
-              style={{ maxWidth: "225px", maxHeight: "225px" }}
-            />
-          )}
-        </div>
-        <div>
-          <TextField
-            label="Recipe Image"
-            placeholder='Right click on image, and click "copy image address". Paste address here.'
-            variant="filled"
+        <Form.Item
+          label="Recipe URL"
+          name="url"
+          rules={[
+            { required: true, message: "Please input the recipe's url!" },
+          ]}
+        >
+          <Input value={url} onChange={(e) => setUrl(e.target.value)} />
+        </Form.Item>
+
+        <Form.Item
+          label="Recipe Image"
+          name="imgSrc"
+          style={{ marginBottom: "15px" }}
+        >
+          <Input
             value={imgSrc}
             onChange={(e) => setImgSrc(e.target.value)}
-            sx={{ m: 2 }}
+            placeholder='Right click on image, and click "copy image address". Paste address here.'
           />
+        </Form.Item>
+
+        <div style={{ display: "flex", alignItems: "baseline" }}>
+          <Form.Item name="hasMade" wrapperCol={{ span: 24 }}>
+            <Checkbox
+              style={{ marginRight: "15px" }}
+              checked={hasMade}
+              onClick={() => setHasMade(!hasMade)}
+            >
+              Has Made?
+            </Checkbox>
+          </Form.Item>
+
+          <Form.Item name="rating" wrapperCol={{ span: 24 }}>
+            <Rate value={rating} onChange={(rating) => setRating(rating)} />
+          </Form.Item>
         </div>
-        <div style={{ marginLeft: "4px" }}>
-          <FormControlLabel
-            value="Has Made?"
-            control={
-              <Checkbox
-                value={hasMade}
-                checked={hasMade}
-                onClick={() => setHasMade(!hasMade)}
-              />
-            }
-            label="Has Made?"
-            labelPlacement="start"
-          />
-        </div>
-        <div>
-          <Rating
-            name="rating"
-            value={rating}
-            onChange={(e, rating) => {
-              setRating(rating);
-            }}
-            sx={{ ml: 2 }}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Recipe Title"
-            variant="filled"
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            sx={{ m: 2 }}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Recipe Author"
-            variant="filled"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            sx={{ m: 2 }}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Recipe Description"
-            variant="filled"
+
+        <Form.Item
+          label="Recipe Title"
+          name="title"
+          rules={[
+            { required: true, message: "Please input the recipe's title!" },
+          ]}
+        >
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+        </Form.Item>
+
+        <Form.Item label="Recipe Author" name="author">
+          <Input value={author} onChange={(e) => setAuthor(e.target.value)} />
+        </Form.Item>
+
+        <Form.Item label="Recipe Description" name="description">
+          <TextArea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            sx={{ m: 2 }}
-            multiline
-            maxRows={4}
+            autoSize={{ minRows: 1, maxRows: 4 }}
+            allowClear
           />
-        </div>
-        <div>
-          <Autocomplete
-            value={allTags}
-            sx={{ m: 2 }}
-            options={quickTagOptions.sort(
-              (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+        </Form.Item>
+
+        <Form.Item label="Recipe Tags" name="tags" wrapperCol={{ span: 12 }}>
+          <TreeSelect
+            treeData={quickTagOptions.sort(
+              (a, b) => -b.title.localeCompare(a.title)
             )}
-            onChange={(e, value) => {
-              let tags = [];
-              value.forEach((val) => {
-                if (typeof val === "string") {
-                  tags.push(val.trim());
-                } else {
-                  tags.push(val.tag.trim());
-                }
-              });
+            onChange={(tags) => {
               setAllTags(tags);
             }}
-            multiple={true}
-            freeSolo
-            disableCloseOnSelect
-            filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-
-              const { inputValue } = params;
-              // Suggest the creation of a new value
-              const isExisting = options.some(
-                (option) => inputValue === option.tag
-              );
-              if (inputValue !== "" && !isExisting) {
-                filtered.push({
-                  inputValue,
-                  tag: inputValue,
-                });
-              }
-              return filtered;
-            }}
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            groupBy={(option) => option.firstLetter}
-            getOptionLabel={(option) => {
-              if (typeof option === "string") {
-                return option;
-              }
-              if (option.inputValue) {
-                return option.inputValue;
-              }
-              return option.tag;
-            }}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.tag}
-              </li>
-            )}
-            renderInput={(params) => (
-              <TextField {...params} label="Edit Tags" variant="filled" />
-            )}
+            treeCheckable
+            placeholder="Please select"
           />
-        </div>
-        <div>
-          {allNotes.length > 1 ? (
-            allNotes.map((note, index) => (
-              <TextField
-                label="Edit Note"
-                variant="filled"
-                value={note}
-                onChange={(e) => handleNotes(e.target.value, index)}
-                sx={{ m: 2 }}
-                multiline
-                maxRows={4}
-              />
-            ))
-          ) : (
-            <TextField
-              label="Add Note"
-              variant="filled"
-              value={allNotes}
-              onChange={(e) => setAllNotes([e.target.value])}
-              sx={{ m: 2 }}
-              multiline
-              maxRows={4}
+        </Form.Item>
+
+        <Form.Item label="Recipe Notes" name="notes">
+          <Tooltip
+            trigger={["focus"]}
+            title="Delimit separate notes with ; "
+            placement="top"
+          >
+            <TextArea
+              value={allNotes.join(";")}
+              onChange={(e) => setAllNotes(e.target.value.split(";"))}
+              autoSize
             />
-          )}
-        </div>
-        <Button
-          type="button"
-          variant="contained"
-          color="error"
-          disabled={title.length && recipe.url.length ? false : true}
-          onClick={editEntry}
-          endIcon={
-            <Icon
-              path={mdiDog}
-              title="Dog"
-              size={1}
-              horizontal
-              vertical
-              rotate={180}
-              color={title.length ? "white" : "darkgray"}
-            />
-          }
-          sx={{
-            margin: "0 8px 8px 0px",
-            width: "100%",
-          }}
-        >
-          Save
-        </Button>
-      </Box>
-    </Box>
+          </Tooltip>
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ span: 24 }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={title.length && url.length ? "btn-active" : "btn"}
+            disabled={title.length && url.length ? false : true}
+            onClick={editEntry}
+            danger
+            block
+          >
+            Update Recipe
+          </Button>
+        </Form.Item>
+      </Form>
+    </Space>
   );
 };
 
