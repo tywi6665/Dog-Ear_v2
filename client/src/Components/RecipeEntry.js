@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Space,
   Button,
@@ -44,6 +44,7 @@ const RecipeEntry = ({
   setType,
   setIsSubmitted,
 }) => {
+  const [recipeUrl, setRecipeUrl] = useState(url);
   const [title, setTitle] = useState(titleCase(recipe.title));
   const [imgSrc, setImgSrc] = useState(recipe.img_src);
   const [description, setDescription] = useState(recipe.description);
@@ -54,6 +55,22 @@ const RecipeEntry = ({
   const [rating, setRating] = useState(0);
 
   const { TextArea } = Input;
+
+  useEffect(() => {
+    if (type === "crawl") {
+      form.setFieldsValue({
+        url: recipeUrl,
+        imgSrc: imgSrc,
+        title: title,
+        author: author,
+        description: description,
+        tags: tags,
+        notes: allNotes,
+        hasMade: hasMade,
+        rating: rating,
+      });
+    }
+  }, []);
 
   const createEntry = () => {
     let notes = [...allNotes];
@@ -120,8 +137,8 @@ const RecipeEntry = ({
           ]}
         >
           <Input
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            value={recipeUrl}
+            onChange={(e) => setRecipeUrl(e.target.value)}
             disabled={type === "blank" ? false : true}
           />
         </Form.Item>
