@@ -65,8 +65,11 @@ class CrawledRecipeItem(models.Model):
 
 class ImageItem(models.Model):
 
-    unique_id = models.CharField(max_length=100, default = uuid.uuid4, null=True, editable = False,
-         unique=True)
+    # unique_id = models.UUIDField(
+    #      default = uuid.uuid4,
+    #      primary_key=True,
+    #      editable = False,
+    #      unique=True)
     # title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images', blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now)
@@ -91,4 +94,4 @@ class ImageItem(models.Model):
         storage.delete(path)
 
     def __str__(self):
-        return self.unique_id
+        return str(self.unique_id)
