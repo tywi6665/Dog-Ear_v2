@@ -24,14 +24,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 
 from .views import hello, FrontendAppView
-from main.views import RecipeItemView, CrawledRecipeItemView, imageUploadView, crawl
+from main.views import RecipeItemView, CrawledRecipeItemView, crawl
+# , imageUploadView 
 
 app_name = 'dog-ear-server'
 # websocket = path
 router = routers.DefaultRouter()                
 router.register(r'recipes', RecipeItemView, 'recipe') 
 router.register(r'crawledrecipe', CrawledRecipeItemView, 'recipe') 
-router.register(r'images', imageUploadView, 'images') 
+# router.register(r'images', imageUploadView, 'images') 
 
 urlpatterns = [
     path(r'', never_cache(FrontendAppView.as_view()), name='index'),
