@@ -8,7 +8,9 @@ import {
   TreeSelect,
   Rate,
   Tooltip,
+  Upload,
 } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const titleCase = (str) => {
   if (str) {
@@ -36,16 +38,25 @@ const RecipeEdit = ({
   quickTagOptions,
   setIsEditing,
   updateRecipe,
+  handleImageUpload,
+  handleImageDelete,
+  isUploading,
+  setIsUploading,
+  imageName,
+  setImageName,
 }) => {
   const [url, setUrl] = useState(recipe.url);
   const [title, setTitle] = useState(titleCase(recipe.title));
   const [imgSrc, setImgSrc] = useState(recipe.img_src);
+  const [oldImgSrc, setOldImgSrc] = useState("");
   const [description, setDescription] = useState(recipe.description);
   const [author, setAuthor] = useState(recipe.author);
   const [allTags, setAllTags] = useState(titleCaseArr(recipe.tags));
   const [allNotes, setAllNotes] = useState(recipe.notes);
   const [hasMade, setHasMade] = useState(recipe.has_made);
   const [rating, setRating] = useState(recipe.rating);
+  const [ingredients, setIngredients] = useState(recipe.ingredients);
+  const [steps, setSteps] = useState(recipe.steps);
 
   const [form] = Form.useForm();
 
@@ -60,8 +71,19 @@ const RecipeEdit = ({
       notes: allNotes,
       hasMade: hasMade,
       rating: rating,
+      ingredients: ingredients,
+      steps: steps,
     });
   }, []);
+
+  useEffect(() => {
+    if (imageName.length) {
+      setImgSrc(`media/images/${imageName}`);
+      form.setFieldsValue({
+        imgSrc: imgSrc,
+      });
+    }
+  }, [imageName]);
 
   const { TextArea } = Input;
 
@@ -86,6 +108,8 @@ const RecipeEdit = ({
       rating: rating,
       notes: notes,
       tags: allTags,
+      ingredients: ingredients,
+      steps: steps,
     };
 
     updateRecipe(
@@ -95,6 +119,40 @@ const RecipeEdit = ({
       updateFocusedRecipe
     );
     setIsEditing(false);
+    if (oldImgSrc.length) {
+      handleImageDelete(oldImgSrc.split("/").slice(-1)[0].split(".")[0]);
+    }
+    setIsUploading("");
+    setImageName("");
+    setOldImgSrc("");
+  };
+
+  const deleteImage = (img) => {
+    const image = img.split("/").slice(-1)[0].split(".")[0];
+    handleImageDelete(image);
+    setImgSrc("");
+    setIsUploading(false);
+  };
+
+  const uploadProps = {
+    name: "file",
+    accept: "image/*",
+    customRequest(image) {
+      let form_data = new FormData();
+      form_data.append("image", image.file, image.file.name);
+      handleImageUpload(form_data);
+      setIsUploading(true);
+    },
+    // onChange(info) {
+    //   if (info.file.status === "done") {
+    //     message.success(`${info.file.name} file uploaded successfully`);
+    //   } else if (info.file.status === "error") {
+    //     message.error(`${info.file.name} file upload failed.`);
+    //   }
+    // },
+    onRemove() {
+      deleteImage(imgSrc);
+    },
   };
 
   return (
@@ -143,8 +201,8 @@ const RecipeEdit = ({
         </Form.Item>
 
         <Form.Item
+          disabled={isUploading}
           label="Recipe Image"
-          name="imgSrc"
           style={{ marginBottom: "15px" }}
         >
           <Input
@@ -152,6 +210,33 @@ const RecipeEdit = ({
             onChange={(e) => setImgSrc(e.target.value)}
             placeholder='Right click on image, and click "copy image address". Paste address here.'
           />
+          {imgSrc.substring(0, 13) === "media/images/" && !isUploading ? (
+            <Button
+              className="btn-active"
+              type="primary"
+              style={{ marginTop: "5px" }}
+              danger
+              onClick={() => [setOldImgSrc(imgSrc), setImgSrc("")]}
+            >
+              Choose Other Image
+            </Button>
+          ) : (
+            <>
+              <p>or</p>
+              <Upload {...uploadProps}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+              <Button
+                className="btn-active"
+                type="primary"
+                style={{ marginTop: "5px" }}
+                danger
+                onClick={() => [setImgSrc(oldImgSrc), setOldImgSrc("")]}
+              >
+                Revert to Original Image
+              </Button>
+            </>
+          )}
         </Form.Item>
 
         <div style={{ display: "flex", alignItems: "baseline" }}>
@@ -216,6 +301,34 @@ const RecipeEdit = ({
               value={allNotes.join(";")}
               onChange={(e) => setAllNotes(e.target.value.split(";"))}
               autoSize
+            />
+          </Tooltip>
+        </Form.Item>
+
+        <Form.Item label="Recipe Ingredients" name="ingredients">
+          <Tooltip
+            trigger={["focus"]}
+            title="Each ingredient needs to be on a new line"
+            placement="top"
+          >
+            <TextArea
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+              autoSize={{ minRows: 3, maxRows: 5 }}
+            />
+          </Tooltip>
+        </Form.Item>
+
+        <Form.Item label="Recipe Steps" name="steps">
+          <Tooltip
+            trigger={["focus"]}
+            // title="Each paragraph needs to have an empty line separating them"
+            placement="top"
+          >
+            <TextArea
+              value={steps}
+              onChange={(e) => setSteps(e.target.value)}
+              autoSize={{ minRows: 3, maxRows: 5 }}
             />
           </Tooltip>
         </Form.Item>

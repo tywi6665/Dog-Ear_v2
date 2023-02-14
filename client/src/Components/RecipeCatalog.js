@@ -58,6 +58,8 @@ function RecipeCatalog() {
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [entryType, setEntryType] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageName, setImageName] = useState("");
 
   const [inputVisible, setInputVisible] = useState(false);
 
@@ -78,6 +80,16 @@ function RecipeCatalog() {
 
   async function handleCreate(recipe) {
     api.createRecipe(recipe, apiStateReferences);
+  }
+
+  async function handleImageUpload(image) {
+    api.uploadImage(image, setImageName);
+  }
+
+  async function handleImageDelete(image) {
+    api.deleteImage(image);
+    setImageName("");
+    setIsUploading(false);
   }
 
   async function handleDelete(unique_id, route) {
@@ -149,6 +161,8 @@ function RecipeCatalog() {
             notes: [],
             rating: 0,
             tags: [],
+            ingredients: "",
+            steps: "",
             timestamp: Date.now(),
           });
         } else if (data.status) {
@@ -229,6 +243,8 @@ function RecipeCatalog() {
         notes: [],
         rating: 0,
         tags: [],
+        ingredients: "",
+        steps: "",
         timestamp: Date.now(),
       });
     }
@@ -326,6 +342,9 @@ function RecipeCatalog() {
 
   const onClose = () => {
     document.body.style.overflow = "unset";
+    if (isUploading) {
+      handleImageDelete(imageName);
+    }
     setOpen(false);
     setIsEditing(false);
   };
@@ -543,6 +562,12 @@ function RecipeCatalog() {
               updateRecipe={handleUpdate}
               updateFocusedRecipe={updateFocusedRecipe}
               setIsEditing={setIsEditing}
+              isUploading={isUploading}
+              setIsUploading={setIsUploading}
+              imageName={imageName}
+              setImageName={setImageName}
+              handleImageUpload={handleImageUpload}
+              handleImageDelete={handleImageDelete}
             />
           ) : (
             <>
@@ -558,6 +583,12 @@ function RecipeCatalog() {
                       placement="bottom"
                       onConfirm={() => (
                         handleDelete(focusedRecipe.unique_id, "recipes"),
+                        handleImageDelete(
+                          focusedRecipe.img_src
+                            .split("/")
+                            .slice(-1)[0]
+                            .split(".")[0]
+                        ),
                         onClose()
                       )}
                     >
@@ -590,7 +621,7 @@ function RecipeCatalog() {
                     style={{ marginTop: "10px" }}
                     danger
                   >
-                    Visit Recipe
+                    Visit Recipe Webpage
                   </Button>
                 </Link>
               </div>
@@ -794,6 +825,58 @@ function RecipeCatalog() {
                       </>
                     ),
                   },
+                  {
+                    label: `Recipe`,
+                    key: "3",
+                    children: (
+                      <>
+                        <Divider orientation="left">
+                          <strong>
+                            <em>Ingredients:</em>
+                          </strong>
+                        </Divider>
+                        <Timeline>
+                          {focusedRecipe.ingredients.length > 0 ? (
+                            focusedRecipe.ingredients
+                              .split("\n")
+                              .map((ingredient) => {
+                                return (
+                                  <Timeline.Item color="#d32f2f" key={uuidv4()}>
+                                    {ingredient}
+                                  </Timeline.Item>
+                                );
+                              })
+                          ) : (
+                            <Timeline.Item color="#d32f2f">
+                              <em>
+                                This recipe has no ingredients assigned to it
+                              </em>
+                            </Timeline.Item>
+                          )}
+                        </Timeline>
+                        <Divider orientation="left">
+                          <strong>
+                            <em>Steps:</em>
+                          </strong>
+                        </Divider>
+                        <Timeline>
+                          {focusedRecipe.steps.length > 0 ? (
+                            focusedRecipe.steps.split("\n").map((step) => {
+                              return (
+                                <Timeline.Item color="#d32f2f" key={uuidv4()}>
+                                  {step}
+                                </Timeline.Item>
+                              );
+                            })
+                          ) : (
+                            <Timeline.Item color="#d32f2f">
+                              <em>This recipe has no steps assigned to it</em>
+                            </Timeline.Item>
+                          )}
+                        </Timeline>
+                      </>
+                    ),
+                  },
                 ]}
               />
             </>
@@ -818,7 +901,12 @@ function RecipeCatalog() {
         footer={null}
         style={{ top: 20 }}
         open={isModalOpen}
-        onCancel={() => [closeModal(), disconnect(entryType), setUrl("")]}
+        onCancel={() => [
+          closeModal(),
+          disconnect(entryType),
+          handleImageDelete(imageName),
+          setUrl(""),
+        ]}
       >
         {(url || entryType === "blank") && isSubmitted ? (
           <div>
@@ -842,12 +930,18 @@ function RecipeCatalog() {
                   setRecipe={setCrawledRecipe}
                   setIsSubmitted={setIsSubmitted}
                   handleCreate={handleCreate}
+                  handleImageUpload={handleImageUpload}
+                  handleImageDelete={handleImageDelete}
                   handleDelete={handleDelete}
                   setUrl={setUrl}
                   quickTagOptions={searchOptions.tags}
                   type={entryType}
                   setType={setEntryType}
                   closeModal={closeModal}
+                  isUploading={isUploading}
+                  setIsUploading={setIsUploading}
+                  imageName={imageName}
+                  setImageName={setImageName}
                 />
               </div>
             ) : (

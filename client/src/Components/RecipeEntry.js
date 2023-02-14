@@ -8,7 +8,10 @@ import {
   TreeSelect,
   Rate,
   Tooltip,
+  message,
+  Upload,
 } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const titleCase = (str) => {
   if (str) {
@@ -38,11 +41,17 @@ const RecipeEntry = ({
   closeModal,
   setUrl,
   handleCreate,
+  handleImageUpload,
+  handleImageDelete,
   handleDelete,
   quickTagOptions,
   type,
   setType,
   setIsSubmitted,
+  isUploading,
+  setIsUploading,
+  imageName,
+  setImageName,
 }) => {
   const [recipeUrl, setRecipeUrl] = useState(url);
   const [title, setTitle] = useState(titleCase(recipe.title));
@@ -51,6 +60,8 @@ const RecipeEntry = ({
   const [author, setAuthor] = useState(recipe.author);
   const [tags, setTags] = useState(titleCaseArr(recipe.tags));
   const [allNotes, setAllNotes] = useState(recipe.notes);
+  const [ingredients, setIngredients] = useState(recipe.ingredients);
+  const [steps, setSteps] = useState(recipe.steps);
   const [hasMade, setHasMade] = useState(false);
   const [rating, setRating] = useState(0);
 
@@ -69,9 +80,20 @@ const RecipeEntry = ({
         notes: allNotes,
         has_made: hasMade,
         rating: rating,
+        ingredients: ingredients,
+        steps: steps,
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (imageName.length) {
+      setImgSrc(`media/images/${imageName}`);
+      form.setFieldsValue({
+        imgSrc: imgSrc,
+      });
+    }
+  }, [imageName]);
 
   const createEntry = () => {
     let notes = [...allNotes];
@@ -95,6 +117,8 @@ const RecipeEntry = ({
       notes: notes,
       rating: rating,
       tags: tags,
+      ingredients: ingredients,
+      steps: steps,
     });
     setRecipe({});
     closeModal();
@@ -104,6 +128,32 @@ const RecipeEntry = ({
     setUrl("");
     setIsSubmitted(false);
     setType("");
+    setIsUploading("");
+    setImageName("");
+  };
+
+  const uploadProps = {
+    name: "file",
+    accept: "image/*",
+    customRequest(image) {
+      let form_data = new FormData();
+      form_data.append("image", image.file, image.file.name);
+      handleImageUpload(form_data);
+      setIsUploading(true);
+    },
+    // onChange(info) {
+    //   if (info.file.status === "done") {
+    //     message.success(`${info.file.name} file uploaded successfully`);
+    //   } else if (info.file.status === "error") {
+    //     message.error(`${info.file.name} file upload failed.`);
+    //   }
+    // },
+    onRemove() {
+      const image = imgSrc.split("/").slice(-1)[0].split(".")[0];
+      handleImageDelete(image);
+      setImgSrc("");
+      setIsUploading(false);
+    },
   };
 
   return (
@@ -145,12 +195,21 @@ const RecipeEntry = ({
           />
         </Form.Item>
 
-        <Form.Item label="Recipe Image" name="imgSrc">
+        <Form.Item label="Recipe Image">
           <Input
+            disabled={isUploading}
             value={imgSrc}
             onChange={(e) => setImgSrc(e.target.value)}
             placeholder='Right click on image, and click "copy image address". Paste address here.'
           />
+          {type === "blank" ? (
+            <>
+              <p>or</p>
+              <Upload {...uploadProps}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+            </>
+          ) : null}
         </Form.Item>
 
         <Form.Item valuePropName="has_made" wrapperCol={{ span: 24 }}>
@@ -212,6 +271,35 @@ const RecipeEntry = ({
             />
           </Tooltip>
         </Form.Item>
+
+        <Form.Item label="Recipe Ingredients" name="ingredients">
+          <Tooltip
+            trigger={["focus"]}
+            title="Each ingredient needs to be on a new line"
+            placement="top"
+          >
+            <TextArea
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+              autoSize={{ minRows: 3 }}
+            />
+          </Tooltip>
+        </Form.Item>
+
+        <Form.Item label="Recipe Steps" name="steps">
+          <Tooltip
+            trigger={["focus"]}
+            // title="Each paragraph needs to have an empty line separating them"
+            placement="top"
+          >
+            <TextArea
+              value={steps}
+              onChange={(e) => setSteps(e.target.value)}
+              autoSize={{ minRows: 3 }}
+            />
+          </Tooltip>
+        </Form.Item>
+
         <Form.Item wrapperCol={{ span: 24 }}>
           <Button
             type="primary"

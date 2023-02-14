@@ -10,8 +10,6 @@ const RecipeCard = ({
   showDrawer,
 }) => {
   const [recipe, setRecipe] = useState(recipeInfo);
-  const [tagsToAdd, setTagsToAdd] = useState("");
-  const [notesToAdd, setNotesToAdd] = useState("");
 
   useEffect(() => {
     setRecipe(recipeInfo);

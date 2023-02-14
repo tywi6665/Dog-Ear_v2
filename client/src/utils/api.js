@@ -31,6 +31,22 @@ export async function createRecipe(recipe, callback) {
     .then((res) => callback());
 }
 
+export async function uploadImage(image, callback) {
+  axios
+    .post("api/images/", image, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    })
+    .then((res) =>
+      callback(res.data.image.split("/").slice(-1)[0].split(".")[0])
+    );
+}
+
+export async function deleteImage(image) {
+  axios.delete(`api/images/${image}`).then((res) => console.log("deleted"));
+}
+
 export async function deleteRecipe(unique_id, route, callback) {
   axios.delete(`api/${route}/${unique_id}`).then((res) => callback());
 }

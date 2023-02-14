@@ -26,7 +26,7 @@ function App() {
 
   return (
     <>
-      {Object.keys(credentials).length ? (
+      {!Object.keys(credentials).length ? (
         <RecipeCatalog />
       ) : (
         <Layout id="layout" style={{ minHeight: "100%" }}>
