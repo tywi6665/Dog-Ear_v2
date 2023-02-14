@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import RecipeItem, CrawledRecipeItem
-# , ImageItem
+from .models import RecipeItem, CrawledRecipeItem, ImageItem
 
 class RecipeItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,11 +39,11 @@ class CrawledRecipeItemSerializer(serializers.ModelSerializer):
             'timestamp',
         )
 
-# class ImageItemSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ImageItem
-#         fields = (
-#             'unique_id',
-#             'image',
-#             'timestamp',
-#         )
+class ImageItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImageItem
+        fields = (
+            'unique_id',
+            'image',
+            'timestamp',
+        )

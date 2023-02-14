@@ -63,34 +63,34 @@ class CrawledRecipeItem(models.Model):
     def __str__(self):
         return self.unique_id
 
-# class ImageItem(models.Model):
+class ImageItem(models.Model):
 
-#     unique_id = models.UUIDField(
-#          default = uuid.uuid4,
-#          primary_key=True,
-#          editable = False)
-#     # title = models.CharField(max_length=200)
-#     image = models.ImageField(upload_to='images', blank=True, null=True)
-#     timestamp = models.DateTimeField(default=timezone.now)
+    unique_id = models.UUIDField(
+         default = uuid.uuid4,
+         primary_key=True,
+         editable = False)
+    # title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images', blank=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
 
-#     def save(self, *args, **kwargs):
-#         new_image =  self.reduce_image_size(self.image)
-#         self.image = new_image
-#         super().save(*args, **kwargs)
-#     def reduce_image_size(self, image):
-#         print('-----IMAGE NAME-----', image)
-#         img = Image.open(image)
-#         thumb_io = BytesIO()
-#         img.save(thumb_io, 'jpeg', quality=50)
-#         new_image = File(thumb_io, name=str(self.unique_id))
-#         return new_image
-#     def delete(self, *args, **kwargs):
-#         # You have to prepare what you need before delete the model
-#         storage, path = self.image.storage, self.image.path
-#         # Delete the model before the file
-#         super(ImageItem, self).delete(*args, **kwargs)
-#         # Delete the file after the model
-#         storage.delete(path)
+    def save(self, *args, **kwargs):
+        new_image =  self.reduce_image_size(self.image)
+        self.image = new_image
+        super().save(*args, **kwargs)
+    def reduce_image_size(self, image):
+        print('-----IMAGE NAME-----', image)
+        img = Image.open(image)
+        thumb_io = BytesIO()
+        img.save(thumb_io, 'jpeg', quality=50)
+        new_image = File(thumb_io, name=str(self.unique_id))
+        return new_image
+    def delete(self, *args, **kwargs):
+        # You have to prepare what you need before delete the model
+        storage, path = self.image.storage, self.image.path
+        # Delete the model before the file
+        super(ImageItem, self).delete(*args, **kwargs)
+        # Delete the file after the model
+        storage.delete(path)
 
-#     def __str__(self):
-#         return str(self.unique_id)
+    def __str__(self):
+        return str(self.unique_id)

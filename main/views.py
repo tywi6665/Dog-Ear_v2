@@ -5,14 +5,12 @@ from django.core.exceptions import ValidationError
 # from django.views.decorators.http import require_POST, require_http_methods
 # from django.shortcuts import render
 from rest_framework import viewsets 
-from .serializers import RecipeItemSerializer, CrawledRecipeItemSerializer
-# , ImageItemSerializer
+from .serializers import RecipeItemSerializer, CrawledRecipeItemSerializer, ImageItemSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from scrapyd_api import ScrapydAPI
 # from main.utils import URLUtil
-from main.models import RecipeItem, CrawledRecipeItem
-# , ImageItem
+from main.models import RecipeItem, CrawledRecipeItem, ImageItem
 from django_filters import rest_framework as filters
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -113,27 +111,26 @@ class RecipeItemView(viewsets.ModelViewSet):
 
         return JsonResponse({'Success': 'Entry Updated'})
 
-# class imageUploadView(viewsets.ModelViewSet):
-#     parser_classes = (MultiPartParser, FormParser)
+class imageUploadView(viewsets.ModelViewSet):
+    parser_classes = (MultiPartParser, FormParser)
 
-#     serializer_class = ImageItemSerializer
-#     queryset = ImageItem.objects.all()
+    serializer_class = ImageItemSerializer
+    queryset = ImageItem.objects.all()
 
-#     def get(self, request, *args, **kwargs):
-#         images = ImageItem.objects.all()
-#         serializer = ImageItemSerializer(images, many=True)
-#         return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        images = ImageItem.objects.all()
+        serializer = ImageItemSerializer(images, many=True)
+        return Response(serializer.data)
 
-#     def post(self, request, *args, **kwargs):
-#         print('-----POST-----', request.data)
-#         images_serializer = ImageItemSerializer(data=request.data)
-#         if images_serializer.is_valid():
-#             images_serializer.save()
-#             return Response(images_serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             print('error', images_serializer.errors)
-#             return Response(images_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+    def post(self, request, *args, **kwargs):
+        print('-----POST-----', request.data)
+        images_serializer = ImageItemSerializer(data=request.data)
+        if images_serializer.is_valid():
+            images_serializer.save()
+            return Response(images_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print('error', images_serializer.errors)
+            return Response(images_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # crawling function
 def crawl(request):
