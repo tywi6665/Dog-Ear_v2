@@ -64,11 +64,10 @@ class CrawledRecipeItem(models.Model):
         return self.unique_id
 
 class ImageItem(models.Model):
-    unique_key = uuid.uuid4
 
     unique_id = models.UUIDField(
          primary_key = True,
-         default = unique_key,
+         default = uuid.uuid4,
          editable = False)
     # title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images', blank=True, null=True)
