@@ -65,7 +65,6 @@ class CrawledRecipeItem(models.Model):
 
 class ImageItem(models.Model):
 
-    id = models.AutoField(primary_key=True)
     unique_id = models.UUIDField(
          default = uuid.uuid4,
          editable = False,
