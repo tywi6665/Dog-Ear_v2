@@ -18,27 +18,30 @@ from django.urls import path, include
 from rest_framework import routers                  
 from main import views   
 from django.conf import settings
-from django.conf.urls import url,static
+from django.conf.urls import url
+from django.conf.urls.static import static
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
-# from django.views.generic import TemplateView
 
 from .views import hello, FrontendAppView
-from main.views import RecipeItemView, CrawledRecipeItemView, crawl
+from main.views import RecipeItemView, CrawledRecipeItemView, imageUploadView, crawl
 
 app_name = 'dog-ear-server'
 # websocket = path
 router = routers.DefaultRouter()                
 router.register(r'recipes', RecipeItemView, 'recipe') 
 router.register(r'crawledrecipe', CrawledRecipeItemView, 'recipe') 
+router.register(r'images', imageUploadView, 'images') 
 
 urlpatterns = [
     path(r'', never_cache(FrontendAppView.as_view()), name='index'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    # path('api/images/', csrf_exempt(imageUploadView.as_view()), name="images"),
     path('hello/', csrf_exempt(hello), name='hello'),
-    url('crawl/', csrf_exempt(crawl), name='crawl'),
-    # url(r'^api/recipes/', csrf_exempt(recipes), name='recipes'),
-    # url(r'^api/delete/', csrf_exempt(delete), name='delete'),
+    url('crawl/', csrf_exempt(crawl), name='crawl')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'corsheaders',          
     'rest_framework',
     'main',
-    'django_filters'
+    'django_filters',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 ROOT_URLCONF = 'server.urls'
 
@@ -103,7 +110,7 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # load database from the DATABASE_URL environment variable
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -154,10 +161,11 @@ STATICFILES_DIRS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Base url to serve media files
+MEDIA_URL = '/media/'
 
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'graphics')
-MEDIA_URL = '/graphics/'
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)

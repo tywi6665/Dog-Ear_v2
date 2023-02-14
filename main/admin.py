@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RecipeItem, CrawledRecipeItem
+from .models import RecipeItem, CrawledRecipeItem, ImageItem
 
 class RecipeItemAdmin(admin.ModelAdmin):
     list_display = (
@@ -14,8 +14,11 @@ class RecipeItemAdmin(admin.ModelAdmin):
         'rating',
         'tags',
         'timestamp',
+        'ingredients',
+        'steps'
         )
 
 # Register your models here.
 admin.site.register(RecipeItem, RecipeItemAdmin)
 admin.site.register(CrawledRecipeItem, RecipeItemAdmin)
+admin.site.register(ImageItem)

@@ -1,6 +1,10 @@
 import json
+import uuid
 from django.db import models
 from django.utils import timezone
+from PIL import Image
+from io import BytesIO
+from django.core.files import File
 
 # Create your models here.
 class RecipeItem(models.Model):
@@ -14,6 +18,8 @@ class RecipeItem(models.Model):
     notes = models.JSONField(default=list)
     rating = models.IntegerField(default=0)
     tags = models.JSONField(default=list)
+    ingredients = models.TextField(max_length=None, blank=True)
+    steps = models.TextField(max_length=None, blank=True)
     timestamp = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -30,6 +36,8 @@ class CrawledRecipeItem(models.Model):
     notes = models.JSONField(default=list)
     rating = models.IntegerField(default=0)
     tags = models.JSONField(default=list)
+    ingredients = models.TextField(max_length=None, blank=True)
+    steps = models.TextField(max_length=None, blank=True)
     timestamp = models.DateTimeField(default=timezone.now)
 
     # This is for basic and custom serialization to return it to client as a JSON.
@@ -46,9 +54,44 @@ class CrawledRecipeItem(models.Model):
             'notes': self.notes,
             'rating': self.rating,
             'tags': self.tags,
+            'ingredients': self.ingredients,
+            'steps': self.steps,
             'timestamp': self.timestamp
         }
         return data 
 
     def __str__(self):
         return self.unique_id
+
+class ImageItem(models.Model):
+    unique_key = uuid.uuid4
+
+    unique_id = models.UUIDField(
+         primary_key = True,
+         default = unique_key,
+         editable = False)
+    # title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images', blank=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        new_image =  self.reduce_image_size(self.image)
+        self.image = new_image
+        super().save(*args, **kwargs)
+    def reduce_image_size(self, image):
+        print('-----IMAGE NAME-----', image)
+        img = Image.open(image)
+        thumb_io = BytesIO()
+        img.save(thumb_io, 'jpeg', quality=50)
+        new_image = File(thumb_io, name=str(self.unique_id))
+        return new_image
+    def delete(self, *args, **kwargs):
+        # You have to prepare what you need before delete the model
+        storage, path = self.image.storage, self.image.path
+        # Delete the model before the file
+        super(ImageItem, self).delete(*args, **kwargs)
+        # Delete the file after the model
+        storage.delete(path)
+
+    def __str__(self):
+        return str(self.unique_id)
