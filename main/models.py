@@ -65,10 +65,11 @@ class CrawledRecipeItem(models.Model):
 
 class ImageItem(models.Model):
 
+    id = models.AutoField(primary_key=True)
     unique_id = models.UUIDField(
-         primary_key = True,
          default = uuid.uuid4,
-         editable = False)
+         editable = False,
+         unique=True)
     # title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images', blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now)
