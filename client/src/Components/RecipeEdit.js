@@ -226,15 +226,17 @@ const RecipeEdit = ({
               <Upload {...uploadProps}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
-              <Button
-                className="btn-active"
-                type="primary"
-                style={{ marginTop: "5px" }}
-                danger
-                onClick={() => [setImgSrc(oldImgSrc), setOldImgSrc("")]}
-              >
-                Revert to Original Image
-              </Button>
+              {oldImgSrc.length ? (
+                <Button
+                  className="btn-active"
+                  type="primary"
+                  style={{ marginTop: "5px" }}
+                  danger
+                  onClick={() => [setImgSrc(oldImgSrc), setOldImgSrc("")]}
+                >
+                  Revert to Original Image
+                </Button>
+              ) : null}
             </>
           )}
         </Form.Item>

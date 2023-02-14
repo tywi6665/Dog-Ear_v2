@@ -1,4 +1,3 @@
-import json
 import uuid
 from django.db import models
 from django.utils import timezone
@@ -67,9 +66,7 @@ class ImageItem(models.Model):
 
     unique_id = models.UUIDField(
          default = uuid.uuid4,
-         primary_key=True,
          editable = False)
-    # title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images', blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now)
 
