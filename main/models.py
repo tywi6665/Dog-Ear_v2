@@ -64,9 +64,7 @@ class CrawledRecipeItem(models.Model):
 
 class ImageItem(models.Model):
 
-    unique_id = models.CharField(max_length=100, null=True, default = str(uuid.uuid4),
-         editable = False,
-         unique=True)
+    unique_id = models.CharField(max_length=100, null=True)
     image = models.ImageField(upload_to='images', blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now)
 
@@ -74,13 +72,14 @@ class ImageItem(models.Model):
         new_image =  self.reduce_image_size(self.image)
         self.image = new_image
         super().save(*args, **kwargs)
+
     def reduce_image_size(self, image):
-        print('-----IMAGE NAME-----', image)
         img = Image.open(image)
         thumb_io = BytesIO()
-        img.save(thumb_io, 'jpeg', quality=50)
-        new_image = File(thumb_io, name=str(self.unique_id))
+        img.save(thumb_io, 'jpeg', quality=40)
+        new_image = File(thumb_io, name=self.unique_id)
         return new_image
+          
     def delete(self, *args, **kwargs):
         # You have to prepare what you need before delete the model
         storage, path = self.image.storage, self.image.path

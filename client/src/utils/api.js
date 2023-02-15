@@ -38,13 +38,18 @@ export async function uploadImage(image, callback) {
         "content-type": "multipart/form-data",
       },
     })
-    .then((res) =>
-      callback(res.data.image.split("/").slice(-1)[0].split(".")[0])
-    );
+    .then((res) => {
+      console.log(res);
+      let index = res.data.image.split("/").indexOf("media");
+      console.log(index);
+      res.data.image = res.data.image.split("/").slice(index).join("/");
+      console.log(res.data);
+      callback(res.data);
+    });
 }
 
-export async function deleteImage(image) {
-  axios.delete(`api/images/${image}`).then((res) => console.log("deleted"));
+export async function deleteImage(image_id) {
+  axios.delete(`api/images/${image_id}`).then((res) => console.log("deleted"));
 }
 
 export async function deleteRecipe(unique_id, route, callback) {

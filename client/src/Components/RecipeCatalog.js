@@ -59,7 +59,7 @@ function RecipeCatalog() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [entryType, setEntryType] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const [imageName, setImageName] = useState("");
+  const [imageName, setImageName] = useState({});
 
   const [inputVisible, setInputVisible] = useState(false);
 
@@ -87,8 +87,10 @@ function RecipeCatalog() {
   }
 
   async function handleImageDelete(image) {
-    api.deleteImage(image);
-    setImageName("");
+    if (isUploading) {
+      api.deleteImage(image);
+    }
+    setImageName({});
     setIsUploading(false);
   }
 
@@ -343,7 +345,7 @@ function RecipeCatalog() {
   const onClose = () => {
     document.body.style.overflow = "unset";
     if (isUploading) {
-      handleImageDelete(imageName);
+      handleImageDelete(imageName.unique_id);
     }
     setOpen(false);
     setIsEditing(false);
@@ -490,6 +492,7 @@ function RecipeCatalog() {
                     display: "flex",
                     justifyContent: "center",
                   }}
+                  key={uuidv4()}
                 >
                   <RecipeCard
                     recipeInfo={recipe}
@@ -904,7 +907,7 @@ function RecipeCatalog() {
         onCancel={() => [
           closeModal(),
           disconnect(entryType),
-          handleImageDelete(imageName),
+          handleImageDelete(imageName.unique_id),
           setUrl(""),
         ]}
       >

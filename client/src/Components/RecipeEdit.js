@@ -11,6 +11,7 @@ import {
   Upload,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { v4 as uuidv4 } from "uuid";
 
 const titleCase = (str) => {
   if (str) {
@@ -77,8 +78,8 @@ const RecipeEdit = ({
   }, []);
 
   useEffect(() => {
-    if (imageName.length) {
-      setImgSrc(`media/images/${imageName}`);
+    if (Object.keys(imageName).length) {
+      setImgSrc(imageName.image);
       form.setFieldsValue({
         imgSrc: imgSrc,
       });
@@ -88,6 +89,10 @@ const RecipeEdit = ({
   const { TextArea } = Input;
 
   const editEntry = () => {
+    if (oldImgSrc.length) {
+      handleImageDelete(oldImgSrc.split("/").slice(-1)[0].split(".")[0]);
+    }
+
     let notes = [...allNotes];
 
     if (notes.length > 0) {
@@ -118,18 +123,15 @@ const RecipeEdit = ({
       updatedRecipe,
       updateFocusedRecipe
     );
-    setIsEditing(false);
-    if (oldImgSrc.length) {
-      handleImageDelete(oldImgSrc.split("/").slice(-1)[0].split(".")[0]);
-    }
+
     setIsUploading("");
-    setImageName("");
     setOldImgSrc("");
+    setImageName("");
+    setIsEditing(false);
   };
 
   const deleteImage = (img) => {
-    const image = img.split("/").slice(-1)[0].split(".")[0];
-    handleImageDelete(image);
+    handleImageDelete(img);
     setImgSrc("");
     setIsUploading(false);
   };
@@ -140,6 +142,7 @@ const RecipeEdit = ({
     customRequest(image) {
       let form_data = new FormData();
       form_data.append("image", image.file, image.file.name);
+      form_data.append("unique_id", uuidv4());
       handleImageUpload(form_data);
       setIsUploading(true);
     },
@@ -151,7 +154,7 @@ const RecipeEdit = ({
     //   }
     // },
     onRemove() {
-      deleteImage(imgSrc);
+      deleteImage(imageName.unique_id);
     },
   };
 
@@ -213,6 +216,7 @@ const RecipeEdit = ({
           {imgSrc.substring(0, 13) === "media/images/" && !isUploading ? (
             <Button
               className="btn-active"
+              htmlType="button"
               type="primary"
               style={{ marginTop: "5px" }}
               danger
@@ -224,12 +228,15 @@ const RecipeEdit = ({
             <>
               <p>or</p>
               <Upload {...uploadProps}>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                <Button htmlType="button" icon={<UploadOutlined />}>
+                  Click to Upload
+                </Button>
               </Upload>
               {oldImgSrc.length ? (
                 <Button
                   className="btn-active"
                   type="primary"
+                  htmlType="button"
                   style={{ marginTop: "5px" }}
                   danger
                   onClick={() => [setImgSrc(oldImgSrc), setOldImgSrc("")]}

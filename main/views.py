@@ -19,6 +19,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 import json
+from PIL import Image
+from io import BytesIO
+from django.core.files import File
 
 # connect to scrapyd service
 scrapyd = ScrapydAPI('http://localhost:6800')
@@ -112,25 +115,44 @@ class RecipeItemView(viewsets.ModelViewSet):
         return JsonResponse({'Success': 'Entry Updated'})
 
 class imageUploadView(viewsets.ModelViewSet):
-    parser_classes = (MultiPartParser, FormParser)
-
+    lookup_field = 'unique_id'
     serializer_class = ImageItemSerializer
+    parser_classes = (MultiPartParser, FormParser)
     queryset = ImageItem.objects.all()
 
     def get(self, request, *args, **kwargs):
         images = ImageItem.objects.all()
         serializer = ImageItemSerializer(images, many=True)
         return Response(serializer.data)
-
-    def post(self, request, *args, **kwargs):
+    
+    def save(self, request, *args, **kwargs):
         print('-----POST-----', request.data)
         images_serializer = ImageItemSerializer(data=request.data)
+        # new_image =  self.reduce_image_size(self.image)
+        # self.image = new_image
         if images_serializer.is_valid():
+            # super().save(*args, **kwargs)
             images_serializer.save()
             return Response(images_serializer.data, status=status.HTTP_201_CREATED)
         else:
             print('error', images_serializer.errors)
             return Response(images_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    # def reduce_image_size(self, image):
+    #     print('-----IMAGE NAME-----', image)
+    #     img = Image.open(image)
+    #     thumb_io = BytesIO()
+    #     img.save(thumb_io, 'jpeg', quality=50)
+    #     new_image = File(thumb_io, name=self.unique_id)
+    #     return new_image
+    
+    # def delete(self, request, *args, **kwargs):
+    #     print('-----DELETE-----', request.data)
+    #     image = get_object_or_404(ImageItem, id=request.id)
+    #     if image.image:
+    #         image.image.delete()
+    #     image.delete()
+    #     return JsonResponse({'Success': 'Image Deleted'})
 
 # crawling function
 def crawl(request):

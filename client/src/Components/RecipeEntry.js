@@ -12,6 +12,7 @@ import {
   Upload,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { v4 as uuidv4 } from "uuid";
 
 const titleCase = (str) => {
   if (str) {
@@ -87,8 +88,8 @@ const RecipeEntry = ({
   }, []);
 
   useEffect(() => {
-    if (imageName.length) {
-      setImgSrc(`media/images/${imageName}`);
+    if (imageName) {
+      setImgSrc(imageName.image);
       form.setFieldsValue({
         imgSrc: imgSrc,
       });
@@ -129,7 +130,7 @@ const RecipeEntry = ({
     setIsSubmitted(false);
     setType("");
     setIsUploading("");
-    setImageName("");
+    setImageName([]);
   };
 
   const uploadProps = {
@@ -138,6 +139,8 @@ const RecipeEntry = ({
     customRequest(image) {
       let form_data = new FormData();
       form_data.append("image", image.file, image.file.name);
+      form_data.append("unique_id", uuidv4());
+      console.log(form_data, image.file, image.file.name);
       handleImageUpload(form_data);
       setIsUploading(true);
     },
@@ -149,8 +152,8 @@ const RecipeEntry = ({
     //   }
     // },
     onRemove() {
-      const image = imgSrc.split("/").slice(-1)[0].split(".")[0];
-      handleImageDelete(image);
+      const image_id = imageName.unique_id;
+      handleImageDelete(image_id);
       setImgSrc("");
       setIsUploading(false);
     },
