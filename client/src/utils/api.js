@@ -31,26 +31,23 @@ export async function createRecipe(recipe, callback) {
     .then((res) => callback());
 }
 
-export async function uploadImage(image, callback) {
-  axios
-    .post("api/images/", image, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    })
-    .then((res) => {
-      console.log(res);
-      let index = res.data.image.split("/").indexOf("media");
-      console.log(index);
-      res.data.image = res.data.image.split("/").slice(index).join("/");
-      console.log(res.data);
-      callback(res.data);
-    });
-}
+// export async function uploadImage(image, callback) {
+//   axios
+//     .post("api/images/", image, {
+//       headers: {
+//         "content-type": "multipart/form-data",
+//       },
+//     })
+//     .then((res) => {
+//       let index = res.data.image.split("/").indexOf("media");
+//       res.data.image = res.data.image.split("/").slice(index).join("/");
+//       callback(res.data);
+//     });
+// }
 
-export async function deleteImage(image_id) {
-  axios.delete(`api/images/${image_id}`).then((res) => console.log("deleted"));
-}
+// export async function deleteImage(image_id) {
+//   axios.delete(`api/images/${image_id}`).then((res) => console.log("deleted"));
+// }
 
 export async function deleteRecipe(unique_id, route, callback) {
   axios.delete(`api/${route}/${unique_id}`).then((res) => callback());
@@ -62,42 +59,36 @@ export async function updateHasMade(unique_id, prevState, callback) {
       field: "has_made",
       has_made: !prevState,
     })
-    // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }
 
 export async function updateRating(unique_id, rating, callback) {
   axios
     .put(`api/recipes/${unique_id}/`, { field: "rating", rating: rating })
-    // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }
 
 export async function addNotes(unique_id, notes, callback) {
   axios
     .put(`api/recipes/${unique_id}/`, { field: "notes_add", notes: notes })
-    // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }
 
 export async function removeNotes(unique_id, note, callback) {
   axios
     .put(`api/recipes/${unique_id}/`, { field: "notes_remove", note: note })
-    // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }
 
 export async function addTags(unique_id, tags, callback) {
   axios
     .put(`api/recipes/${unique_id}/`, { field: "tags_add", tags: tags })
-    // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }
 
 export async function removeTags(unique_id, tag, callback) {
   axios
     .put(`api/recipes/${unique_id}/`, { field: "tags_remove", tag: tag })
-    // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }
 
@@ -107,6 +98,5 @@ export async function editEntry(unique_id, newInfo, callback) {
       field: "edit_entry",
       editedEntry: newInfo,
     })
-    // .then((res) => callback());
     .then((res) => getOne(unique_id, callback));
 }

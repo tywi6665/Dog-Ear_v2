@@ -8,11 +8,12 @@ import {
   TreeSelect,
   Rate,
   Tooltip,
-  message,
-  Upload,
+  Switch,
+  // message,
+  // Upload,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
+// import { UploadOutlined } from "@ant-design/icons";
+// import { v4 as uuidv4 } from "uuid";
 
 const titleCase = (str) => {
   if (str) {
@@ -42,17 +43,17 @@ const RecipeEntry = ({
   closeModal,
   setUrl,
   handleCreate,
-  handleImageUpload,
-  handleImageDelete,
+  // handleImageUpload,
+  // handleImageDelete,
   handleDelete,
   quickTagOptions,
   type,
   setType,
   setIsSubmitted,
-  isUploading,
-  setIsUploading,
-  imageName,
-  setImageName,
+  // isUploading,
+  // setIsUploading,
+  // imageName,
+  // setImageName,
 }) => {
   const [recipeUrl, setRecipeUrl] = useState(url);
   const [title, setTitle] = useState(titleCase(recipe.title));
@@ -65,6 +66,7 @@ const RecipeEntry = ({
   const [steps, setSteps] = useState(recipe.steps);
   const [hasMade, setHasMade] = useState(false);
   const [rating, setRating] = useState(0);
+  const [urlNotNeeded, setUrlNotNeeded] = useState(false);
 
   const [form] = Form.useForm();
   const { TextArea } = Input;
@@ -87,14 +89,14 @@ const RecipeEntry = ({
     }
   }, []);
 
-  useEffect(() => {
-    if (imageName) {
-      setImgSrc(imageName.image);
-      form.setFieldsValue({
-        imgSrc: imgSrc,
-      });
-    }
-  }, [imageName]);
+  // useEffect(() => {
+  //   if (Object.keys(imageName).length) {
+  //     setImgSrc(imageName.image);
+  //     form.setFieldsValue({
+  //       imgSrc: imgSrc,
+  //     });
+  //   }
+  // }, [imageName]);
 
   const createEntry = () => {
     let notes = [...allNotes];
@@ -129,35 +131,28 @@ const RecipeEntry = ({
     setUrl("");
     setIsSubmitted(false);
     setType("");
-    setIsUploading("");
-    setImageName([]);
+    // setIsUploading("");
+    // setImageName({});
   };
 
-  const uploadProps = {
-    name: "file",
-    accept: "image/*",
-    customRequest(image) {
-      let form_data = new FormData();
-      form_data.append("image", image.file, image.file.name);
-      form_data.append("unique_id", uuidv4());
-      console.log(form_data, image.file, image.file.name);
-      handleImageUpload(form_data);
-      setIsUploading(true);
-    },
-    // onChange(info) {
-    //   if (info.file.status === "done") {
-    //     message.success(`${info.file.name} file uploaded successfully`);
-    //   } else if (info.file.status === "error") {
-    //     message.error(`${info.file.name} file upload failed.`);
-    //   }
-    // },
-    onRemove() {
-      const image_id = imageName.unique_id;
-      handleImageDelete(image_id);
-      setImgSrc("");
-      setIsUploading(false);
-    },
-  };
+  // const uploadProps = {
+  //   name: "file",
+  //   accept: "image/*",
+  //   customRequest(image) {
+  //     let form_data = new FormData();
+  //     form_data.append("image", image.file, image.file.name);
+  //     form_data.append("unique_id", uuidv4());
+  //     console.log(form_data, image.file, image.file.name);
+  //     handleImageUpload(form_data);
+  //     setIsUploading(true);
+  //   },
+  //   onRemove() {
+  //     const image_id = imageName.unique_id;
+  //     handleImageDelete(image_id);
+  //     setImgSrc("");
+  //     setIsUploading(false);
+  //   },
+  // };
 
   return (
     <Space
@@ -187,32 +182,52 @@ const RecipeEntry = ({
         <Form.Item
           label="Recipe URL"
           name="url"
-          rules={[
-            { required: true, message: "Please input the recipe's url!" },
-          ]}
+          // rules={[
+          //   { required: true, message: "Please input the recipe's url!" },
+          // ]}
         >
-          <Input
-            value={recipeUrl}
-            onChange={(e) => setRecipeUrl(e.target.value)}
-            disabled={type === "blank" ? false : true}
-          />
+          <div>
+            <Input
+              value={recipeUrl}
+              onChange={(e) => setRecipeUrl(e.target.value)}
+              disabled={type === "blank" ? (urlNotNeeded ? true : false) : true}
+            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "10px",
+              }}
+            >
+              <label htmlFor="switch" style={{ marginRight: "5px" }}>
+                Is recipe from a book?
+              </label>
+              <Switch
+                name="switch"
+                onChange={() => [
+                  setUrlNotNeeded(!urlNotNeeded),
+                  setRecipeUrl("#"),
+                ]}
+              />
+            </div>
+          </div>
         </Form.Item>
 
         <Form.Item label="Recipe Image">
           <Input
-            disabled={isUploading}
+            // disabled={isUploading}
             value={imgSrc}
             onChange={(e) => setImgSrc(e.target.value)}
             placeholder='Right click on image, and click "copy image address". Paste address here.'
           />
-          {type === "blank" ? (
+          {/* {type === "blank" ? (
             <>
               <p>or</p>
               <Upload {...uploadProps}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
             </>
-          ) : null}
+          ) : null} */}
         </Form.Item>
 
         <Form.Item valuePropName="has_made" wrapperCol={{ span: 24 }}>
@@ -308,7 +323,7 @@ const RecipeEntry = ({
             type="primary"
             htmlType="submit"
             className={title.length && recipeUrl.length ? "btn-active" : "btn"}
-            disabled={title.length && recipeUrl.length ? false : true}
+            disabled={title.length ? false : true}
             onClick={createEntry}
             danger
             block

@@ -58,8 +58,9 @@ function RecipeCatalog() {
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [entryType, setEntryType] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
-  const [imageName, setImageName] = useState({});
+
+  // const [isUploading, setIsUploading] = useState(false);
+  // const [imageName, setImageName] = useState({});
 
   const [inputVisible, setInputVisible] = useState(false);
 
@@ -82,17 +83,17 @@ function RecipeCatalog() {
     api.createRecipe(recipe, apiStateReferences);
   }
 
-  async function handleImageUpload(image) {
-    api.uploadImage(image, setImageName);
-  }
+  // async function handleImageUpload(image) {
+  //   api.uploadImage(image, setImageName);
+  // }
 
-  async function handleImageDelete(image) {
-    if (isUploading) {
-      api.deleteImage(image);
-    }
-    setImageName({});
-    setIsUploading(false);
-  }
+  // async function handleImageDelete(image) {
+  //   if (isUploading) {
+  //     api.deleteImage(image);
+  //   }
+  //   setImageName({});
+  //   setIsUploading(false);
+  // }
 
   async function handleDelete(unique_id, route) {
     api.deleteRecipe(unique_id, route, apiStateReferences);
@@ -344,9 +345,9 @@ function RecipeCatalog() {
 
   const onClose = () => {
     document.body.style.overflow = "unset";
-    if (isUploading) {
-      handleImageDelete(imageName.unique_id);
-    }
+    // if (isUploading) {
+    //   handleImageDelete(imageName.unique_id);
+    // }
     setOpen(false);
     setIsEditing(false);
   };
@@ -565,12 +566,12 @@ function RecipeCatalog() {
               updateRecipe={handleUpdate}
               updateFocusedRecipe={updateFocusedRecipe}
               setIsEditing={setIsEditing}
-              isUploading={isUploading}
-              setIsUploading={setIsUploading}
-              imageName={imageName}
-              setImageName={setImageName}
-              handleImageUpload={handleImageUpload}
-              handleImageDelete={handleImageDelete}
+              // isUploading={isUploading}
+              // setIsUploading={setIsUploading}
+              // imageName={imageName}
+              // setImageName={setImageName}
+              // handleImageUpload={handleImageUpload}
+              // handleImageDelete={handleImageDelete}
             />
           ) : (
             <>
@@ -586,12 +587,12 @@ function RecipeCatalog() {
                       placement="bottom"
                       onConfirm={() => (
                         handleDelete(focusedRecipe.unique_id, "recipes"),
-                        handleImageDelete(
-                          focusedRecipe.img_src
-                            .split("/")
-                            .slice(-1)[0]
-                            .split(".")[0]
-                        ),
+                        // handleImageDelete(
+                        //   focusedRecipe.img_src
+                        //     .split("/")
+                        //     .slice(-1)[0]
+                        //     .split(".")[0]
+                        // ),
                         onClose()
                       )}
                     >
@@ -616,17 +617,19 @@ function RecipeCatalog() {
                 />
               </div>
               <div className="drawer-div">
-                <Link href={focusedRecipe.url} target="_blank">
-                  <Button
-                    className="btn-active"
-                    type="primary"
-                    block
-                    style={{ marginTop: "10px" }}
-                    danger
-                  >
-                    Visit Recipe Webpage
-                  </Button>
-                </Link>
+                {focusedRecipe.url !== "#" ? (
+                  <Link href={focusedRecipe.url} target="_blank">
+                    <Button
+                      className="btn-active"
+                      type="primary"
+                      block
+                      style={{ marginTop: "10px" }}
+                      danger
+                    >
+                      Visit Recipe Webpage
+                    </Button>
+                  </Link>
+                ) : null}
               </div>
               <Divider />
               <Tabs
@@ -907,7 +910,7 @@ function RecipeCatalog() {
         onCancel={() => [
           closeModal(),
           disconnect(entryType),
-          handleImageDelete(imageName.unique_id),
+          // handleImageDelete(imageName.unique_id),
           setUrl(""),
         ]}
       >
@@ -933,18 +936,18 @@ function RecipeCatalog() {
                   setRecipe={setCrawledRecipe}
                   setIsSubmitted={setIsSubmitted}
                   handleCreate={handleCreate}
-                  handleImageUpload={handleImageUpload}
-                  handleImageDelete={handleImageDelete}
+                  // handleImageUpload={handleImageUpload}
+                  // handleImageDelete={handleImageDelete}
                   handleDelete={handleDelete}
                   setUrl={setUrl}
                   quickTagOptions={searchOptions.tags}
                   type={entryType}
                   setType={setEntryType}
                   closeModal={closeModal}
-                  isUploading={isUploading}
-                  setIsUploading={setIsUploading}
-                  imageName={imageName}
-                  setImageName={setImageName}
+                  // isUploading={isUploading}
+                  // setIsUploading={setIsUploading}
+                  // imageName={imageName}
+                  // setImageName={setImageName}
                 />
               </div>
             ) : (

@@ -37,7 +37,6 @@ urlpatterns = [
     path(r'', never_cache(FrontendAppView.as_view()), name='index'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    # path('api/images/', csrf_exempt(imageUploadView.as_view()), name="images"),
     path('hello/', csrf_exempt(hello), name='hello'),
     url('crawl/', csrf_exempt(crawl), name='crawl')
 ]

@@ -8,10 +8,10 @@ import {
   TreeSelect,
   Rate,
   Tooltip,
-  Upload,
+  // Upload,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
+// import { UploadOutlined } from "@ant-design/icons";
+// import { v4 as uuidv4 } from "uuid";
 
 const titleCase = (str) => {
   if (str) {
@@ -39,17 +39,17 @@ const RecipeEdit = ({
   quickTagOptions,
   setIsEditing,
   updateRecipe,
-  handleImageUpload,
-  handleImageDelete,
+  // handleImageUpload,
+  // handleImageDelete,
   isUploading,
-  setIsUploading,
-  imageName,
-  setImageName,
+  // setIsUploading,
+  // imageName,
+  // setImageName,
 }) => {
   const [url, setUrl] = useState(recipe.url);
   const [title, setTitle] = useState(titleCase(recipe.title));
   const [imgSrc, setImgSrc] = useState(recipe.img_src);
-  const [oldImgSrc, setOldImgSrc] = useState("");
+  // const [oldImgSrc, setOldImgSrc] = useState("");
   const [description, setDescription] = useState(recipe.description);
   const [author, setAuthor] = useState(recipe.author);
   const [allTags, setAllTags] = useState(titleCaseArr(recipe.tags));
@@ -77,21 +77,21 @@ const RecipeEdit = ({
     });
   }, []);
 
-  useEffect(() => {
-    if (Object.keys(imageName).length) {
-      setImgSrc(imageName.image);
-      form.setFieldsValue({
-        imgSrc: imgSrc,
-      });
-    }
-  }, [imageName]);
+  // useEffect(() => {
+  //   if (Object.keys(imageName).length) {
+  //     setImgSrc(imageName.image);
+  //     form.setFieldsValue({
+  //       imgSrc: imgSrc,
+  //     });
+  //   }
+  // }, [imageName]);
 
   const { TextArea } = Input;
 
   const editEntry = () => {
-    if (oldImgSrc.length) {
-      handleImageDelete(oldImgSrc.split("/").slice(-1)[0].split(".")[0]);
-    }
+    // if (oldImgSrc.length) {
+    //   deleteImage(oldImgSrc.split("/").slice(-1)[0].split(".")[0]);
+    // }
 
     let notes = [...allNotes];
 
@@ -124,39 +124,32 @@ const RecipeEdit = ({
       updateFocusedRecipe
     );
 
-    setIsUploading("");
-    setOldImgSrc("");
-    setImageName("");
+    // setIsUploading("");
+    // setOldImgSrc("");
+    // setImageName("");
     setIsEditing(false);
   };
 
-  const deleteImage = (img) => {
-    handleImageDelete(img);
-    setImgSrc("");
-    setIsUploading(false);
-  };
+  // const deleteImage = (img) => {
+  //   handleImageDelete(img);
+  //   setImgSrc("");
+  //   setIsUploading(false);
+  // };
 
-  const uploadProps = {
-    name: "file",
-    accept: "image/*",
-    customRequest(image) {
-      let form_data = new FormData();
-      form_data.append("image", image.file, image.file.name);
-      form_data.append("unique_id", uuidv4());
-      handleImageUpload(form_data);
-      setIsUploading(true);
-    },
-    // onChange(info) {
-    //   if (info.file.status === "done") {
-    //     message.success(`${info.file.name} file uploaded successfully`);
-    //   } else if (info.file.status === "error") {
-    //     message.error(`${info.file.name} file upload failed.`);
-    //   }
-    // },
-    onRemove() {
-      deleteImage(imageName.unique_id);
-    },
-  };
+  // const uploadProps = {
+  //   name: "file",
+  //   accept: "image/*",
+  //   customRequest(image) {
+  //     let form_data = new FormData();
+  //     form_data.append("image", image.file, image.file.name);
+  //     form_data.append("unique_id", uuidv4());
+  //     handleImageUpload(form_data);
+  //     setIsUploading(true);
+  //   },
+  //   onRemove() {
+  //     deleteImage(imageName.unique_id);
+  //   },
+  // };
 
   return (
     <Space
@@ -204,7 +197,7 @@ const RecipeEdit = ({
         </Form.Item>
 
         <Form.Item
-          disabled={isUploading}
+          // disabled={isUploading}
           label="Recipe Image"
           style={{ marginBottom: "15px" }}
         >
@@ -213,7 +206,7 @@ const RecipeEdit = ({
             onChange={(e) => setImgSrc(e.target.value)}
             placeholder='Right click on image, and click "copy image address". Paste address here.'
           />
-          {imgSrc.substring(0, 13) === "media/images/" && !isUploading ? (
+          {/* {imgSrc.substring(0, 13) === "media/images/" && !isUploading ? (
             <Button
               className="btn-active"
               htmlType="button"
@@ -245,7 +238,7 @@ const RecipeEdit = ({
                 </Button>
               ) : null}
             </>
-          )}
+          )} */}
         </Form.Item>
 
         <div style={{ display: "flex", alignItems: "baseline" }}>

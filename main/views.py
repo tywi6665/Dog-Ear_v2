@@ -7,21 +7,17 @@ from django.core.exceptions import ValidationError
 from rest_framework import viewsets 
 from .serializers import RecipeItemSerializer, CrawledRecipeItemSerializer, ImageItemSerializer
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from scrapyd_api import ScrapydAPI
 # from main.utils import URLUtil
 from main.models import RecipeItem, CrawledRecipeItem, ImageItem
 from django_filters import rest_framework as filters
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
+# from django.shortcuts import get_object_or_404
 import json
-from PIL import Image
-from io import BytesIO
-from django.core.files import File
 
 # connect to scrapyd service
 scrapyd = ScrapydAPI('http://localhost:6800')
