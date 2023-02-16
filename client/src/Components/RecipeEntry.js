@@ -182,9 +182,9 @@ const RecipeEntry = ({
         <Form.Item
           label="Recipe URL"
           name="url"
-          // rules={[
-          //   { required: true, message: "Please input the recipe's url!" },
-          // ]}
+          rules={[
+            { required: true, message: "Please input the recipe's url!" },
+          ]}
         >
           <div>
             <Input
@@ -192,24 +192,26 @@ const RecipeEntry = ({
               onChange={(e) => setRecipeUrl(e.target.value)}
               disabled={type === "blank" ? (urlNotNeeded ? true : false) : true}
             />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "10px",
-              }}
-            >
-              <label htmlFor="switch" style={{ marginRight: "5px" }}>
-                Is recipe from a book?
-              </label>
-              <Switch
-                name="switch"
-                onChange={() => [
-                  setUrlNotNeeded(!urlNotNeeded),
-                  setRecipeUrl("#"),
-                ]}
-              />
-            </div>
+            {type === "blank" ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "10px",
+                }}
+              >
+                <label htmlFor="switch" style={{ marginRight: "5px" }}>
+                  Is recipe from a book?
+                </label>
+                <Switch
+                  name="switch"
+                  onChange={() => [
+                    setUrlNotNeeded(!urlNotNeeded),
+                    setRecipeUrl("#"),
+                  ]}
+                />
+              </div>
+            ) : null}
           </div>
         </Form.Item>
 
