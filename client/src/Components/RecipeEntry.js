@@ -325,7 +325,7 @@ const RecipeEntry = ({
             type="primary"
             htmlType="submit"
             className={title.length && recipeUrl.length ? "btn-active" : "btn"}
-            disabled={title.length ? false : true}
+            disabled={title.length && recipeUrl.length ? false : true}
             onClick={createEntry}
             danger
             block
